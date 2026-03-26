@@ -19,6 +19,9 @@ import { RelayModule } from './modules/relay/relay.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
+import { IdempotencyInterceptor } from './common/interceptors/idempotency.interceptor';
 
 @Module({
   imports: [
@@ -33,6 +36,19 @@ import { PrismaModule } from './modules/prisma/prisma.module';
         url: process.env.REDIS_URL,
       },
     }),
+    ThrottlerModule.forRoot([{
+      name: 'default',
+      ttl: 60000,
+      limit: 100,
+    }, {
+      name: 'auth',
+      ttl: 60000,
+      limit: 10,
+    }, {
+      name: 'quote',
+      ttl: 60000,
+      limit: 30,
+    }]),
     StellarModule,
     MerchantModule,
     PaymentsModule,
@@ -48,6 +64,18 @@ import { PrismaModule } from './modules/prisma/prisma.module';
     AnalyticsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, EventsGateway],
+  providers: [
+    AppService, 
+    EventsGateway,
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: IdempotencyInterceptor,
+    }
+  ],
 })
 export class AppModule {}
+
