@@ -109,6 +109,7 @@ model Payment {
   secretRevealed Boolean        @default(false)
   // Metadata
   metadata       Json?
+  linkId         String?
   refundedAt     DateTime?
   completedAt    DateTime?
   createdAt      DateTime       @default(now())
@@ -116,6 +117,7 @@ model Payment {
   merchant       Merchant       @relation(fields: [merchantId], references: [id])
   quote          Quote          @relation(fields: [quoteId], references: [id])
   webhookEvents  WebhookEvent[]
+  paymentLink    PaymentLink?   @relation("LinkPayments", fields: [linkId], references: [id])
 }
 
 enum PaymentStatus {
@@ -136,14 +138,18 @@ enum PaymentStatus {
 model PaymentLink {
   id          String    @id @default(cuid())
   merchantId  String
+  shortCode   String    @unique
   amount      Decimal?  @db.Decimal(36, 18) // null = open amount
   currency    String    @default("USD")
   description String?
   singleUse   Boolean   @default(false)
   usedCount   Int       @default(0)
+  viewCount   Int       @default(0)
+  qrCodeUrl   String?
   expiresAt   DateTime?
   active      Boolean   @default(true)
   createdAt   DateTime  @default(now())
+  payments    Payment[] @relation("LinkPayments")
   merchant    Merchant  @relation(fields: [merchantId], references: [id])
 }
 

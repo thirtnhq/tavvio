@@ -268,6 +268,7 @@ async function main() {
       // Active, fixed amount, single-use
       {
         merchantId: acme.id,
+        shortCode: 'Abc12345',
         amount: '25.00',
         currency: 'USD',
         description: 'T-shirt purchase',
@@ -277,6 +278,7 @@ async function main() {
       // Active, open amount, multi-use
       {
         merchantId: acme.id,
+        shortCode: 'Def67890',
         amount: null,
         currency: 'USD',
         description: 'Donations',
@@ -287,6 +289,7 @@ async function main() {
       // Active with expiry
       {
         merchantId: globex.id,
+        shortCode: 'Ghi11223',
         amount: '99.99',
         currency: 'EUR',
         description: 'Premium subscription',
@@ -297,6 +300,7 @@ async function main() {
       // Expired link
       {
         merchantId: globex.id,
+        shortCode: 'Jkl44556',
         amount: '50.00',
         currency: 'USD',
         description: 'Flash sale item',
@@ -307,6 +311,7 @@ async function main() {
       // Used single-use link
       {
         merchantId: initech.id,
+        shortCode: 'Mno77889',
         amount: '150.00',
         currency: 'USD',
         description: 'Consulting session',
