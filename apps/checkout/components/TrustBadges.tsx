@@ -21,9 +21,9 @@ export function TrustBadges() {
 
       {/* Powered by */}
       <p className="text-center text-xs text-muted-foreground/60">
-        Powered by{" "}
+        🔒 Powered by{" "}
         <span className="font-display font-semibold text-muted-foreground">
-          Tavvio
+          Useroutr
         </span>
       </p>
     </div>
