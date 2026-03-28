@@ -1,6 +1,7 @@
 import { Processor, WorkerHost } from '@nestjs/bullmq';
 import { Job } from 'bullmq';
 import { Logger } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Resend } from 'resend';
 import { EmailJobData } from './types';
 
@@ -10,28 +11,40 @@ import { EmailJobData } from './types';
 export class NotificationsProcessor extends WorkerHost {
   private readonly logger = new Logger(NotificationsProcessor.name);
   private resend: Resend;
+  private fromEmail: string;
 
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     super();
-    // Use the RESEND_API_KEY from environment, though normally you inject ConfigService
-    this.resend = new Resend(process.env.RESEND_API_KEY || 're_mock');
+
+    const apiKey = this.configService.get<string>('RESEND_API_KEY');
+    if (!apiKey) {
+      throw new Error(
+        'RESEND_API_KEY is not configured. Set it in your environment variables.',
+      );
+    }
+
+    this.resend = new Resend(apiKey);
+    this.fromEmail = this.configService.get<string>(
+      'EMAIL_FROM',
+      'noreply@useroutr.io',
+    );
   }
 
   async process(job: Job<EmailJobData>): Promise<void> {
     switch (job.name) {
       case 'sendEmail': {
-        const { to, subject, html } = job.data;
-        const fromEmail = process.env.EMAIL_FROM || 'noreply@useroutr.io';
+        const { to, subject, html, attachments } = job.data;
         const toString = Array.isArray(to) ? to.join(', ') : to;
 
         try {
           this.logger.debug(`Sending email to ${toString}`);
 
           const response = await this.resend.emails.send({
-            from: fromEmail,
+            from: this.fromEmail,
             to: typeof to === 'string' ? [to] : to,
             subject,
             html,
+            ...(attachments?.length ? { attachments } : {}),
           });
 
           if (response.error) {

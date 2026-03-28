@@ -1,15 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
+import { ConfigService } from '@nestjs/config';
 import { Queue } from 'bullmq';
 import { EmailJobData, Invoice, Payment, Payout } from './types';
 import * as templates from './templates';
 
 @Injectable()
 export class NotificationsService {
+  private readonly appUrl: string;
+
   constructor(
     @InjectQueue('notifications')
     private readonly notificationsQueue: Queue<EmailJobData>,
-  ) {}
+    private readonly configService: ConfigService,
+  ) {
+    this.appUrl = this.configService.get<string>(
+      'FRONTEND_URL',
+      'http://localhost:3001',
+    );
+  }
 
   private async dispatch(data: EmailJobData) {
     if (!data.subject || !data.to || !data.html) {
@@ -30,7 +39,7 @@ export class NotificationsService {
     await this.dispatch({
       to: email,
       subject: 'Verify your email',
-      html: templates.verificationTemplate(token),
+      html: templates.verificationTemplate(token, this.appUrl),
     });
   }
 
@@ -38,7 +47,7 @@ export class NotificationsService {
     await this.dispatch({
       to: email,
       subject: 'Reset your password',
-      html: templates.passwordResetTemplate(token),
+      html: templates.passwordResetTemplate(token, this.appUrl),
     });
   }
 
@@ -74,7 +83,7 @@ export class NotificationsService {
     await this.dispatch({
       to: merchantEmail,
       subject: 'New Payment Received',
-      html: templates.paymentReceiptTemplate(payment),
+      html: templates.merchantPaymentNotificationTemplate(payment),
     });
   }
 
@@ -84,15 +93,16 @@ export class NotificationsService {
     invoice: Invoice,
     pdfUrl: string,
   ): Promise<void> {
-    // Ideally we would fetch the PDF and attach it, but relying on external URL attachment
-    // or dropping a link in the email can bypass needing complex buffers here.
-    // Assuming attachment is a base64 or buff. In this simple mock, we just link it.
     await this.dispatch({
       to: customerEmail,
       subject: `Invoice ${invoice.id} is available`,
-      html:
-        templates.invoiceTemplate(invoice) +
-        `<p><a href="${pdfUrl}">Download PDF</a></p>`,
+      html: templates.invoiceTemplate(invoice, this.appUrl),
+      attachments: [
+        {
+          filename: `invoice-${invoice.id}.pdf`,
+          path: pdfUrl,
+        },
+      ],
     });
   }
 
@@ -100,10 +110,21 @@ export class NotificationsService {
     customerEmail: string,
     invoice: Invoice,
   ): Promise<void> {
+    const now = new Date();
+    const diff = Math.ceil(
+      (invoice.dueDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24),
+    );
+    const dueLabel =
+      diff <= 0
+        ? 'overdue'
+        : diff === 1
+          ? 'due tomorrow'
+          : `due in ${diff} days`;
+
     await this.dispatch({
       to: customerEmail,
-      subject: 'Your invoice is due in 3 days',
-      html: templates.invoiceReminderTemplate(invoice),
+      subject: `Your invoice is ${dueLabel}`,
+      html: templates.invoiceReminderTemplate(invoice, this.appUrl),
     });
   }
 

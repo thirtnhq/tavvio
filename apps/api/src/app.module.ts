@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { RedisModule } from '@nestjs-modules/ioredis';
 import { BullModule } from '@nestjs/bullmq';
 import { AppController } from './app.controller';
@@ -25,6 +26,7 @@ import { IdempotencyInterceptor } from './common/interceptors/idempotency.interc
 
 @Module({
   imports: [
+    ConfigModule.forRoot({ isGlobal: true }),
     PrismaModule,
     AuthModule,
     RedisModule.forRoot({

@@ -4,7 +4,8 @@ export interface EmailJobData {
   html: string;
   attachments?: {
     filename: string;
-    content: string; // Base64 or Buffer
+    content?: string; // Base64 or Buffer
+    path?: string; // URL to fetch the file from
   }[];
 }
 
