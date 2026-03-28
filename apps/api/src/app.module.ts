@@ -36,7 +36,7 @@ import { IdempotencyInterceptor } from './common/interceptors/idempotency.interc
         url: process.env.REDIS_URL,
       },
     }),
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+
     ThrottlerModule.forRoot([
       {
         name: 'default',
@@ -74,7 +74,7 @@ import { IdempotencyInterceptor } from './common/interceptors/idempotency.interc
     EventsGateway,
     {
       provide: APP_GUARD,
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+
       useClass: ThrottlerGuard,
     },
     {
