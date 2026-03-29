@@ -27,7 +27,12 @@ model Merchant {
   settlementAddress String? // Stellar G... address OR EVM 0x...
   settlementChain   String        @default("stellar")
   kybStatus         KybStatus     @default(PENDING)
+  kybData           Json?
   feeBps            Int           @default(50) // 0.5%
+  logoUrl           String?
+  brandColor        String?
+  customDomain      String?
+  companyName       String?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   payments          Payment[]

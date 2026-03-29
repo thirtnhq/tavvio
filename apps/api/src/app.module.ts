@@ -26,7 +26,9 @@ import { IdempotencyInterceptor } from './common/interceptors/idempotency.interc
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     PrismaModule,
     AuthModule,
     RedisModule.forRoot({
