@@ -7,7 +7,7 @@ import {
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import * as crypto from 'crypto';
-import type { Merchant } from '../../../generated/prisma/client.js';
+import type { Merchant } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service.js';
 import type { RegisterDto } from './dto/register.dto.js';
 import type { LoginDto } from './dto/login.dto.js';

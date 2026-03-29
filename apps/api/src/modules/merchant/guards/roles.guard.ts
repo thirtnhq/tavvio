@@ -5,7 +5,7 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { TeamRole } from '../../../../generated/prisma/client';
+import { TeamRole } from '@prisma/client';
 import { ROLES_KEY } from '../decorators/roles.decorator';
 import { PrismaService } from '../../prisma/prisma.service';
 

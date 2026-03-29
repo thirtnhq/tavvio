@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import * as bcrypt from 'bcrypt';
-import type { Merchant } from '../../../generated/prisma/client.js';
+import type { Merchant } from '@prisma/client';
 import { PrismaService } from '../../modules/prisma/prisma.service.js';
 import { IS_PUBLIC_ROUTE } from '../decorators/public-route.decorator.js';
 import type { AuthenticatedRequest } from '../decorators/current-merchant.decorator.js';

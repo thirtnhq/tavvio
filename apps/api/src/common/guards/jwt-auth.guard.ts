@@ -6,7 +6,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_ROUTE } from '../decorators/public-route.decorator.js';
-import type { Merchant } from '../../../generated/prisma/client.js';
+import type { Merchant } from '@prisma/client';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {

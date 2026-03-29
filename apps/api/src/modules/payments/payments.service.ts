@@ -674,7 +674,6 @@ export class PaymentsService implements OnModuleInit {
 
   async initiateRefund(paymentId: string): Promise<Payment> {
     const payment = await this.getById(paymentId);
-
     const refundableStatuses: PaymentStatus[] = [
       PaymentStatus.SOURCE_LOCKED,
       PaymentStatus.STELLAR_LOCKED,

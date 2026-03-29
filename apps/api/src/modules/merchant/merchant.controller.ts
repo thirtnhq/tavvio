@@ -10,7 +10,7 @@ import {
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { TeamRole } from '../../../generated/prisma/client';
+import { TeamRole } from '@prisma/client';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CurrentMerchant } from './decorators/current-merchant.decorator';
 import { Roles } from './decorators/roles.decorator';

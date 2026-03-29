@@ -4,7 +4,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
-import { KybStatus, Merchant, TeamRole } from '../../../generated/prisma/client';
+import { KybStatus, Merchant, TeamRole } from '@prisma/client';
 import { UpdateMerchantDto } from './dto/update-merchant.dto';
 import { SettlementDto } from './dto/settlement.dto';
 import { BrandingDto } from './dto/branding.dto';

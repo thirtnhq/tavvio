@@ -1,6 +1,6 @@
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import type { Request } from 'express';
-import type { Merchant } from '../../../generated/prisma/client.js';
+import type { Merchant } from '@prisma/client';
 
 export interface AuthenticatedRequest extends Request {
   user: Merchant;

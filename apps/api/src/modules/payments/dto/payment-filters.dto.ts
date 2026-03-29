@@ -1,17 +1,29 @@
 import {
   IsOptional,
-  IsEnum,
   IsISO8601,
   IsString,
   IsNumber,
   IsIn,
 } from 'class-validator';
-import { PaymentStatus } from '../../../../generated/prisma/client';
+
+const PAYMENT_STATUSES = [
+  'PENDING',
+  'AWAITING_CONFIRMATION',
+  'QUOTE_LOCKED',
+  'SOURCE_LOCKED',
+  'STELLAR_LOCKED',
+  'PROCESSING',
+  'COMPLETED',
+  'REFUNDING',
+  'REFUNDED',
+  'EXPIRED',
+  'FAILED',
+] as const;
 
 export class PaymentFiltersDto {
-  @IsEnum(PaymentStatus)
+  @IsIn(PAYMENT_STATUSES)
   @IsOptional()
-  status?: PaymentStatus;
+  status?: (typeof PAYMENT_STATUSES)[number];
 
   @IsISO8601()
   @IsOptional()
