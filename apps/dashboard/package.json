@@ -20,12 +20,7 @@
     "socket.io-client": "^4",
     "recharts": "^2",
     "zustand": "^5",
-    "zod": "^3",
-    "@phosphor-icons/react": "^2",
-    "date-fns": "^3",
-    "framer-motion": "^11",
-    "@tavvio/types": "workspace:*",
-    "@tavvio/ui": "workspace:*"
+    "zod": "^3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
