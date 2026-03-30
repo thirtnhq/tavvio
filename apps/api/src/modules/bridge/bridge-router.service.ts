@@ -4,6 +4,8 @@ import {
   BridgeInResult,
   BridgeOutParams,
   BridgeOutResult,
+  Chain,
+  CompleteSourceLockParams,
 } from '@tavvio/types';
 import { WormholeService } from './providers/wormhole.service';
 import { LayerswapService } from './providers/layerswap.service';
@@ -136,6 +138,23 @@ export class BridgeRouterService {
       default:
         throw new Error('Unknown provider');
     }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/require-await -- stub until EVM HTLC contract integration
+  async completeSourceLock(params: CompleteSourceLockParams): Promise<string> {
+    const { chain, lockId } = params;
+    // TODO: call withdraw() on the EVM HTLC contract for the specific chain
+    return `tx_hash_for_unlocking_${lockId}_on_${chain}`;
+  }
+
+  // eslint-disable-next-line @typescript-eslint/require-await -- stub until EVM HTLC contract integration
+  async refundSourceLock(params: {
+    chain: Chain;
+    lockId: string;
+  }): Promise<string> {
+    const { chain, lockId } = params;
+    // TODO: call refund() on EVM HTLC contract
+    return `tx_hash_for_refunding_${lockId}_on_${chain}`;
   }
 
   private stellarDirectTransfer(params: BridgeOutParams): BridgeOutResult {

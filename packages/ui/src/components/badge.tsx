@@ -25,6 +25,9 @@ const badgeVariants = cva(
         cancelled: "bg-[var(--muted)] text-[var(--muted-foreground)]",
         overdue: "border border-[var(--red)]/40 text-[var(--red)]",
         draft: "border border-[var(--border)] text-[var(--muted-foreground)]",
+        active: "bg-[var(--green)]/15 text-[var(--green)]",
+        expired: "bg-[var(--muted)] text-[var(--muted-foreground)]",
+        deactivated: "bg-[var(--red)]/15 text-[var(--red)]",
       },
     },
     defaultVariants: {
@@ -41,6 +44,9 @@ const BADGE_ICONS = {
   cancelled: Prohibit,
   overdue: Warning,
   draft: FileText,
+  active: CheckCircle,
+  expired: Clock,
+  deactivated: Prohibit,
   default: null,
 } as const;
 

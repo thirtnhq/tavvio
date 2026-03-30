@@ -121,7 +121,7 @@ const HTLC_ABI = [
 @Injectable()
 export class WormholeService {
   private readonly logger = new Logger(WormholeService.name);
-  private wh: Wormhole<'Mainnet' | 'Testnet'>;
+  private wh!: Wormhole<'Mainnet' | 'Testnet'>;
   private isTestnet = false;
   private relayEvmWallet: ethers.Wallet | null = null;
 

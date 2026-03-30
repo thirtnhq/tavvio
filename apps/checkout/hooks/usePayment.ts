@@ -1,23 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import { api } from "@/lib/api";
 
-interface Payment {
+export type PaymentMethod = "card" | "bank" | "crypto";
+
+export interface PaymentData {
   id: string;
   amount: number;
   currency: string;
   status: string;
-  merchantName: string;
-  merchantLogo?: string;
-  description?: string;
-  lineItems?: { label: string; amount: number }[];
-  expiresAt?: string;
+  merchant: {
+    name: string;
+    logo?: string;
+  };
+  metadata?: {
+    description?: string;
+    orderId?: string;
+    [key: string]: unknown;
+  };
+  paymentMethods: PaymentMethod[];
 }
 
 export function usePayment(paymentId: string) {
-  return useQuery<Payment>({
+  return useQuery<PaymentData>({
     queryKey: ["payment", paymentId],
-    queryFn: () => api.get(`/checkout/${paymentId}`),
+    queryFn: () => api.get(`/v1/payments/${paymentId}`),
     enabled: !!paymentId,
-    refetchInterval: 5000,
+    retry: 1,
   });
 }

@@ -1,42 +1,63 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import { CreditCard, Bank, CurrencyBtc } from "@phosphor-icons/react";
 import { cn } from "@tavvio/ui";
+import type { PaymentMethod } from "@/hooks/usePayment";
 
-const METHODS = [
-  {
-    id: "card",
+const METHOD_CONFIG = {
+  card: {
     label: "Card",
     description: "Visa, Mastercard, etc.",
     icon: CreditCard,
   },
-  {
-    id: "bank",
+  bank: {
     label: "Bank Transfer",
     description: "Direct bank payment",
     icon: Bank,
   },
-  {
-    id: "crypto",
-    label: "Crypto",
+  crypto: {
+    label: "Crypto Wallet",
     description: "USDC, ETH, BTC",
     icon: CurrencyBtc,
   },
-] as const;
+} as const;
 
-export function PaymentMethodSelector() {
+interface PaymentMethodSelectorProps {
+  paymentId: string;
+  methods: PaymentMethod[];
+}
+
+export function PaymentMethodSelector({
+  paymentId,
+  methods,
+}: PaymentMethodSelectorProps) {
+  const router = useRouter();
+
+  if (methods.length === 0) {
+    return (
+      <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
+        <p className="text-center text-sm text-muted-foreground">
+          No payment methods available. Please contact the merchant.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
       <h2 className="font-display text-base font-semibold text-foreground">
-        Payment method
+        Pay with
       </h2>
 
       <div className="mt-4 space-y-2">
-        {METHODS.map((method) => {
-          const Icon = method.icon;
+        {methods.map((method) => {
+          const config = METHOD_CONFIG[method];
+          const Icon = config.icon;
           return (
             <button
-              key={method.id}
+              key={method}
+              onClick={() => router.push(`/${paymentId}/${method}`)}
               className={cn(
                 "flex w-full items-center gap-4 rounded-lg border border-border px-4 py-3.5 text-left transition-colors",
                 "hover:border-primary/40 hover:bg-primary/5"
@@ -47,10 +68,10 @@ export function PaymentMethodSelector() {
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  {method.label}
+                  {config.label}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {method.description}
+                  {config.description}
                 </p>
               </div>
             </button>

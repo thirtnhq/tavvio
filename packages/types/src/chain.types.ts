@@ -71,3 +71,22 @@ export interface CompleteSourceLockParams {
   lockId:   string;
   preimage: string;                  // the revealed secret (hex)
 }
+
+export type StellarContractEventType = 'Locked' | 'Withdrawn' | 'Refunded';
+
+export interface StellarContractEvent {
+  type: StellarContractEventType;
+  lock_id: string;
+  preimage: string;
+}
+
+export interface SourceLockEvent {
+  lockId:   string;
+  sender:   string;
+  receiver: string;
+  amount:   bigint;
+  hashlock: string;
+  timelock: number;
+  token:    string;
+  chain:    Chain;
+}

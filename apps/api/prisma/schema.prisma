@@ -5,8 +5,7 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider = "prisma-client"
-  output   = "../generated/prisma"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -27,7 +26,12 @@ model Merchant {
   settlementAddress String? // Stellar G... address OR EVM 0x...
   settlementChain   String        @default("stellar")
   kybStatus         KybStatus     @default(PENDING)
+  kybData           Json?
   feeBps            Int           @default(50) // 0.5%
+  logoUrl           String?
+  brandColor        String?
+  customDomain      String?
+  companyName       String?
   createdAt         DateTime      @default(now())
   updatedAt         DateTime      @updatedAt
   payments          Payment[]
@@ -106,11 +110,15 @@ model Payment {
   destTxHash     String?
   // HTLC fields
   hashlock       String? // sha256 of secret
+  htlcSecret     String? // encrypted secret
   secretRevealed Boolean        @default(false)
+  // Idempotency
+  idempotencyKey String?        @unique
   // Metadata
   metadata       Json?
   refundedAt     DateTime?
   completedAt    DateTime?
+  expiresAt      DateTime?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   merchant       Merchant       @relation(fields: [merchantId], references: [id])

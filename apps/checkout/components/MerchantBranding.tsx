@@ -1,9 +1,23 @@
-export function MerchantBranding() {
-  // TODO: Fetch merchant branding from payment data
+interface MerchantBrandingProps {
+  merchantName: string;
+  merchantLogo?: string;
+}
+
+export function MerchantBranding({ merchantName, merchantLogo }: MerchantBrandingProps) {
   return (
     <div className="text-center">
-      <div className="mx-auto h-10 w-10 skeleton rounded-lg" />
-      <div className="mx-auto mt-2 h-4 w-32 skeleton" />
+      {merchantLogo ? (
+        <img
+          src={merchantLogo}
+          alt={merchantName}
+          className="mx-auto h-10 w-10 rounded-lg object-cover"
+        />
+      ) : (
+        <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-lg font-bold text-primary-foreground">
+          {merchantName.charAt(0).toUpperCase()}
+        </div>
+      )}
+      <p className="mt-2 text-sm font-medium text-foreground">{merchantName}</p>
     </div>
   );
 }

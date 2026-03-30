@@ -23,7 +23,7 @@ export function TrustBadges() {
       <p className="text-center text-xs text-muted-foreground/60">
         Powered by{" "}
         <span className="font-display font-semibold text-muted-foreground">
-          Tavvio
+          Useroutr
         </span>
       </p>
     </div>

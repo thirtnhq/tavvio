@@ -25,7 +25,12 @@ const mockSafeMerchant: SafeMerchant = {
   settlementAddress: null,
   settlementChain: 'stellar',
   kybStatus: 'PENDING',
+  kybData: null,
   feeBps: 50,
+  logoUrl: null,
+  brandColor: null,
+  customDomain: null,
+  companyName: null,
   createdAt: new Date('2026-01-01'),
   updatedAt: new Date('2026-01-01'),
 };
