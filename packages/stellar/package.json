@@ -2,5 +2,15 @@
   "name": "@tavvio/stellar",
   "version": "0.0.1",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts"
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "@stellar/stellar-sdk": "^14.5.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.3"
+  }
 }
