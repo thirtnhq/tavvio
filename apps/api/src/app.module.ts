@@ -5,7 +5,7 @@ import { BullModule } from '@nestjs/bullmq';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './modules/auth/auth.module';
-import { EventsGateway } from './modules/events/events/events.gateway';
+import { EventsModule } from './modules/events/events.module';
 import { StellarModule } from './modules/stellar/stellar.module';
 import { MerchantModule } from './modules/merchant/merchant.module';
 import { PaymentsModule } from './modules/payments/payments.module';
@@ -31,6 +31,7 @@ import { IdempotencyInterceptor } from './common/interceptors/idempotency.interc
     }),
     PrismaModule,
     AuthModule,
+    EventsModule,
     RedisModule.forRoot({
       type: 'single',
       url: process.env.REDIS_URL,
@@ -75,7 +76,6 @@ import { IdempotencyInterceptor } from './common/interceptors/idempotency.interc
   controllers: [AppController],
   providers: [
     AppService,
-    EventsGateway,
     {
       provide: APP_GUARD,
 

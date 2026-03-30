@@ -18,7 +18,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
     const inputType = isPassword && showPassword ? "text" : type;
 
     return (
-      <div className="space-y-1.5">
+      <div className="space-y-2">
         {label && (
           <label
             htmlFor={id}
@@ -33,7 +33,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
             id={id}
             type={inputType}
             className={cn(
-              "h-10 w-full rounded-[var(--radius-sm)] border bg-transparent px-3 text-sm text-[var(--foreground)] outline-none transition-colors",
+              "h-10 w-full relative rounded-[var(--radius-sm)] border bg-transparent px-3 text-sm text-[var(--foreground)] outline-none transition-colors",
               "placeholder:text-[var(--muted-foreground)]",
               "focus:border-[var(--ring)] focus:ring-1 focus:ring-[var(--ring)]",
               "disabled:cursor-not-allowed disabled:opacity-50",
@@ -42,7 +42,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
                 : success
                   ? "border-[var(--success)] focus:border-[var(--success)] focus:ring-[var(--success)]"
                   : "border-[var(--input)]",
-              (isPassword || success) && "pr-10",
+              (isPassword || success) && "pr-12",
               className
             )}
             {...props}
@@ -52,7 +52,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
               type="button"
               tabIndex={-1}
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute right-3 top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
+              className="absolute right-3 bg-white top-1/2 -translate-y-1/2 text-[var(--muted-foreground)] hover:text-[var(--foreground)]"
             >
               {showPassword ? <EyeSlash size={18} /> : <Eye size={18} />}
             </button>

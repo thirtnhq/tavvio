@@ -39,6 +39,7 @@ model Merchant {
   invoices          Invoice[]
   paymentLinks      PaymentLink[]
   teamMembers       TeamMember[]
+  webhookEvents     WebhookEvent[]
 }
 
 model TeamMember {
@@ -118,6 +119,7 @@ model Payment {
   metadata       Json?
   refundedAt     DateTime?
   completedAt    DateTime?
+  expiresAt      DateTime?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   merchant       Merchant       @relation(fields: [merchantId], references: [id])
@@ -265,6 +267,7 @@ model WebhookEvent {
   lastAttemptAt DateTime?
   nextRetryAt   DateTime?
   createdAt     DateTime      @default(now())
+  merchant      Merchant      @relation(fields: [merchantId], references: [id])
   payment       Payment?      @relation(fields: [paymentId], references: [id])
 }
 
