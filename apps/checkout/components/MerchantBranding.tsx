@@ -3,7 +3,10 @@ interface MerchantBrandingProps {
   merchantLogo?: string;
 }
 
-export function MerchantBranding({ merchantName, merchantLogo }: MerchantBrandingProps) {
+export function MerchantBranding({
+  merchantName,
+  merchantLogo,
+}: MerchantBrandingProps) {
   return (
     <div className="text-center">
       {merchantLogo ? (
@@ -14,10 +17,12 @@ export function MerchantBranding({ merchantName, merchantLogo }: MerchantBrandin
         />
       ) : (
         <div className="mx-auto flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-lg font-bold text-primary-foreground">
-          {merchantName.charAt(0).toUpperCase()}
+          {(merchantName?.charAt(0) || "T").toUpperCase()}
         </div>
       )}
-      <p className="mt-2 text-sm font-medium text-foreground">{merchantName}</p>
+      <p className="mt-2 text-sm font-medium text-foreground">
+        {merchantName || "Tavvio"}
+      </p>
     </div>
   );
 }

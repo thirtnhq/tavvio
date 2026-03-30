@@ -1,22 +1,30 @@
-import { IsNumber, IsString, IsOptional, IsArray, IsEmail, IsObject, IsUrl } from 'class-validator';
+import {
+  IsNumber,
+  IsString,
+  IsOptional,
+  IsArray,
+  IsEmail,
+  IsObject,
+  IsUrl,
+} from 'class-validator';
 
 export class CreatePaymentDto {
   @IsString()
   quoteId!: string;
 
   @IsNumber()
-  amount!: number;                    // in smallest currency unit (cents, for USD)
+  amount!: number; // in smallest currency unit (cents, for USD)
 
   @IsString()
-  currency!: string;                  // "USD"
-
-  @IsString()
-  @IsOptional()
-  settlement_asset?: string;         // defaults to merchant's preference
+  currency!: string; // "USD"
 
   @IsString()
   @IsOptional()
-  settlement_network?: string;       // defaults to merchant's preference
+  settlement_asset?: string; // defaults to merchant's preference
+
+  @IsString()
+  @IsOptional()
+  settlement_network?: string; // defaults to merchant's preference
 
   @IsArray()
   @IsOptional()
@@ -24,7 +32,7 @@ export class CreatePaymentDto {
 
   @IsObject()
   @IsOptional()
-  customer?: { email?: string, name?: string };
+  customer?: { email?: string; name?: string };
 
   @IsObject()
   @IsOptional()

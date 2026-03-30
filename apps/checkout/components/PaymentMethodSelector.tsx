@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { CreditCard, Bank, CurrencyBtc } from "@phosphor-icons/react";
 import { cn } from "@tavvio/ui";
 import type { PaymentMethod } from "@/hooks/usePayment";
@@ -32,8 +32,6 @@ export function PaymentMethodSelector({
   paymentId,
   methods,
 }: PaymentMethodSelectorProps) {
-  const router = useRouter();
-
   if (methods.length === 0) {
     return (
       <div className="rounded-xl border border-border bg-card p-6 shadow-sm">
@@ -55,9 +53,9 @@ export function PaymentMethodSelector({
           const config = METHOD_CONFIG[method];
           const Icon = config.icon;
           return (
-            <button
+            <Link
               key={method}
-              onClick={() => router.push(`/${paymentId}/${method}`)}
+              href={`/${paymentId}/${method}`}
               className={cn(
                 "flex w-full items-center gap-4 rounded-lg border border-border px-4 py-3.5 text-left transition-colors",
                 "hover:border-primary/40 hover:bg-primary/5"
@@ -74,7 +72,7 @@ export function PaymentMethodSelector({
                   {config.description}
                 </p>
               </div>
-            </button>
+            </Link>
           );
         })}
       </div>

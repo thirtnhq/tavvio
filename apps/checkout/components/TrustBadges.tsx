@@ -1,4 +1,6 @@
-import { ShieldCheck, Lock, Lightning } from "@phosphor-icons/react/dist/ssr";
+"use client";
+
+import { ShieldCheck, Lock, Lightning } from "@phosphor-icons/react";
 
 export function TrustBadges() {
   return (

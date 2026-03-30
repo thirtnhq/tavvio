@@ -1,3 +1,4 @@
+import { CheckCircle, XCircle } from "@phosphor-icons/react";
 import { cn } from "@tavvio/ui";
 
 interface StatusIndicatorProps {
@@ -20,6 +21,12 @@ export function StatusIndicator({ status }: StatusIndicatorProps) {
             <div className="h-6 w-6 rounded-full border-2 border-primary border-t-transparent animate-spin" />
             <div className="absolute inset-0 rounded-full border-2 border-primary/20 animate-pulse" />
           </>
+        )}
+        {status === "success" && (
+          <CheckCircle size={30} weight="fill" className="text-green" />
+        )}
+        {status === "error" && (
+          <XCircle size={30} weight="fill" className="text-red" />
         )}
       </div>
     </div>

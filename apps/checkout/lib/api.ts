@@ -30,7 +30,26 @@ async function request<T>(
   });
 
   if (!res.ok) {
-    throw new Error(`API error: ${res.status} ${res.statusText}`);
+    let message = `API error: ${res.status} ${res.statusText}`;
+
+    try {
+      const data = (await res.json()) as {
+        message?: string | string[];
+        error?: string;
+      };
+
+      if (Array.isArray(data.message) && data.message.length > 0) {
+        message = data.message.join(", ");
+      } else if (typeof data.message === "string" && data.message.length > 0) {
+        message = data.message;
+      } else if (typeof data.error === "string" && data.error.length > 0) {
+        message = data.error;
+      }
+    } catch {
+      // Fall back to the default HTTP status text when the response is not JSON.
+    }
+
+    throw new Error(message);
   }
 
   return res.json();
