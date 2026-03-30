@@ -118,6 +118,7 @@ model Payment {
   metadata       Json?
   refundedAt     DateTime?
   completedAt    DateTime?
+  expiresAt      DateTime?
   createdAt      DateTime       @default(now())
   updatedAt      DateTime       @updatedAt
   merchant       Merchant       @relation(fields: [merchantId], references: [id])
