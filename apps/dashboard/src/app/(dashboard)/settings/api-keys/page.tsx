@@ -15,19 +15,21 @@ import {
   useToast,
 } from "@tavvio/ui";
 import {
-  useMerchantProfile,
+  useApiKeys,
   useGenerateApiKey,
   useRevokeApiKey,
+  type ApiKeyItem,
 } from "@/hooks/useSettings";
+import { formatDate, formatLastUsed } from "@/lib/utils/time";
 import { motion } from "framer-motion";
 import {
   KeyRound,
   Copy,
   Trash2,
   AlertTriangle,
-  ShieldCheck,
   TestTube,
   Zap,
+  Clock,
 } from "lucide-react";
 
 const fadeUp = {
@@ -41,41 +43,50 @@ const fadeUp = {
 
 export default function ApiKeysPage() {
   const { toast } = useToast();
-  const { isLoading: isLoadingProfile } = useMerchantProfile();
+  const { data: apiKeys, isLoading } = useApiKeys();
   const generateApiKey = useGenerateApiKey();
   const revokeApiKey = useRevokeApiKey();
 
-  const [showGenerateModal, setShowGenerateModal] = useState(false);
-  const [showRevokeModal, setShowRevokeModal] = useState(false);
-  const [showNewKeyModal, setShowNewKeyModal] = useState(false);
+  const [showGenerateDialog, setShowGenerateDialog] = useState(false);
+  const [showRevokeDialog, setShowRevokeDialog] = useState(false);
+  const [showNewKeyDialog, setShowNewKeyDialog] = useState(false);
   const [selectedKeyType, setSelectedKeyType] = useState<"live" | "test">(
     "live",
   );
+  const [keyName, setKeyName] = useState("");
   const [revokeConfirmText, setRevokeConfirmText] = useState("");
+  const [selectedKey, setSelectedKey] = useState<ApiKeyItem | null>(null);
   const [newKey, setNewKey] = useState("");
-  const [hasGeneratedKey, setHasGeneratedKey] = useState(false);
 
   const handleGenerateKey = () => {
-    generateApiKey.mutate(selectedKeyType, {
-      onSuccess: (data) => {
-        setNewKey(data.key);
-        setHasGeneratedKey(true);
-        setShowGenerateModal(false);
-        setShowNewKeyModal(true);
+    if (!keyName.trim()) {
+      toast("Please enter a name for the key.", "error");
+      return;
+    }
+
+    generateApiKey.mutate(
+      { mode: selectedKeyType, name: keyName.trim() },
+      {
+        onSuccess: (data) => {
+          setNewKey(data.apiKey);
+          setShowGenerateDialog(false);
+          setShowNewKeyDialog(true);
+          setKeyName("");
+        },
+        onError: (err) =>
+          toast(err.message || "Failed to generate API key.", "error"),
       },
-      onError: (err) =>
-        toast(err.message || "Failed to generate API key.", "error"),
-    });
+    );
   };
 
   const handleRevokeKey = () => {
-    if (revokeConfirmText !== "REVOKE") return;
+    if (!selectedKey || revokeConfirmText !== "REVOKE") return;
 
-    revokeApiKey.mutate(undefined, {
+    revokeApiKey.mutate(selectedKey.id, {
       onSuccess: () => {
-        setHasGeneratedKey(false);
-        setShowRevokeModal(false);
+        setShowRevokeDialog(false);
         setRevokeConfirmText("");
+        setSelectedKey(null);
         toast("API key has been revoked.", "success");
       },
       onError: (err) =>
@@ -88,18 +99,25 @@ export default function ApiKeysPage() {
     toast("Copied to clipboard!", "success");
   };
 
-  if (isLoadingProfile) {
+  if (isLoading) {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <div>
-            <Skeleton className="h-6 w-24" />
-            <Skeleton className="mt-1 h-4 w-56" />
+          <div className="flex items-center gap-3">
+            <Skeleton className="h-10 w-10 rounded-xl" />
+            <div>
+              <Skeleton className="h-5 w-24" />
+              <Skeleton className="mt-1 h-3 w-44" />
+            </div>
           </div>
-          <Skeleton className="h-10 w-40" />
+          <Skeleton className="h-10 w-36" />
         </div>
         <Skeleton className="h-20 w-full rounded-2xl" />
-        <Skeleton className="h-28 w-full rounded-2xl" />
+        <div className="space-y-2">
+          {[1, 2].map((i) => (
+            <Skeleton key={i} className="h-20 w-full rounded-2xl" />
+          ))}
+        </div>
       </div>
     );
   }
@@ -123,11 +141,12 @@ export default function ApiKeysPage() {
               API Keys
             </h2>
             <p className="text-xs text-muted-foreground">
-              Manage your API keys for integration
+              {apiKeys?.length ?? 0} key{(apiKeys?.length ?? 0) !== 1 && "s"}{" "}
+              configured
             </p>
           </div>
         </div>
-        <Button onClick={() => setShowGenerateModal(true)}>
+        <Button onClick={() => setShowGenerateDialog(true)}>
           <Zap size={15} />
           Generate Key
         </Button>
@@ -141,10 +160,7 @@ export default function ApiKeysPage() {
         animate="visible"
         custom={1}
       >
-        <AlertTriangle
-          size={18}
-          className="mt-0.5 shrink-0 text-amber"
-        />
+        <AlertTriangle size={18} className="mt-0.5 shrink-0 text-amber" />
         <div>
           <p className="text-sm font-medium text-amber">
             API keys are shown once at creation.
@@ -155,57 +171,93 @@ export default function ApiKeysPage() {
         </div>
       </motion.div>
 
-      {/* Key Status */}
-      <motion.div
-        className="surface overflow-hidden"
-        variants={fadeUp}
-        initial="hidden"
-        animate="visible"
-        custom={2}
-      >
-        {hasGeneratedKey ? (
-          <div className="flex items-center justify-between p-5">
-            <div className="flex items-center gap-4">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-green/10">
-                <ShieldCheck size={18} className="text-green" />
-              </div>
-              <div>
-                <div className="flex items-center gap-2">
-                  <code className="font-mono text-sm text-foreground tracking-wide">
-                    ••••••••••••••••••••
-                  </code>
-                  <span className="inline-flex items-center rounded-lg bg-green/10 px-2 py-0.5 text-[11px] font-semibold text-green">
-                    Active
-                  </span>
-                </div>
-                <p className="mt-0.5 text-xs text-muted-foreground">
-                  Full key is only shown at creation
-                </p>
-              </div>
-            </div>
-            <Button
-              variant="destructive"
-              size="sm"
-              onClick={() => setShowRevokeModal(true)}
+      {/* Key List */}
+      {apiKeys && apiKeys.length > 0 ? (
+        <div className="space-y-2">
+          {apiKeys.map((key, idx) => (
+            <motion.div
+              key={key.id}
+              className="surface flex items-center justify-between p-4"
+              variants={fadeUp}
+              initial="hidden"
+              animate="visible"
+              custom={idx + 2}
             >
-              <Trash2 size={14} />
-              Revoke
-            </Button>
+              <div className="flex items-center gap-3 min-w-0">
+                <div
+                  className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl ${
+                    key.mode === "LIVE"
+                      ? "bg-green/10"
+                      : "bg-blue/10"
+                  }`}
+                >
+                  {key.mode === "LIVE" ? (
+                    <Zap size={16} className="text-green" />
+                  ) : (
+                    <TestTube size={16} className="text-blue" />
+                  )}
+                </div>
+                <div className="min-w-0">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium text-foreground truncate">
+                      {key.name}
+                    </span>
+                    <span
+                      className={`inline-flex items-center rounded-lg px-2 py-0.5 text-[11px] font-semibold ${
+                        key.mode === "LIVE"
+                          ? "bg-green/10 text-green"
+                          : "bg-blue/10 text-blue"
+                      }`}
+                    >
+                      {key.mode}
+                    </span>
+                  </div>
+                  <div className="mt-0.5 flex items-center gap-3 text-xs text-muted-foreground">
+                    <code className="font-mono">{key.maskedKey}</code>
+                    <span className="hidden sm:inline">
+                      Created {formatDate(key.createdAt)}
+                    </span>
+                    <span className="hidden md:inline-flex items-center gap-1">
+                      <Clock size={11} />
+                      {formatLastUsed(key.lastUsedAt)}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="sm"
+                className="shrink-0 text-destructive hover:text-destructive"
+                onClick={() => {
+                  setSelectedKey(key);
+                  setShowRevokeDialog(true);
+                }}
+              >
+                <Trash2 size={14} />
+                Revoke
+              </Button>
+            </motion.div>
+          ))}
+        </div>
+      ) : (
+        <motion.div
+          className="surface p-10 text-center"
+          variants={fadeUp}
+          initial="hidden"
+          animate="visible"
+          custom={2}
+        >
+          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary">
+            <KeyRound size={20} className="text-muted-foreground" />
           </div>
-        ) : (
-          <div className="p-8 text-center">
-            <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary">
-              <KeyRound size={20} className="text-muted-foreground" />
-            </div>
-            <p className="text-sm font-medium text-foreground">
-              No API key configured
-            </p>
-            <p className="mt-1 text-xs text-muted-foreground">
-              Generate one to start integrating with Tavvio
-            </p>
-          </div>
-        )}
-      </motion.div>
+          <p className="text-sm font-medium text-foreground">
+            No API keys yet
+          </p>
+          <p className="mt-1 text-xs text-muted-foreground">
+            Generate a key to start integrating with Tavvio
+          </p>
+        </motion.div>
+      )}
 
       {/* Sandbox info */}
       <motion.div
@@ -235,72 +287,67 @@ export default function ApiKeysPage() {
       </motion.div>
 
       {/* Generate Key Dialog */}
-      <Dialog open={showGenerateModal} onOpenChange={setShowGenerateModal}>
+      <Dialog open={showGenerateDialog} onOpenChange={setShowGenerateDialog}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Generate New API Key</DialogTitle>
             <DialogDescription>
-              {hasGeneratedKey
-                ? "This will replace your existing API key"
-                : "Select the type of API key you want to generate"}
+              Create a named API key for your integration
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            {hasGeneratedKey && (
-              <div className="flex items-start gap-3 rounded-xl border border-amber/20 bg-amber/5 p-4">
-                <AlertTriangle
-                  size={16}
-                  className="mt-0.5 shrink-0 text-amber"
-                />
-                <p className="text-xs text-amber">
-                  Generating a new key will revoke your existing one. Any
-                  integration using the current key will stop working.
-                </p>
-              </div>
-            )}
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                onClick={() => setSelectedKeyType("live")}
-                className={`rounded-xl border-2 p-4 text-left transition-all duration-200 ${
-                  selectedKeyType === "live"
-                    ? "border-primary bg-primary/5 shadow-sm"
-                    : "border-border/60 hover:border-border hover:bg-secondary/50"
-                }`}
-              >
-                <Zap
-                  size={18}
-                  className={
+            <Input
+              label="Key name"
+              placeholder="e.g. Production Backend, Staging Server"
+              value={keyName}
+              onChange={(e) => setKeyName(e.target.value)}
+            />
+            <div className="space-y-2">
+              <label className="block text-sm font-medium text-foreground">
+                Environment
+              </label>
+              <div className="grid grid-cols-2 gap-3">
+                <button
+                  onClick={() => setSelectedKeyType("live")}
+                  className={`rounded-xl border-2 p-4 text-left transition-all duration-200 ${
                     selectedKeyType === "live"
-                      ? "text-primary"
-                      : "text-muted-foreground"
-                  }
-                />
-                <p className="mt-2 font-semibold text-foreground">Live</p>
-                <p className="text-xs text-muted-foreground">
-                  For production
-                </p>
-              </button>
-              <button
-                onClick={() => setSelectedKeyType("test")}
-                className={`rounded-xl border-2 p-4 text-left transition-all duration-200 ${
-                  selectedKeyType === "test"
-                    ? "border-primary bg-primary/5 shadow-sm"
-                    : "border-border/60 hover:border-border hover:bg-secondary/50"
-                }`}
-              >
-                <TestTube
-                  size={18}
-                  className={
+                      ? "border-primary bg-primary/5 shadow-sm"
+                      : "border-border/60 hover:border-border hover:bg-secondary/50"
+                  }`}
+                >
+                  <Zap
+                    size={18}
+                    className={
+                      selectedKeyType === "live"
+                        ? "text-primary"
+                        : "text-muted-foreground"
+                    }
+                  />
+                  <p className="mt-2 font-semibold text-foreground">Live</p>
+                  <p className="text-xs text-muted-foreground">
+                    For production
+                  </p>
+                </button>
+                <button
+                  onClick={() => setSelectedKeyType("test")}
+                  className={`rounded-xl border-2 p-4 text-left transition-all duration-200 ${
                     selectedKeyType === "test"
-                      ? "text-primary"
-                      : "text-muted-foreground"
-                  }
-                />
-                <p className="mt-2 font-semibold text-foreground">Test</p>
-                <p className="text-xs text-muted-foreground">
-                  For sandbox
-                </p>
-              </button>
+                      ? "border-primary bg-primary/5 shadow-sm"
+                      : "border-border/60 hover:border-border hover:bg-secondary/50"
+                  }`}
+                >
+                  <TestTube
+                    size={18}
+                    className={
+                      selectedKeyType === "test"
+                        ? "text-primary"
+                        : "text-muted-foreground"
+                    }
+                  />
+                  <p className="mt-2 font-semibold text-foreground">Test</p>
+                  <p className="text-xs text-muted-foreground">For sandbox</p>
+                </button>
+              </div>
             </div>
           </div>
           <DialogFooter>
@@ -310,6 +357,7 @@ export default function ApiKeysPage() {
             <Button
               onClick={handleGenerateKey}
               loading={generateApiKey.isPending}
+              disabled={!keyName.trim()}
             >
               Generate Key
             </Button>
@@ -318,7 +366,7 @@ export default function ApiKeysPage() {
       </Dialog>
 
       {/* New Key Dialog */}
-      <Dialog open={showNewKeyModal} onOpenChange={setShowNewKeyModal}>
+      <Dialog open={showNewKeyDialog} onOpenChange={setShowNewKeyDialog}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>API Key Generated</DialogTitle>
@@ -357,11 +405,13 @@ export default function ApiKeysPage() {
       </Dialog>
 
       {/* Revoke Key Dialog */}
-      <Dialog open={showRevokeModal} onOpenChange={setShowRevokeModal}>
+      <Dialog open={showRevokeDialog} onOpenChange={setShowRevokeDialog}>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader>
             <DialogTitle>Revoke API Key</DialogTitle>
-            <DialogDescription>This action cannot be undone</DialogDescription>
+            <DialogDescription>
+              Revoke &ldquo;{selectedKey?.name}&rdquo;
+            </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
             <div className="flex items-start gap-3 rounded-xl border border-destructive/20 bg-destructive/5 p-4">
@@ -370,8 +420,10 @@ export default function ApiKeysPage() {
                 className="mt-0.5 shrink-0 text-destructive"
               />
               <p className="text-xs text-destructive">
-                Revoking this key will immediately break any integration
-                using it. This action cannot be undone.
+                Revoking{" "}
+                <code className="font-mono">{selectedKey?.maskedKey}</code> will
+                immediately break any integration using it. This action cannot
+                be undone.
               </p>
             </div>
             <Input

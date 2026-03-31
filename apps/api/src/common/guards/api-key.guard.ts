@@ -49,6 +49,38 @@ export class ApiKeyGuard implements CanActivate {
       });
     }
 
+    // Check new ApiKey table
+    const apiKeys = await this.prisma.apiKey.findMany({
+      select: { id: true, keyHash: true, merchantId: true },
+    });
+
+    for (const key of apiKeys) {
+      if (await bcrypt.compare(apiKey, key.keyHash)) {
+        // Update lastUsedAt
+        await this.prisma.apiKey.update({
+          where: { id: key.id },
+          data: { lastUsedAt: new Date() },
+        });
+
+        const fullMerchant: Merchant | null =
+          await this.prisma.merchant.findUnique({
+            where: { id: key.merchantId },
+          });
+
+        if (!fullMerchant) {
+          throw new UnauthorizedException({
+            code: 'unauthorized',
+            message: 'Merchant not found',
+            docs: 'https://docs.useroutr.io/errors/unauthorized',
+          });
+        }
+
+        request.user = fullMerchant;
+        return true;
+      }
+    }
+
+    // Fallback: check legacy apiKeyHash on Merchant (backward compat)
     const merchants = await this.prisma.merchant.findMany({
       where: { apiKeyHash: { not: null } },
       select: { id: true, apiKeyHash: true },

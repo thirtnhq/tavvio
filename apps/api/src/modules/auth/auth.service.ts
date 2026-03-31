@@ -3,6 +3,7 @@ import {
   ConflictException,
   UnauthorizedException,
   BadRequestException,
+  NotFoundException,
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
@@ -30,7 +31,20 @@ export interface AuthResponse extends AuthTokens {
 
 export interface ApiKeyResponse {
   apiKey: string;
+  id: string;
+  name: string;
+  maskedKey: string;
+  mode: string;
   message: string;
+}
+
+export interface ApiKeyListItem {
+  id: string;
+  name: string;
+  maskedKey: string;
+  mode: string;
+  lastUsedAt: string | null;
+  createdAt: string;
 }
 
 @Injectable()
@@ -117,32 +131,66 @@ export class AuthService {
     return this.generateTokens(merchant.id, merchant.email);
   }
 
+  // ── API Key Management ──────────────────────────────────────────
+
+  async listApiKeys(merchantId: string): Promise<ApiKeyListItem[]> {
+    const keys = await this.prisma.apiKey.findMany({
+      where: { merchantId },
+      orderBy: { createdAt: 'desc' },
+    });
+
+    return keys.map((k) => ({
+      id: k.id,
+      name: k.name,
+      maskedKey: k.maskedKey,
+      mode: k.mode,
+      lastUsedAt: k.lastUsedAt?.toISOString() ?? null,
+      createdAt: k.createdAt.toISOString(),
+    }));
+  }
+
   async generateApiKey(
     merchantId: string,
     mode: 'live' | 'test' = 'live',
+    name: string = 'Untitled Key',
   ): Promise<ApiKeyResponse> {
     const prefix = mode === 'live' ? 'ur_live_' : 'ur_test_';
     const randomPart = crypto.randomBytes(32).toString('hex').slice(0, 32);
     const plainTextKey = `${prefix}${randomPart}`;
 
-    const apiKeyHash = await bcrypt.hash(plainTextKey, BCRYPT_ROUNDS);
+    const maskedKey = `${plainTextKey.slice(0, prefix.length + 4)}...${plainTextKey.slice(-4)}`;
+    const keyHash = await bcrypt.hash(plainTextKey, BCRYPT_ROUNDS);
 
-    await this.prisma.merchant.update({
-      where: { id: merchantId },
-      data: { apiKeyHash },
+    const apiKey = await this.prisma.apiKey.create({
+      data: {
+        merchantId,
+        name,
+        keyHash,
+        maskedKey,
+        mode: mode === 'live' ? 'LIVE' : 'TEST',
+      },
     });
 
     return {
       apiKey: plainTextKey,
+      id: apiKey.id,
+      name: apiKey.name,
+      maskedKey: apiKey.maskedKey,
+      mode: apiKey.mode,
       message: 'Store this key securely. It will not be shown again.',
     };
   }
 
-  async revokeApiKey(merchantId: string): Promise<void> {
-    await this.prisma.merchant.update({
-      where: { id: merchantId },
-      data: { apiKeyHash: null },
+  async revokeApiKey(merchantId: string, keyId: string): Promise<void> {
+    const key = await this.prisma.apiKey.findFirst({
+      where: { id: keyId, merchantId },
     });
+
+    if (!key) {
+      throw new NotFoundException('API key not found');
+    }
+
+    await this.prisma.apiKey.delete({ where: { id: keyId } });
   }
 
   async validateApiKey(apiKey: string): Promise<Merchant> {
@@ -150,6 +198,32 @@ export class AuthService {
       throw new BadRequestException('Invalid API key format');
     }
 
+    // Check new ApiKey table first
+    const apiKeys = await this.prisma.apiKey.findMany({
+      select: { id: true, keyHash: true, merchantId: true },
+    });
+
+    for (const key of apiKeys) {
+      if (await bcrypt.compare(apiKey, key.keyHash)) {
+        // Update lastUsedAt
+        await this.prisma.apiKey.update({
+          where: { id: key.id },
+          data: { lastUsedAt: new Date() },
+        });
+
+        const merchant = await this.prisma.merchant.findUnique({
+          where: { id: key.merchantId },
+        });
+
+        if (!merchant) {
+          throw new UnauthorizedException('Merchant not found');
+        }
+
+        return merchant;
+      }
+    }
+
+    // Fallback: check legacy apiKeyHash on Merchant (backward compat)
     const merchants = await this.prisma.merchant.findMany({
       where: { apiKeyHash: { not: null } },
       select: { id: true, apiKeyHash: true },
@@ -174,6 +248,8 @@ export class AuthService {
 
     throw new UnauthorizedException('Invalid API key');
   }
+
+  // ── Profile ─────────────────────────────────────────────────────
 
   async getProfile(merchantId: string): Promise<SafeMerchant> {
     const merchant = await this.prisma.merchant.findUnique({

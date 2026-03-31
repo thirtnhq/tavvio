@@ -46,6 +46,7 @@ const mockAuthService = {
   login: jest.fn(),
   refreshToken: jest.fn(),
   getProfile: jest.fn(),
+  listApiKeys: jest.fn(),
   generateApiKey: jest.fn(),
   revokeApiKey: jest.fn(),
 };
@@ -174,48 +175,90 @@ describe('AuthController', () => {
     });
   });
 
+  describe('GET /merchants/api-keys', () => {
+    it('should return list of API keys', async () => {
+      const keys = [
+        {
+          id: 'key_1',
+          name: 'Production',
+          maskedKey: 'ur_live_abcd...ef01',
+          mode: 'LIVE',
+          lastUsedAt: null,
+          createdAt: '2026-01-01T00:00:00.000Z',
+        },
+      ];
+      mockAuthService.listApiKeys.mockResolvedValue(keys);
+
+      const result = await controller.listApiKeys('cuid_merchant_1');
+
+      expect(result).toEqual(keys);
+      expect(mockAuthService.listApiKeys).toHaveBeenCalledWith(
+        'cuid_merchant_1',
+      );
+    });
+  });
+
   describe('POST /merchants/api-keys', () => {
     it('should generate a live API key by default', async () => {
       const apiKeyResponse: ApiKeyResponse = {
         apiKey: 'ur_live_abc123',
+        id: 'key_1',
+        name: 'Production',
+        maskedKey: 'ur_live_abc1...c123',
+        mode: 'LIVE',
         message: 'Store this key securely. It will not be shown again.',
       };
       mockAuthService.generateApiKey.mockResolvedValue(apiKeyResponse);
 
-      const result = await controller.generateApiKey('cuid_merchant_1');
+      const result = await controller.generateApiKey(
+        'cuid_merchant_1',
+        undefined,
+        'Production',
+      );
 
       expect(result).toEqual(apiKeyResponse);
       expect(mockAuthService.generateApiKey).toHaveBeenCalledWith(
         'cuid_merchant_1',
         'live',
+        'Production',
       );
     });
 
     it('should pass mode parameter when provided', async () => {
       const apiKeyResponse: ApiKeyResponse = {
         apiKey: 'ur_test_abc123',
+        id: 'key_2',
+        name: 'Staging',
+        maskedKey: 'ur_test_abc1...c123',
+        mode: 'TEST',
         message: 'Store this key securely. It will not be shown again.',
       };
       mockAuthService.generateApiKey.mockResolvedValue(apiKeyResponse);
 
-      const result = await controller.generateApiKey('cuid_merchant_1', 'test');
+      const result = await controller.generateApiKey(
+        'cuid_merchant_1',
+        'test',
+        'Staging',
+      );
 
       expect(result.apiKey).toMatch(/^ur_test_/);
       expect(mockAuthService.generateApiKey).toHaveBeenCalledWith(
         'cuid_merchant_1',
         'test',
+        'Staging',
       );
     });
   });
 
-  describe('DELETE /merchants/api-keys', () => {
-    it('should revoke the API key', async () => {
+  describe('DELETE /merchants/api-keys/:id', () => {
+    it('should revoke the API key by id', async () => {
       mockAuthService.revokeApiKey.mockResolvedValue(undefined);
 
-      await controller.revokeApiKey('cuid_merchant_1');
+      await controller.revokeApiKey('cuid_merchant_1', 'key_1');
 
       expect(mockAuthService.revokeApiKey).toHaveBeenCalledWith(
         'cuid_merchant_1',
+        'key_1',
       );
     });
   });

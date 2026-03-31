@@ -19,7 +19,7 @@ model Merchant {
   name              String
   email             String         @unique
   passwordHash      String
-  apiKeyHash        String?        @unique
+  apiKeyHash        String?        @unique // deprecated – use ApiKey model
   webhookUrl        String?
   webhookSecret     String?
   settlementAsset   String         @default("USDC")
@@ -40,6 +40,26 @@ model Merchant {
   paymentLinks      PaymentLink[]
   teamMembers       TeamMember[]
   webhookEvents     WebhookEvent[]
+  apiKeys           ApiKey[]
+}
+
+model ApiKey {
+  id         String    @id @default(cuid())
+  merchantId String
+  name       String
+  keyHash    String    @unique
+  maskedKey  String // e.g. "ur_live_abc1...f9e2"
+  mode       ApiKeyMode @default(LIVE)
+  lastUsedAt DateTime?
+  createdAt  DateTime  @default(now())
+  merchant   Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+
+  @@index([merchantId])
+}
+
+enum ApiKeyMode {
+  LIVE
+  TEST
 }
 
 model TeamMember {

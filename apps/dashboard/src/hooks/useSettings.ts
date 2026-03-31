@@ -98,16 +98,43 @@ export function useUpdateBranding() {
 
 // ─── API Keys ────────────────────────────────────────────────────────────────
 
+export interface ApiKeyItem {
+  id: string;
+  name: string;
+  maskedKey: string;
+  mode: "LIVE" | "TEST";
+  lastUsedAt: string | null;
+  createdAt: string;
+}
+
+export interface GenerateApiKeyResponse {
+  apiKey: string;
+  id: string;
+  name: string;
+  maskedKey: string;
+  mode: string;
+  message: string;
+}
+
+export function useApiKeys() {
+  return useQuery<ApiKeyItem[]>({
+    queryKey: ["api-keys"],
+    queryFn: () => api.get("/merchants/api-keys"),
+  });
+}
+
 export function useGenerateApiKey() {
   const queryClient = useQueryClient();
 
-  return useMutation<{ key: string }, Error, "live" | "test">({
-    mutationFn: (mode) =>
-      api.post("/merchants/api-keys", undefined, {
-        params: { mode },
-      }),
+  return useMutation<
+    GenerateApiKeyResponse,
+    Error,
+    { mode: "live" | "test"; name: string }
+  >({
+    mutationFn: ({ mode, name }) =>
+      api.post("/merchants/api-keys", { name }, { params: { mode } }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["merchant-profile"] });
+      queryClient.invalidateQueries({ queryKey: ["api-keys"] });
     },
   });
 }
@@ -115,10 +142,10 @@ export function useGenerateApiKey() {
 export function useRevokeApiKey() {
   const queryClient = useQueryClient();
 
-  return useMutation<void, Error, void>({
-    mutationFn: () => api.delete("/merchants/api-keys"),
+  return useMutation<void, Error, string>({
+    mutationFn: (id) => api.delete(`/merchants/api-keys/${id}`),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["merchant-profile"] });
+      queryClient.invalidateQueries({ queryKey: ["api-keys"] });
     },
   });
 }

@@ -16,6 +16,13 @@ const mockPrismaService = {
     create: jest.fn(),
     update: jest.fn(),
   },
+  apiKey: {
+    findMany: jest.fn(),
+    findFirst: jest.fn(),
+    create: jest.fn(),
+    update: jest.fn(),
+    delete: jest.fn(),
+  },
 };
 
 jest.mock('../prisma/prisma.service', () => ({
@@ -258,36 +265,60 @@ describe('AuthService', () => {
   });
 
   describe('generateApiKey', () => {
-    it('should generate a live API key with ur_live_ prefix', async () => {
-      mockPrismaService.merchant.update.mockResolvedValue(mockMerchant);
+    const mockCreatedKey = {
+      id: 'key_1',
+      merchantId: 'cuid_merchant_1',
+      name: 'Production',
+      keyHash: '$2b$12$hashed',
+      maskedKey: 'ur_live_abcd...ef01',
+      mode: 'LIVE',
+      lastUsedAt: null,
+      createdAt: new Date('2026-01-01'),
+    };
 
-      const result = await service.generateApiKey('cuid_merchant_1', 'live');
+    it('should generate a live API key with ur_live_ prefix', async () => {
+      mockPrismaService.apiKey.create.mockResolvedValue(mockCreatedKey);
+
+      const result = await service.generateApiKey(
+        'cuid_merchant_1',
+        'live',
+        'Production',
+      );
 
       expect(result.apiKey).toMatch(/^ur_live_[a-f0-9]{32}$/);
+      expect(result.name).toBe('Production');
+      expect(result.maskedKey).toBeDefined();
       expect(result.message).toContain('Store this key securely');
-      expect(mockPrismaService.merchant.update).toHaveBeenCalledWith({
-        where: { id: 'cuid_merchant_1' },
-        data: { apiKeyHash: expect.any(String) as string },
-      });
     });
 
     it('should generate a test API key with ur_test_ prefix', async () => {
-      mockPrismaService.merchant.update.mockResolvedValue(mockMerchant);
+      mockPrismaService.apiKey.create.mockResolvedValue({
+        ...mockCreatedKey,
+        mode: 'TEST',
+      });
 
-      const result = await service.generateApiKey('cuid_merchant_1', 'test');
+      const result = await service.generateApiKey(
+        'cuid_merchant_1',
+        'test',
+        'Staging',
+      );
 
       expect(result.apiKey).toMatch(/^ur_test_[a-f0-9]{32}$/);
     });
 
     it('should store bcrypt hash of the key, not plaintext', async () => {
-      mockPrismaService.merchant.update.mockResolvedValue(mockMerchant);
+      mockPrismaService.apiKey.create.mockResolvedValue(mockCreatedKey);
 
-      const result = await service.generateApiKey('cuid_merchant_1', 'live');
+      const result = await service.generateApiKey(
+        'cuid_merchant_1',
+        'live',
+        'Production',
+      );
 
-      const calls = mockPrismaService.merchant.update.mock.calls as [
-        [{ data: { apiKeyHash: string } }],
+      const calls = mockPrismaService.apiKey.create.mock.calls as [
+        [{ data: { keyHash: string } }],
       ];
-      const storedHash: string = calls[0][0].data.apiKeyHash;
+      const storedHash: string = calls[0][0].data.keyHash;
 
       expect(storedHash).not.toBe(result.apiKey);
       const isValid = await bcrypt.compare(result.apiKey, storedHash);
@@ -296,22 +327,40 @@ describe('AuthService', () => {
   });
 
   describe('revokeApiKey', () => {
-    it('should set apiKeyHash to null', async () => {
-      mockPrismaService.merchant.update.mockResolvedValue(mockMerchant);
+    it('should delete the API key by id', async () => {
+      mockPrismaService.apiKey.findFirst.mockResolvedValue({
+        id: 'key_1',
+        merchantId: 'cuid_merchant_1',
+      });
+      mockPrismaService.apiKey.delete.mockResolvedValue({});
 
-      await service.revokeApiKey('cuid_merchant_1');
+      await service.revokeApiKey('cuid_merchant_1', 'key_1');
 
-      expect(mockPrismaService.merchant.update).toHaveBeenCalledWith({
-        where: { id: 'cuid_merchant_1' },
-        data: { apiKeyHash: null },
+      expect(mockPrismaService.apiKey.delete).toHaveBeenCalledWith({
+        where: { id: 'key_1' },
       });
     });
   });
 
   describe('validateApiKey', () => {
-    it('should return merchant for valid API key', async () => {
+    it('should return merchant for valid API key from ApiKey table', async () => {
       const plainKey = 'ur_live_abcdef1234567890abcdef1234567890';
       const hash = await bcrypt.hash(plainKey, 12);
+      mockPrismaService.apiKey.findMany.mockResolvedValue([
+        { id: 'key_1', keyHash: hash, merchantId: 'cuid_merchant_1' },
+      ]);
+      mockPrismaService.apiKey.update.mockResolvedValue({});
+      mockPrismaService.merchant.findUnique.mockResolvedValue(mockMerchant);
+
+      const result = await service.validateApiKey(plainKey);
+
+      expect(result.id).toBe('cuid_merchant_1');
+    });
+
+    it('should fall back to legacy apiKeyHash on Merchant', async () => {
+      const plainKey = 'ur_live_abcdef1234567890abcdef1234567890';
+      const hash = await bcrypt.hash(plainKey, 12);
+      mockPrismaService.apiKey.findMany.mockResolvedValue([]);
       mockPrismaService.merchant.findMany.mockResolvedValue([
         { id: 'cuid_merchant_1', apiKeyHash: hash },
       ]);
@@ -329,6 +378,7 @@ describe('AuthService', () => {
     });
 
     it('should throw UnauthorizedException if no key matches', async () => {
+      mockPrismaService.apiKey.findMany.mockResolvedValue([]);
       mockPrismaService.merchant.findMany.mockResolvedValue([
         { id: 'cuid_merchant_1', apiKeyHash: '$2b$12$nonmatchinghash' },
       ]);
@@ -338,7 +388,8 @@ describe('AuthService', () => {
       ).rejects.toThrow(UnauthorizedException);
     });
 
-    it('should throw UnauthorizedException when no merchants have keys', async () => {
+    it('should throw UnauthorizedException when no keys exist', async () => {
+      mockPrismaService.apiKey.findMany.mockResolvedValue([]);
       mockPrismaService.merchant.findMany.mockResolvedValue([]);
 
       await expect(

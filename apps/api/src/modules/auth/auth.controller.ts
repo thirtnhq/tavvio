@@ -5,6 +5,7 @@ import {
   Delete,
   Body,
   Query,
+  Param,
   UseGuards,
   UsePipes,
   HttpCode,
@@ -56,18 +57,32 @@ export class AuthController {
   }
 
   @UseGuards(JwtAuthGuard)
+  @Get('merchants/api-keys')
+  async listApiKeys(@CurrentMerchant('id') merchantId: string) {
+    return this.authService.listApiKeys(merchantId);
+  }
+
+  @UseGuards(JwtAuthGuard)
   @Post('merchants/api-keys')
   async generateApiKey(
     @CurrentMerchant('id') merchantId: string,
     @Query('mode') mode?: 'live' | 'test',
+    @Body('name') name?: string,
   ) {
-    return this.authService.generateApiKey(merchantId, mode ?? 'live');
+    return this.authService.generateApiKey(
+      merchantId,
+      mode ?? 'live',
+      name ?? 'Untitled Key',
+    );
   }
 
   @UseGuards(JwtAuthGuard)
-  @Delete('merchants/api-keys')
+  @Delete('merchants/api-keys/:id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  async revokeApiKey(@CurrentMerchant('id') merchantId: string): Promise<void> {
-    await this.authService.revokeApiKey(merchantId);
+  async revokeApiKey(
+    @CurrentMerchant('id') merchantId: string,
+    @Param('id') keyId: string,
+  ): Promise<void> {
+    await this.authService.revokeApiKey(merchantId, keyId);
   }
 }
