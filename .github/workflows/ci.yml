@@ -1,0 +1,194 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NODE_VERSION: "20"
+
+jobs:
+  # ── Lint ──────────────────────────────────────────────────────────────────────
+  lint:
+    name: Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lint API
+        working-directory: apps/api
+        run: npm run lint
+
+      - name: Lint Dashboard
+        working-directory: apps/dashboard
+        run: npm run lint
+
+      - name: Lint Checkout
+        working-directory: apps/checkout
+        run: npm run lint
+
+      - name: Lint WWW
+        working-directory: apps/www
+        run: npm run lint
+
+      - name: Prettier check (API)
+        working-directory: apps/api
+        run: npx prettier --check "src/**/*.ts"
+
+  # ── Test API ─────────────────────────────────────────────────────────────────
+  test-api:
+    name: Test API
+    runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: tavvio
+          POSTGRES_PASSWORD: tavvio
+          POSTGRES_DB: tavvio_test
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd="pg_isready -U tavvio"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd="redis-cli ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    env:
+      DATABASE_URL: postgresql://tavvio:tavvio@localhost:5432/tavvio_test
+      REDIS_URL: redis://localhost:6379
+      JWT_SECRET: ci-test-secret
+      JWT_REFRESH_SECRET: ci-test-refresh-secret
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Generate Prisma client
+        working-directory: apps/api
+        run: npx prisma generate
+
+      - name: Run migrations
+        working-directory: apps/api
+        run: npx prisma migrate deploy
+
+      - name: Run tests
+        working-directory: apps/api
+        run: npm test
+
+  # ── Test EVM Contracts ───────────────────────────────────────────────────────
+  test-contracts-evm:
+    name: Test EVM Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Compile contracts
+        working-directory: contract/evm
+        run: npx hardhat compile
+
+      - name: Run tests
+        working-directory: contract/evm
+        run: npx hardhat test
+
+  # ── Test Soroban Contracts ───────────────────────────────────────────────────
+  test-contracts-soroban:
+    name: Test Soroban Contracts
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: wasm32-unknown-unknown
+
+      - name: Cache Cargo
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            contract/soroban/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('contract/soroban/Cargo.lock') }}
+          restore-keys: cargo-${{ runner.os }}-
+
+      - name: Run tests
+        working-directory: contract/soroban
+        run: cargo test --workspace
+
+  # ── Build ────────────────────────────────────────────────────────────────────
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    needs: [lint]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Generate Prisma client
+        working-directory: apps/api
+        run: npx prisma generate
+
+      - name: Build API
+        working-directory: apps/api
+        run: npm run build
+
+      - name: Build Dashboard
+        working-directory: apps/dashboard
+        env:
+          NEXT_PUBLIC_API_URL: https://api.tavvio.io
+        run: npm run build
+
+      - name: Build Checkout
+        working-directory: apps/checkout
+        env:
+          NEXT_PUBLIC_API_URL: https://api.tavvio.io
+        run: npm run build
+
+      - name: Build WWW
+        working-directory: apps/www
+        run: npm run build
