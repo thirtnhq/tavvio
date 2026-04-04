@@ -10,7 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 
 interface TopbarProps {
   title?: string;

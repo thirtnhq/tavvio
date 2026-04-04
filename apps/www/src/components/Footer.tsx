@@ -24,14 +24,26 @@ interface FooterProps {
 
 const footerNavigation = {
   products: [
-    { name: "Gateway", href: "https://thirtn.mintlify.app/products#tavio-gateway" },
-    { name: "Payouts", href: "https://thirtn.mintlify.app/products#tavio-payouts" },
-    { name: "Invoicing", href: "https://thirtn.mintlify.app/products#tavio-invoicing" },
+    {
+      name: "Gateway",
+      href: "https://thirtn.mintlify.app/products#useroutr-gateway",
+    },
+    {
+      name: "Payouts",
+      href: "https://thirtn.mintlify.app/products#useroutr-payouts",
+    },
+    {
+      name: "Invoicing",
+      href: "https://thirtn.mintlify.app/products#useroutr-invoicing",
+    },
     { name: "Status", href: "#" },
   ],
   developers: [
     { name: "Documentation", href: "https://thirtn.mintlify.app/" },
-    { name: "API Reference", href: "https://thirtn.mintlify.app/api-reference/introduction" },
+    {
+      name: "API Reference",
+      href: "https://thirtn.mintlify.app/api-reference/introduction",
+    },
     { name: "SDKs", href: "https://thirtn.mintlify.app/sdks" },
     { name: "GitHub", href: "https://github.com/useroutr" },
   ],
@@ -86,7 +98,7 @@ export function Footer({ onWaitlistClick }: FooterProps) {
           stagger: 0.05,
           ease: "power3.out",
         },
-        "-=0.6"
+        "-=0.6",
       );
 
       gsap.fromTo(
@@ -106,7 +118,7 @@ export function Footer({ onWaitlistClick }: FooterProps) {
             end: "bottom bottom",
             scrub: 1.5,
           },
-        }
+        },
       );
 
       // Magnetic social links
@@ -135,7 +147,7 @@ export function Footer({ onWaitlistClick }: FooterProps) {
         btn.addEventListener("mouseleave", onLeave);
       });
     },
-    { scope: containerRef }
+    { scope: containerRef },
   );
 
   return (

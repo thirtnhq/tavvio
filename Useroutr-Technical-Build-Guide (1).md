@@ -1,18 +1,18 @@
 
 
-| TAVVIO Technical Architecture & Build Guide  Non-Custodial Cross-Chain Payment Infrastructure Stellar · Soroban · NestJS · Next.js · Rust · HTLC Version 1.0  ·  2026  ·  Confidential |
+| USEROUTR Technical Architecture & Build Guide  Non-Custodial Cross-Chain Payment Infrastructure Stellar · Soroban · NestJS · Next.js · Rust · HTLC Version 1.0  ·  2026  ·  Confidential |
 | ----- |
 
-| Who this document is for This document is the single source of truth for building Tavvio from scratch. It covers system architecture, every technology decision and why it was made, complete smart contract code, NestJS service structure, database schema, bridge integrations, and a week-by-week build sequence. Read it entirely before writing a single line of code. |
+| Who this document is for This document is the single source of truth for building Useroutr from scratch. It covers system architecture, every technology decision and why it was made, complete smart contract code, NestJS service structure, database schema, bridge integrations, and a week-by-week build sequence. Read it entirely before writing a single line of code. |
 | :---- |
 
 **01  ·  SYSTEM OVERVIEW**
 
-# **What Tavvio Is Building**
+# **What Useroutr Is Building**
 
-Tavvio is a non-custodial, cross-chain payment infrastructure platform. Any payer on any chain sends funds using any wallet. Any merchant on any chain receives funds in any asset. Stellar is the invisible settlement hub in the middle.
+Useroutr is a non-custodial, cross-chain payment infrastructure platform. Any payer on any chain sends funds using any wallet. Any merchant on any chain receives funds in any asset. Stellar is the invisible settlement hub in the middle.
 
-The key word is non-custodial. Tavvio never holds user funds. Every payment flows through audited smart contracts — Hash Time Locked Contracts (HTLCs) on Stellar (Soroban) and on each supported EVM chain. Either both sides of the swap complete atomically, or both sides refund. There is no state where a payer has lost funds and a merchant was not paid.
+The key word is non-custodial. Useroutr never holds user funds. Every payment flows through audited smart contracts — Hash Time Locked Contracts (HTLCs) on Stellar (Soroban) and on each supported EVM chain. Either both sides of the swap complete atomically, or both sides refund. There is no state where a payer has lost funds and a merchant was not paid.
 
 ## **The Three-Layer Model**
 
@@ -30,11 +30,11 @@ Every cross-chain payment uses a Hash Time Locked Contract. The mechanism guaran
 
 * Payer locks funds on source chain with hashlock H and a 24-hour timeout.
 
-* Tavvio's Soroban contract locks merchant funds on Stellar with the same hashlock H and a 12-hour timeout.
+* Useroutr's Soroban contract locks merchant funds on Stellar with the same hashlock H and a 12-hour timeout.
 
-* Merchant (or Tavvio relay) reveals S on Stellar → merchant receives funds.
+* Merchant (or Useroutr relay) reveals S on Stellar → merchant receives funds.
 
-* S is now public on-chain. Relay uses S on source chain → Tavvio liquidity pool reimbursed.
+* S is now public on-chain. Relay uses S on source chain → Useroutr liquidity pool reimbursed.
 
 * If either side fails: timelock expires → automatic refund. No funds are lost.
 
@@ -118,11 +118,11 @@ Every technology decision below was made for a specific reason. The stack is opt
 
 ## **Monorepo Structure**
 
-Tavvio uses a NestJS native monorepo. All code lives in one repository. Shared types, Prisma schema, and Stellar wrappers are in the packages/ directory. Four Next.js apps and one NestJS API app live in apps/.
+Useroutr uses a NestJS native monorepo. All code lives in one repository. Shared types, Prisma schema, and Stellar wrappers are in the packages/ directory. Four Next.js apps and one NestJS API app live in apps/.
 
 | Directory Structure |
 | :---- |
-| tavvio/ |
+| useroutr/ |
 | ├── apps/ |
 | │   ├── api/                          \# NestJS — single backend process |
 | │   │   └── src/ |
@@ -190,7 +190,7 @@ Tavvio uses a NestJS native monorepo. All code lives in one repository. Shared t
 
 This is the complete lifecycle of a single non-custodial cross-chain payment. Every box below corresponds to code you will write.
 
-| Example: Payer sends ETH on Base → Merchant receives USDC on BNB Chain 1\.  Merchant creates a payment request via Tavio API. Receives a checkout URL. 2\.  Payer opens checkout URL. Sees order summary and selects "EVM Wallet — Base". 3\.  Quote Service fetches ETH/USDC rate. Calculates Tavvio fee (basis points). Locks quote in Redis for 30 seconds. 4\.  Checkout displays: "Send 0.021 ETH on Base → Merchant receives 49.77 USDC on BNB". 30s countdown. 5\.  Payer approves transaction in MetaMask. Calls lock() on Tavvio's EVM HTLC contract on Base. 6\.  HTLC contract on Base locks 0.021 ETH. Emits Locked(lockId, hashlock, amount, timeout=24h) event. 7\.  Relay Service (NestJS) detects Locked event via Ethereum event listener. 8\.  Relay calls Soroban Settlement Contract: "A payment is locked on Base with hashlock H". 9\.  Settlement Contract: executes Stellar path payment ETH(wrapped) → USDC. Deducts Tavvio fee. Calls HTLC Contract: lock USDC for merchant with same hashlock H, timeout=12h. 10\. Relay Service detects Stellar HTLC lock. Calls withdraw(lockId, secret) on Stellar HTLC — reveals S. 11\. Stellar HTLC releases USDC to merchant's Stellar address. Emits Withdrawn(lockId, preimage=S) event. 12\. Relay Service detects Withdrawn event on Stellar. S is now public. 13\. Relay calls withdraw(sourceLockId, S) on Base HTLC contract. Tavvio liquidity pool reimbursed. 14\. Payment status updated to COMPLETED. Webhook fired to merchant. Dashboard updates via WebSocket. |
+| Example: Payer sends ETH on Base → Merchant receives USDC on BNB Chain 1\.  Merchant creates a payment request via Tavio API. Receives a checkout URL. 2\.  Payer opens checkout URL. Sees order summary and selects "EVM Wallet — Base". 3\.  Quote Service fetches ETH/USDC rate. Calculates Useroutr fee (basis points). Locks quote in Redis for 30 seconds. 4\.  Checkout displays: "Send 0.021 ETH on Base → Merchant receives 49.77 USDC on BNB". 30s countdown. 5\.  Payer approves transaction in MetaMask. Calls lock() on Useroutr's EVM HTLC contract on Base. 6\.  HTLC contract on Base locks 0.021 ETH. Emits Locked(lockId, hashlock, amount, timeout=24h) event. 7\.  Relay Service (NestJS) detects Locked event via Ethereum event listener. 8\.  Relay calls Soroban Settlement Contract: "A payment is locked on Base with hashlock H". 9\.  Settlement Contract: executes Stellar path payment ETH(wrapped) → USDC. Deducts Useroutr fee. Calls HTLC Contract: lock USDC for merchant with same hashlock H, timeout=12h. 10\. Relay Service detects Stellar HTLC lock. Calls withdraw(lockId, secret) on Stellar HTLC — reveals S. 11\. Stellar HTLC releases USDC to merchant's Stellar address. Emits Withdrawn(lockId, preimage=S) event. 12\. Relay Service detects Withdrawn event on Stellar. S is now public. 13\. Relay calls withdraw(sourceLockId, S) on Base HTLC contract. Useroutr liquidity pool reimbursed. 14\. Payment status updated to COMPLETED. Webhook fired to merchant. Dashboard updates via WebSocket. |
 | :---- |
 
 ## **The Bridge Router — Chain Support Matrix**
@@ -410,7 +410,7 @@ Single PostgreSQL database. Each domain uses a separate Prisma model group. Sche
 
 # **Smart Contracts**
 
-Tavvio deploys four Soroban contracts on Stellar and one HTLC contract on each supported EVM chain. The Soroban contracts are the core of Tavvio's non-custodial guarantee. They must be audited before mainnet deployment.
+Useroutr deploys four Soroban contracts on Stellar and one HTLC contract on each supported EVM chain. The Soroban contracts are the core of Useroutr's non-custodial guarantee. They must be audited before mainnet deployment.
 
 *🔴  These contracts handle real user funds. Never deploy to mainnet without a professional security audit. Budget $15,000–$40,000 for an audit from OtterSec, Halborn, or Trail of Bits.*
 
@@ -626,7 +626,7 @@ The Hash Time Locked Contract is the atomic swap primitive. It is the most criti
 
 ## **5.3  EVM HTLC Contract (Solidity)**
 
-Deployed on every EVM chain Tavvio supports: ETH, Base, BNB, Polygon, Arbitrum, Avalanche.
+Deployed on every EVM chain Useroutr supports: ETH, Base, BNB, Polygon, Arbitrum, Avalanche.
 
 | Solidity — contracts/evm/contracts/HTLCEvm.sol |
 | :---- |
@@ -735,7 +735,7 @@ The BridgeRouter is the abstraction that hides all bridge complexity from the pa
 | // apps/api/src/modules/bridge/bridge-router.service.ts |
 |   |
 | import { Injectable } from "@nestjs/common"; |
-| import { Chain, BridgeRoute, BridgeInParams, BridgeOutParams } from "@tavvio/types"; |
+| import { Chain, BridgeRoute, BridgeInParams, BridgeOutParams } from "@useroutr/types"; |
 | import { CctpService }       from "./providers/cctp.service"; |
 | import { WormholeService }   from "./providers/wormhole.service"; |
 | import { LayerswapService }  from "./providers/layerswap.service"; |
@@ -802,7 +802,7 @@ The BridgeRouter is the abstraction that hides all bridge complexity from the pa
 
 ## **6.2  Relay Service**
 
-The Relay Service is the "nervous system" of Tavvio. It watches both the source chain and Stellar for HTLC events and automatically propagates secrets to complete swaps. It runs as a BullMQ worker.
+The Relay Service is the "nervous system" of Useroutr. It watches both the source chain and Stellar for HTLC events and automatically propagates secrets to complete swaps. It runs as a BullMQ worker.
 
 | TypeScript — Relay Service |
 | :---- |
@@ -901,7 +901,7 @@ The Relay Service is the "nervous system" of Tavvio. It watches both the source 
 
 ## **6.3  Quote Service**
 
-Quotes are locked in Redis with a 30-second TTL. If the quote expires before the payer confirms, they must re-quote. This protects Tavvio from slippage and protects the payer from stale rates.
+Quotes are locked in Redis with a 30-second TTL. If the quote expires before the payer confirms, they must re-quote. This protects Useroutr from slippage and protects the payer from stale rates.
 
 | TypeScript — Quote Service |
 | :---- |
@@ -989,9 +989,9 @@ Quotes are locked in Redis with a 30-second TTL. If the quote expires before the
 
 # **MoneyGram Ramp Integration**
 
-MoneyGram's ramp is a massive shortcut for Tavvio's regulatory situation. By integrating as a technical partner using their SEP-24 API, Tavvio inherits MoneyGram's money transmitter licenses across 174 countries without applying for a single license itself. This is the single most important partnership in the entire architecture.
+MoneyGram's ramp is a massive shortcut for Useroutr's regulatory situation. By integrating as a technical partner using their SEP-24 API, Useroutr inherits MoneyGram's money transmitter licenses across 174 countries without applying for a single license itself. This is the single most important partnership in the entire architecture.
 
-| What MoneyGram gives you On-ramp: Cash or bank transfer → USDC on Stellar. Payer visits any MoneyGram agent (hundreds of thousands globally). Off-ramp: USDC on Stellar → cash or bank transfer. Available in 174 countries. $5 min / $2,500 max per transaction. KYC handled by MoneyGram's webview. Tavvio never owns KYC data. Regulated: MoneyGram is licensed as a Money Transmitter in all 50 US states and globally. You operate under their umbrella. Built on Stellar SEP-10/24: The same standards your wallet SDK already implements. |
+| What MoneyGram gives you On-ramp: Cash or bank transfer → USDC on Stellar. Payer visits any MoneyGram agent (hundreds of thousands globally). Off-ramp: USDC on Stellar → cash or bank transfer. Available in 174 countries. $5 min / $2,500 max per transaction. KYC handled by MoneyGram's webview. Useroutr never owns KYC data. Regulated: MoneyGram is licensed as a Money Transmitter in all 50 US states and globally. You operate under their umbrella. Built on Stellar SEP-10/24: The same standards your wallet SDK already implements. |
 | :---- |
 
 ## **Integration Steps**
@@ -1089,7 +1089,7 @@ MoneyGram's ramp is a massive shortcut for Tavvio's regulatory situation. By int
 
 # **Address Detection & Chain Routing**
 
-When a merchant pastes a destination address, Tavvio must identify the chain from the address format and route accordingly. For EVM addresses (which look identical across all EVM chains), the merchant must also specify the chain explicitly.
+When a merchant pastes a destination address, Useroutr must identify the chain from the address format and route accordingly. For EVM addresses (which look identical across all EVM chains), the merchant must also specify the chain explicitly.
 
 | TypeScript — Address Detection |
 | :---- |
@@ -1164,7 +1164,7 @@ Never commit secrets to git. All environment variables are injected at runtime. 
 | \# .env.example — copy to .env and fill in values |
 |   |
 | \# ── Database ────────────────────────────────────────────────── |
-| DATABASE\_URL="postgresql://tavvio:password@localhost:5432/tavvio" |
+| DATABASE\_URL="postgresql://useroutr:password@localhost:5432/useroutr" |
 |   |
 | \# ── Redis ───────────────────────────────────────────────────── |
 | REDIS\_URL="redis://localhost:6379" |
@@ -1229,7 +1229,7 @@ Never commit secrets to git. All environment variables are injected at runtime. 
 | R2\_ACCOUNT\_ID="your-cloudflare-account-id" |
 | R2\_ACCESS\_KEY\_ID="your-r2-access-key" |
 | R2\_SECRET\_ACCESS\_KEY="your-r2-secret-key" |
-| R2\_BUCKET\_NAME="tavvio-files" |
+| R2\_BUCKET\_NAME="useroutr-files" |
 | R2\_PUBLIC\_URL="https://files.tavio.io" |
 |   |
 | \# ── App ─────────────────────────────────────────────────────── |
@@ -1237,7 +1237,7 @@ Never commit secrets to git. All environment variables are injected at runtime. 
 | NODE\_ENV="development" |
 | FRONTEND\_URL="http://localhost:3001" |
 | CHECKOUT\_URL="http://localhost:3002" |
-| TAVVIO\_FEE\_BPS=50    \# Default 0.5% platform fee |
+| USEROUTR\_FEE\_BPS=50    \# Default 0.5% platform fee |
 
 **10  ·  STEP-BY-STEP BUILD GUIDE**
 
@@ -1251,10 +1251,10 @@ The sequence below is ordered by dependency — each phase depends on the previo
 
 Everything that every other module depends on. Get this working before touching blockchain.
 
-| 1 | Initialize the monorepo bash \# Create workspace mkdir tavvio && cd tavvio npm init \-y   \# Install NestJS CLI globally npm install \-g @nestjs/cli   \# Create NestJS monorepo nest new api \--skip-git cd api && nest generate app dashboard nest generate app checkout nest generate app www   \# Add shared library nest generate library types nest generate library stellar   \# Add workspace packages npm install \-w packages/types typescript zod  |
+| 1 | Initialize the monorepo bash \# Create workspace mkdir useroutr && cd useroutr npm init \-y   \# Install NestJS CLI globally npm install \-g @nestjs/cli   \# Create NestJS monorepo nest new api \--skip-git cd api && nest generate app dashboard nest generate app checkout nest generate app www   \# Add shared library nest generate library types nest generate library stellar   \# Add workspace packages npm install \-w packages/types typescript zod  |
 | :---: | :---- |
 
-| 2 | Start local services with Docker yaml \# docker-compose.yml version: "3.8" services:   postgres:     image: postgres:16-alpine     environment:       POSTGRES\_DB: tavvio       POSTGRES\_USER: tavvio       POSTGRES\_PASSWORD: password     ports: \["5432:5432"\]     volumes: \["pgdata:/var/lib/postgresql/data"\]     redis:     image: redis:7-alpine     ports: \["6379:6379"\]   volumes:   pgdata: bash docker-compose up \-d docker ps  \# Verify both containers running  |
+| 2 | Start local services with Docker yaml \# docker-compose.yml version: "3.8" services:   postgres:     image: postgres:16-alpine     environment:       POSTGRES\_DB: useroutr       POSTGRES\_USER: useroutr       POSTGRES\_PASSWORD: password     ports: \["5432:5432"\]     volumes: \["pgdata:/var/lib/postgresql/data"\]     redis:     image: redis:7-alpine     ports: \["6379:6379"\]   volumes:   pgdata: bash docker-compose up \-d docker ps  \# Verify both containers running  |
 | :---: | :---- |
 
 | 3 | Set up Prisma and run first migration bash npm install prisma @prisma/client npx prisma init \# Copy the full schema from Section 4 into prisma/schema.prisma npx prisma migrate dev \--name init npx prisma generate  |
@@ -1271,7 +1271,7 @@ Everything that every other module depends on. Get this working before touching 
 
 ## **Phase 2 — Stellar Core (Weeks 3–4)**
 
-Build the Stellar module. This is the heart of Tavvio. Everything routes through Stellar.
+Build the Stellar module. This is the heart of Useroutr. Everything routes through Stellar.
 
 | 7 | Install Stellar SDKs and create the Stellar Module bash npm install @stellar/stellar-sdk @stellar/typescript-wallet-sdk   nest generate module stellar apps/api/src/modules nest generate service stellar apps/api/src/modules   \# Implement in stellar.service.ts: \# \- createAccount() \# \- getAccount(publicKey) \# \- findStrictSendPaths(sourceAsset, amount, destAsset) \# \- findStrictReceivePaths(destAsset, amount, sourceAsset) \# \- executePathPayment(params) \# \- streamContractEvents(contractId, callback) \# \- fundTestnetAccount(publicKey)  \-- testnet only  |
 | :---: | :---- |
@@ -1300,7 +1300,7 @@ Build the Stellar module. This is the heart of Tavvio. Everything routes through
 
 ## **Phase 5 — Bridge Integrations (Weeks 9–11)**
 
-| 14 | Integrate Circle CCTP CCTP enables native USDC transfers between Ethereum, Base, Avalanche, Arbitrum, Polygon, and Stellar. This covers your highest-volume routes. bash npm install @circle-fin/w3s-pw-web-sdk \# Also install Circle's attestation API client   \# CCTP flow: \# 1\. User approves USDC burn on source chain \# 2\. Circle burns USDC and issues attestation \# 3\. Tavvio polls Circle Attestation API for confirmation \# 4\. Tavvio submits attestation to Stellar CCTP receiver \# 5\. USDC minted on Stellar   \# Test on testnets first: \# Sepolia → Base Sepolia → Stellar Testnet  |
+| 14 | Integrate Circle CCTP CCTP enables native USDC transfers between Ethereum, Base, Avalanche, Arbitrum, Polygon, and Stellar. This covers your highest-volume routes. bash npm install @circle-fin/w3s-pw-web-sdk \# Also install Circle's attestation API client   \# CCTP flow: \# 1\. User approves USDC burn on source chain \# 2\. Circle burns USDC and issues attestation \# 3\. Useroutr polls Circle Attestation API for confirmation \# 4\. Useroutr submits attestation to Stellar CCTP receiver \# 5\. USDC minted on Stellar   \# Test on testnets first: \# Sepolia → Base Sepolia → Stellar Testnet  |
 | :---: | :---- |
 
 | 15 | Integrate Wormhole Wormhole covers BNB Chain, Solana, and any asset that CCTP does not support natively. bash npm install @wormhole-foundation/sdk   \# Wormhole flow: \# 1\. Lock asset in Wormhole contract on source chain \# 2\. Wormhole guardian network signs a VAA (Verified Action Approval) \# 3\. Relay service polls for VAA availability \# 4\. Relay submits VAA to Stellar Wormhole receiver \# 5\. Wrapped asset available on Stellar \# 6\. Stellar path payment converts wrapped asset → USDC  |

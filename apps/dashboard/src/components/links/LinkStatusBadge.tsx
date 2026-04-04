@@ -1,7 +1,7 @@
 "use client";
 
-import { Badge } from "@tavvio/ui";
-import type { LinkStatus } from "@tavvio/types";
+import { Badge } from "@useroutr/ui";
+import type { LinkStatus } from "@useroutr/types";
 
 const STATUS_LABELS: Record<LinkStatus, string> = {
   active: "Active",

@@ -26,7 +26,7 @@ import {
   BridgeOutParams,
   BridgeOutResult,
   CompleteSourceLockParams,
-} from '@tavvio/types';
+} from '@useroutr/types';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -223,7 +223,7 @@ export class LayerswapService {
         `Deposit address: ${swap.deposit_address} | Memo: ${swap.deposit_memo}`,
     );
 
-    // Step 3: Send USDC from Tavvio's Stellar relay wallet to Layerswap's deposit address
+    // Step 3: Send USDC from Useroutr's Stellar relay wallet to Layerswap's deposit address
     //         with the required memo
     if (!swap.deposit_address) {
       throw new Error('Layerswap did not return a Stellar deposit address');

@@ -1,23 +1,22 @@
 
-
-| TAVIO UI / UX Design Brief Full-Stack Payment Infrastructure Platform Stellar Blockchain · Fiat \+ Crypto Rails Prepared for: Lead UI/UX Designer Version 1.0  ·  February 2026 |
+| Useroutr UI / UX Design Brief Full-Stack Payment Infrastructure Platform Stellar Blockchain · Fiat \+ Crypto Rails Prepared for: Lead UI/UX Designer Version 1.0  ·  February 2026 |
 | ----- |
 
 | How to use this document |
 | :---- |
-| This brief is your single source of truth for the Tavio design project. Read it cover to cover before opening a single frame in Figma. Every section has been written to eliminate ambiguity — from brand values to micro-interaction expectations. When in doubt, return here first. |
+| This brief is your single source of truth for the Useroutr design project. Read it cover to cover before opening a single frame in Figma. Every section has been written to eliminate ambiguity — from brand values to micro-interaction expectations. When in doubt, return here first. |
 
 **01  ·  PROJECT OVERVIEW**
 
 # **Project Overview**
 
-Tavio is a full-stack payment infrastructure platform that unifies fiat and cryptocurrency payment rails into a single, developer-friendly SDK — settled on the Stellar blockchain.
+Useroutr is a full-stack payment infrastructure platform that unifies fiat and cryptocurrency payment rails into a single, developer-friendly SDK — settled on the Stellar blockchain.
 
 The product is simultaneously a developer tool and a business dashboard, serving two distinct audiences who interact with the same underlying infrastructure in fundamentally different ways.
 
 | Attribute | Detail |
 | :---- | :---- |
-| Project Name | Tavio |
+| Project Name | Useroutr |
 | Product Type | B2B & B2C Payment Infrastructure Platform |
 | Tagline | Pay anything. Settle everywhere. |
 | Blockchain | Stellar (Soroban smart contracts) |
@@ -30,7 +29,7 @@ The product is simultaneously a developer tool and a business dashboard, serving
 
 ## **The Design Problem**
 
-Tavio needs to look and feel like a platform that developers trust with their infrastructure and business owners trust with their money. These two audiences have different mental models, different vocabularies, and different success metrics — yet they use the same product. The design challenge is building a visual system that serves both without compromising either.
+Useroutr needs to look and feel like a platform that developers trust with their infrastructure and business owners trust with their money. These two audiences have different mental models, different vocabularies, and different success metrics — yet they use the same product. The design challenge is building a visual system that serves both without compromising either.
 
 Additionally, the product sits at the intersection of traditional finance (familiar, trustworthy, conservative) and crypto infrastructure (modern, technical, fast-moving). The visual language must bridge these two worlds — credible enough for a CFO, clean enough for an engineer, and intuitive enough for a small business owner paying an invoice.
 
@@ -38,29 +37,29 @@ Additionally, the product sits at the intersection of traditional finance (famil
 
 # **Target Audiences**
 
-Tavio has three distinct user types. Design decisions must always be pressure-tested against all three. Never optimize for one at the expense of another without a deliberate, documented reason.
+Useroutr has three distinct user types. Design decisions must always be pressure-tested against all three. Never optimize for one at the expense of another without a deliberate, documented reason.
 
 | 👨‍💻  The Developer | 🏢  The Business Owner | 👤  The End Consumer |
 | :---- | :---- | :---- |
-| **Role: Backend/Fullstack Engineer** Goal: Integrate Tavio into their product quickly with minimal friction and maximum flexibility. **Needs:** Clean API docs & code examples API key management dashboard Sandbox/test environment Webhook inspector & logs Error messages that explain why, not just what **Frustration:** Opaque APIs, poor error states, no sandbox, and docs that assume too much prior knowledge. | **Role: Founder, Finance Lead, Ops Manager** Goal: Accept payments globally, send payouts, and get a clear view of business finances without complexity. **Needs:** Transaction history & export Revenue analytics dashboard Payment link/invoice creator Payout management Multi-currency balance view **Frustration:** Crypto complexity leaking into the UI. Unclear status labels. No clean export for accounting. | **Role: Customer of a Tavio-powered business** Goal: Pay for something quickly, in whatever form of money they have — card, bank, or crypto wallet. **Needs:** Frictionless checkout Transparent conversion rates Clear payment confirmation Mobile-optimized flow Trust signals throughout **Frustration:** Confusing crypto jargon in checkout. Unclear final amount. Slow confirmation screens. |
+| **Role: Backend/Fullstack Engineer** Goal: Integrate Useroutr into their product quickly with minimal friction and maximum flexibility. **Needs:** Clean API docs & code examples API key management dashboard Sandbox/test environment Webhook inspector & logs Error messages that explain why, not just what **Frustration:** Opaque APIs, poor error states, no sandbox, and docs that assume too much prior knowledge. | **Role: Founder, Finance Lead, Ops Manager** Goal: Accept payments globally, send payouts, and get a clear view of business finances without complexity. **Needs:** Transaction history & export Revenue analytics dashboard Payment link/invoice creator Payout management Multi-currency balance view **Frustration:** Crypto complexity leaking into the UI. Unclear status labels. No clean export for accounting. | **Role: Customer of a Useroutr-powered business** Goal: Pay for something quickly, in whatever form of money they have — card, bank, or crypto wallet. **Needs:** Frictionless checkout Transparent conversion rates Clear payment confirmation Mobile-optimized flow Trust signals throughout **Frustration:** Confusing crypto jargon in checkout. Unclear final amount. Slow confirmation screens. |
 
 **03  ·  PRODUCTS TO DESIGN**
 
 # **Screens & Products**
 
-Tavio consists of five product modules plus a public marketing site. Each module has its own primary user, flow, and design priority. The full design scope covers all six areas.
+Useroutr consists of five product modules plus a public marketing site. Each module has its own primary user, flow, and design priority. The full design scope covers all six areas.
 
-## **3.1  Marketing Website (tavio.io)**
+## **3.1  Marketing Website (useroutr.io)**
 
-The public-facing landing page and documentation site. This is the first impression for both developers and business owners. It must immediately communicate what Tavio does, why it matters, and how to get started.
+The public-facing landing page and documentation site. This is the first impression for both developers and business owners. It must immediately communicate what Useroutr does, why it matters, and how to get started.
 
 | Homepage / Landing Page Hero section with headline, 2-sentence value prop, CTA (Join Waitlist, Try It Out, View Docs). Below the fold: product overview, key differentiators, supported chains/currencies grid, testimonials section, and a video demo block. Footer with 'A product of thirtn.com'.  Marketing  High Priority  Conversion-Critical  |
 | :---- |
 
-| Documentation Hub (docs.tavio.io) Developer-facing documentation site. Left sidebar navigation tree, right-side content area with code blocks, copy-to-clipboard, language switcher (JS/Python/Go), and an API reference explorer. Dark and light mode required.  Dev-Facing  High Priority  Dual Theme  |
+| Documentation Hub (docs.useroutr.io) Developer-facing documentation site. Left sidebar navigation tree, right-side content area with code blocks, copy-to-clipboard, language switcher (JS/Python/Go), and an API reference explorer. Dark and light mode required.  Dev-Facing  High Priority  Dual Theme  |
 | :---- |
 
-## **3.2  Merchant Dashboard (dashboard.tavio.io)**
+## **3.2  Merchant Dashboard (dashboard.useroutr.io)**
 
 The primary interface for business owners and their teams. This is where merchants manage their payment operations day-to-day. Desktop-first, with responsive mobile support.
 
@@ -88,9 +87,9 @@ The primary interface for business owners and their teams. This is where merchan
 | Settings API key management (generate, rotate, delete). Webhook endpoint config with event checkboxes and delivery logs. Team members and role management. Branding (logo, color for hosted checkout). Compliance / KYC status.  Config  Multi-Tab  |
 | :---- |
 
-## **3.3  Hosted Checkout (checkout.tavio.io)**
+## **3.3  Hosted Checkout (checkout.useroutr.io)**
 
-The payment-facing surface that end consumers see when paying through a Tavio-powered business. Must be clean, trustworthy, and optimized for conversion. This is mobile-first.
+The payment-facing surface that end consumers see when paying through a Useroutr-powered business. Must be clean, trustworthy, and optimized for conversion. This is mobile-first.
 
 | Checkout Flow — Step 1: Method Selection Show merchant logo and order summary. Payment method selector tabs: Card / Bank Transfer / Crypto. Real-time conversion rate if paying in crypto. Trust badges and security note.  Consumer-Facing  Mobile-First  Trust-Critical  |
 | :---- |
@@ -101,29 +100,29 @@ The payment-facing surface that end consumers see when paying through a Tavio-po
 | Checkout Flow — Step 3: Confirmation Payment processing animation. Success state with amount, reference ID, and merchant email. Error state with clear reason and retry option. Redirect countdown.  Success/Error States  Mobile-First  |
 | :---- |
 
-| Payment Link Landing Branded page a recipient sees when opening a Tavio Link. Shows merchant name, logo (if set), amount or custom amount field, description, and expiry timer. Leads into checkout flow.  Consumer-Facing  Minimal  |
+| Payment Link Landing Branded page a recipient sees when opening a Useroutr Link. Shows merchant name, logo (if set), amount or custom amount field, description, and expiry timer. Leads into checkout flow.  Consumer-Facing  Minimal  |
 | :---- |
 
 **04  ·  VISUAL IDENTITY**
 
 # **Visual Identity System**
 
-Tavio has an established brand direction. The designer's job is to execute it faithfully and extend it into a coherent, scalable design system — not to reinvent it. Every decision should feel like it could have come from this brief.
+Useroutr has an established brand direction. The designer's job is to execute it faithfully and extend it into a coherent, scalable design system — not to reinvent it. Every decision should feel like it could have come from this brief.
 
 ## **4.1  Personality & Aesthetic**
 
-| Tavio is... | Tavio is NOT... | Reference Feel |
+| Useroutr is... | Useroutr is NOT... | Reference Feel |
 | :---- | :---- | :---- |
 | Technically credible Trustworthy & institutional Modern and clean Calm under complexity Precise and deliberate Developer-native | Hype-driven or flashy Overly crypto-bro Cluttered or noisy Playful or casual Generic SaaS blue Purple-gradient AI-core | Stripe (trust, clarity) Linear (developer aesthetic) Wise (global, accessible) Vercel (dark mode done right) Mercury (banking, clean) Resend (dev-native tone) |
 
 ## **4.2  Color System**
 
-The full Tavio color palette. Use semantic roles — do not use colors arbitrarily. Every color choice should be defensible by its role.
+The full Useroutr color palette. Use semantic roles — do not use colors arbitrarily. Every color choice should be defensible by its role.
 
 | Swatch | Name | Hex | Usage Role |
 | :---- | :---- | :---- | :---- |
 |    | **Deep Ocean** | \#0A2463 | Primary brand, hero backgrounds, nav, heavy headings |
-|    | **Tavio Blue** | \#007BFF | Primary CTA buttons, links, active states, key accents |
+|    | **Useroutr Blue** | \#007BFF | Primary CTA buttons, links, active states, key accents |
 |    | **Stellar Teal** | \#00C0B0 | Secondary accent, badges, Stellar references, success tones |
 |    | **Cyber Green** | \#28A745 | Success states, paid badges, positive delta indicators |
 |    | **Sunset Orange** | \#FD7E14 | Warning states, pending badges, attention alerts |
@@ -156,7 +155,7 @@ Two typefaces only. No exceptions without documented approval.
 
 ## **4.4  Logo**
 
-The Tavio logo is a combination mark: a geometric dual-V diamond icon paired with the lowercase wordmark 'tavvio'. The double-V in the name is intentional and should always appear as written — never 'tavio' with a single V.
+The Useroutr logo is a combination mark: a geometric dual-V diamond icon paired with the lowercase wordmark 'useroutr'. The double-V in the name is intentional and should always appear as written — never 'useroutr' with a single V.
 
 | Logo Usage Rules |
 | :---- |
@@ -166,11 +165,11 @@ The Tavio logo is a combination mark: a geometric dual-V diamond icon paired wit
 | On dark backgrounds: use full color version (blue icon, white wordmark). |
 | On light backgrounds: use full color version (blue icon, ocean wordmark). |
 | Never recolor, stretch, add effects, or use on busy photographic backgrounds. |
-| The 'vv' in 'tavvio' should always be set slightly tighter than surrounding letterforms. |
+| The 'vv' in 'useroutr' should always be set slightly tighter than surrounding letterforms. |
 
 ## **4.5  Iconography**
 
-Use Phosphor Icons (https://phosphoricons.com) as the primary icon library — Regular weight by default, Bold for emphasis. Do not mix icon libraries. Icons should always have a label unless space is critically constrained, in which case a tooltip is mandatory.
+Use Phosphor Icons (<https://phosphoricons.com>) as the primary icon library — Regular weight by default, Bold for emphasis. Do not mix icon libraries. Icons should always have a label unless space is critically constrained, in which case a tooltip is mandatory.
 
 | Context | Icon Style |
 | :---- | :---- |
@@ -183,7 +182,7 @@ Use Phosphor Icons (https://phosphoricons.com) as the primary icon library — R
 
 ## **4.6  Spacing & Grid**
 
-Tavio uses an 8px base spacing system. All padding, margins, gaps, and layout dimensions must be multiples of 8 (8, 16, 24, 32, 48, 64, 80, 96...). Never use arbitrary values like 10px, 13px, or 22px.
+Useroutr uses an 8px base spacing system. All padding, margins, gaps, and layout dimensions must be multiples of 8 (8, 16, 24, 32, 48, 64, 80, 96...). Never use arbitrary values like 10px, 13px, or 22px.
 
 | Grid Specs |
 | :---- |
@@ -198,7 +197,7 @@ Tavio uses an 8px base spacing system. All padding, margins, gaps, and layout di
 
 # **Design System & Components**
 
-Tavio requires a fully built Figma component library before screen design begins. Components must be built with auto-layout, variants, and Figma variables (for light/dark mode). Do not design screens without the library — it will cause rework.
+Useroutr requires a fully built Figma component library before screen design begins. Components must be built with auto-layout, variants, and Figma variables (for light/dark mode). Do not design screens without the library — it will cause rework.
 
 ## **Priority 1 — Build First**
 
@@ -260,11 +259,11 @@ Line chart (revenue over time), Bar chart (volume by method), Donut chart (curre
 
 # **UX Principles & Interaction Guidelines**
 
-These principles govern every design decision on Tavio. They are not suggestions — they are constraints. When a design decision violates one of these, revisit and revise.
+These principles govern every design decision on Useroutr. They are not suggestions — they are constraints. When a design decision violates one of these, revisit and revise.
 
 | Principle | What it means in practice |
 | :---- | :---- |
-| **Hide the complexity** | The user should never feel the weight of what Tavio is doing under the hood. Crypto bridging, path payments, Soroban contracts — none of it surfaces in the UI unless the user explicitly digs for it. Show outcomes, not mechanics. |
+| **Hide the complexity** | The user should never feel the weight of what Useroutr is doing under the hood. Crypto bridging, path payments, Soroban contracts — none of it surfaces in the UI unless the user explicitly digs for it. Show outcomes, not mechanics. |
 | **Status is sacred** | Every transaction, payout, and invoice has a state. That state must always be visible, unambiguous, and consistently styled. Never let a user wonder 'what is happening right now?' |
 | **Errors are conversations** | Error messages must explain what went wrong, why it happened, and what the user can do next. 'Something went wrong' is never acceptable. Every error state is a designed screen. |
 | **Confirmation before destruction** | Any irreversible action (cancel payout, revoke API key, delete webhook) requires a confirmation modal with a plain-language description of the consequence. |
@@ -273,11 +272,11 @@ These principles govern every design decision on Tavio. They are not suggestions
 | **Developers read before they click** | Documentation and onboarding flows for developers should prioritize information density and scanability over decoration. Code examples appear early and often. |
 | **One primary action per screen** | Every page has one clear primary CTA. Secondary actions are visually subordinate. Tertiary actions live in menus or drawers. The eye should never be confused about where to go first. |
 | **Numbers need context** | Never show a raw number without a unit, currency code, delta, or comparison point. '$10,000' is less useful than '$10,000 USD ↑ 12% vs last month'. |
-| **Trust is designed in** | Payment products live and die by trust. Every screen should include at least one trust signal: security badge, Stellar settlement indicator, 'Powered by Tavio' mark (on hosted surfaces), or visual confirmation of encryption. |
+| **Trust is designed in** | Payment products live and die by trust. Every screen should include at least one trust signal: security badge, Stellar settlement indicator, 'Powered by Useroutr' mark (on hosted surfaces), or visual confirmation of encryption. |
 
 ## **Motion & Animation**
 
-Tavio uses motion purposefully — never decoratively. Every animation has a functional reason.
+Useroutr uses motion purposefully — never decoratively. Every animation has a functional reason.
 
 | Element | Behavior |
 | :---- | :---- |
@@ -300,7 +299,7 @@ The following flows must be fully mapped in Figma as interactive prototypes befo
 
 ## **Flow 1 — Developer Onboarding**
 
-| Entry: Developer lands on tavio.io, clicks 'Start Building' |
+| Entry: Developer lands on useroutr.io, clicks 'Start Building' |
 | :---- |
 | 1\. Marketing site → Sign up form (name, email, company, password) |
 | 2\. Email verification → Redirect to dashboard |
@@ -322,7 +321,7 @@ The following flows must be fully mapped in Figma as interactive prototypes befo
 
 ## **Flow 3 — Consumer Checkout (Crypto Path)**
 
-| Entry: Consumer clicks a Tavio payment link or is redirected to hosted checkout |
+| Entry: Consumer clicks a Useroutr payment link or is redirected to hosted checkout |
 | :---- |
 | 1\. Order summary (merchant name, logo, amount, description) |
 | 2\. Select payment method: Card / Bank / Crypto |
@@ -364,7 +363,7 @@ Both modes are required across all dashboard surfaces and the docs site. The mar
 | Input border | \#DEE2E6 |
 | Code block bg | \#F1F5F9 |
 
-*Note: Primary brand colors (Tavio Blue, Stellar Teal, status colors) remain consistent across both modes. Only surface and text tokens switch.*
+*Note: Primary brand colors (Useroutr Blue, Stellar Teal, status colors) remain consistent across both modes. Only surface and text tokens switch.*
 
 **09  ·  DELIVERABLES & TIMELINE**
 
@@ -410,7 +409,7 @@ The following rules are absolute. They are not up for creative interpretation. D
 | Never use arbitrary spacing values. All spacing is a multiple of 8px. |
 | Never use purple gradients, neon colors, or glowing crypto aesthetics. |
 | Never design a screen without a loading state and an empty state. |
-| Never use placeholder text ('Lorem ipsum') in final frames. Use realistic Tavio data. |
+| Never use placeholder text ('Lorem ipsum') in final frames. Use realistic Useroutr data. |
 | Never design error states that say only 'Error' or 'Something went wrong'. |
 | Never use a spinner as a loading state for data tables or cards — use skeletons. |
 | All Figma components must have proper variants and auto-layout. No static components. |
@@ -427,9 +426,8 @@ The following rules are absolute. They are not up for creative interpretation. D
 | wise.com | Multi-currency, global payments — very similar mental model |
 | vercel.com/dashboard | Dark mode dashboard done right for technical users |
 | phosphoricons.com | Our icon library — study the full set |
-| docs.tavio.io (this brief) | The product this brief describes |
+| docs.useroutr.io (this brief) | The product this brief describes |
 | Chainrails.io | Closest competitor — understand what to differentiate from |
 
-| Questions? Contact the Tavio team. tavio.io  ·  docs.tavio.io  ·  A product of thirtn.com Version 1.0  ·  February 2026  ·  Confidential |
+| Questions? Contact the Useroutr team. useroutr.io  ·  docs.useroutr.io  ·  A product of thirtn.com Version 1.0  ·  February 2026  ·  Confidential |
 | :---: |
-

@@ -30,7 +30,7 @@ async function main() {
       email: 'admin@acmecorp.com',
       passwordHash: await hash('acme_password_123', 10),
       apiKeyHash: apiKeyHash1,
-      webhookUrl: 'https://acmecorp.com/webhooks/tavvio',
+      webhookUrl: 'https://acmecorp.com/webhooks/useroutr',
       webhookSecret: 'whsec_acme_test_secret',
       settlementAsset: 'USDC',
       settlementAddress:

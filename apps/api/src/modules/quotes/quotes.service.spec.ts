@@ -10,7 +10,7 @@ import { QuotesService } from './quotes.service';
 import { PrismaService } from '../prisma/prisma.service';
 import { StellarService } from '../stellar/stellar.service';
 import { BridgeRouterService } from '../bridge/bridge-router.service';
-import { Chain } from '@tavvio/types';
+import { Chain } from '@useroutr/types';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 
 const Decimal = Prisma.Decimal;

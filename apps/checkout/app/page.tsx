@@ -5,7 +5,7 @@ export default function CheckoutHome() {
     <div className="flex min-h-screen items-center justify-center px-8">
       <div className="w-full max-w-[460px] text-center">
         <h1 className="font-display text-2xl font-bold text-foreground">
-          Tavvio Checkout
+          Useroutr Checkout
         </h1>
         <p className="mt-2 text-sm text-muted-foreground">
           This page is not meant to be accessed directly.

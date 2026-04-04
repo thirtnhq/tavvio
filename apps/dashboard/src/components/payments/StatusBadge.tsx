@@ -1,6 +1,6 @@
 "use client";
 
-import { Badge } from "@tavvio/ui";
+import { Badge } from "@useroutr/ui";
 import { type PaymentStatus } from "@/hooks/usePayments";
 
 interface StatusBadgeProps {

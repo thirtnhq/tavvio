@@ -21,7 +21,7 @@ export function CardPaymentScreen({ paymentId }: { paymentId: string }) {
       <div className="w-full max-w-[460px] space-y-6">
         <div className="text-center">
           <p className="font-display text-sm font-semibold text-muted-foreground">
-            Tavvio Checkout
+            Useroutr Checkout
           </p>
           {payment?.merchantName ? (
             <p className="mt-1 text-sm text-muted-foreground">
@@ -48,7 +48,7 @@ export function CardPaymentScreen({ paymentId }: { paymentId: string }) {
               {payment?.currency ? ` ${payment.currency.toUpperCase()}` : ""}
             </h1>
             <p className="text-sm leading-6 text-muted-foreground">
-              Enter your card details securely through Stripe Elements. Tavvio
+              Enter your card details securely through Stripe Elements. Useroutr
               will confirm the payment and continue settlement automatically.
             </p>
           </div>

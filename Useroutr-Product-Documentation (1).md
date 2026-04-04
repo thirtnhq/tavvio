@@ -1,6 +1,5 @@
 
-
-**TAVIO**
+**Useroutr**
 
 **Product Documentation**
 
@@ -10,19 +9,19 @@ Version 1.0  ·  February 2026
 
 # **1\. Introduction**
 
-Tavvio is a full-stack payment infrastructure platform for businesses and developers. It unifies traditional fiat payment rails with crypto-native infrastructure enabling anyone to accept or send money across blockchain networks and currencies through a single SDK, API, or no-code dashboard.
+Useroutr is a full-stack payment infrastructure platform for businesses and developers. It unifies traditional fiat payment rails with crypto-native infrastructure enabling anyone to accept or send money across blockchain networks and currencies through a single SDK, API, or no-code dashboard.
 
-Tavvio is built on the Stellar blockchain, leveraging Stellar's native path payments, Soroban smart contracts, and its global anchor network to deliver near-instant, low-cost settlement in any currency. The platform bridges the gap that currently exists between fiat-native processors (like Stripe or Flutterwave) and crypto-native payment solutions giving businesses one place to handle everything.
+Useroutr is built on the Stellar blockchain, leveraging Stellar's native path payments, Soroban smart contracts, and its global anchor network to deliver near-instant, low-cost settlement in any currency. The platform bridges the gap that currently exists between fiat-native processors (like Stripe or Flutterwave) and crypto-native payment solutions giving businesses one place to handle everything.
 
-## **1.1 Who is Tavvio for?**
+## **1.1 Who is Useroutr for?**
 
-Tavvio serves two primary audiences:
+Useroutr serves two primary audiences:
 
 * Developers & Businesses (B2B) teams building fintech products, marketplaces, e-commerce platforms, or any application that needs to accept or disburse payments across currencies and chains.
 
-* End Consumers (B2C) individuals paying for goods or services through a Tavvio-powered checkout, payment link, or invoice, using fiat or crypto from any supported wallet or bank.
+* End Consumers (B2C) individuals paying for goods or services through a Useroutr-powered checkout, payment link, or invoice, using fiat or crypto from any supported wallet or bank.
 
-## **1.2 The Problem Tavvio Solves**
+## **1.2 The Problem Useroutr Solves**
 
 Today's payment landscape is fragmented in two directions:
 
@@ -30,11 +29,11 @@ Today's payment landscape is fragmented in two directions:
 
 * Crypto-side: Every blockchain has its own tokens, wallets, liquidity silos, and developer tooling. A USDC on Ethereum is not the same as USDC on Solana forcing developers to build and maintain multi-chain infrastructure that most apps simply don't need.
 
-Tavvio removes both layers of friction. Merchants choose where they want to settle fiat accounts, crypto wallet, or Stellar assets and Tavvio handles everything in between.
+Useroutr removes both layers of friction. Merchants choose where they want to settle fiat accounts, crypto wallet, or Stellar assets and Useroutr handles everything in between.
 
 # **2\. Platform Architecture**
 
-Tavvio is composed of four core layers that work together to route, convert, and settle payments.
+Useroutr is composed of four core layers that work together to route, convert, and settle payments.
 
 ## **2.1 Inbound Layer**
 
@@ -50,45 +49,45 @@ The inbound layer is responsible for receiving payments from any source a custom
 
 Once funds arrive on Stellar, the routing engine determines the optimal conversion path to the merchant's preferred settlement asset.
 
-* Stellar Path Payments: Tavvio uses Stellar's native path payment mechanism (findStrictSendPaths / findStrictReceivePaths) to find the best multi-hop route across the Stellar DEX and AMM liquidity pools.
+* Stellar Path Payments: Useroutr uses Stellar's native path payment mechanism (findStrictSendPaths / findStrictReceivePaths) to find the best multi-hop route across the Stellar DEX and AMM liquidity pools.
 
 * Soroban Smart Contracts: Custom settlement logic, fee deduction, refund rules, and multi-tenant disbursement are handled by Soroban contracts deployed on Stellar Mainnet.
 
-* Slippage protection and quote locking: Tavvio locks quotes for 30 seconds, ensuring the merchant receives exactly the quoted amount.
+* Slippage protection and quote locking: Useroutr locks quotes for 30 seconds, ensuring the merchant receives exactly the quoted amount.
 
 ## **2.3 Settlement Layer**
 
-Settlement is the final delivery of funds to the merchant or recipient. Tavvio supports three settlement modes:
+Settlement is the final delivery of funds to the merchant or recipient. Useroutr supports three settlement modes:
 
 * Crypto Settlement: Funds land in a Stellar wallet as any Stellar-native asset (USDC, XLM, or any anchored asset).
 
 * Fiat Off-Ramp: Stellar anchors (regulated on/off ramp operators using SEP-6/SEP-24 standards) convert on-chain funds to fiat and deliver to a bank account or mobile money wallet.
 
-* Cross-Border Fiat: Tavvio supports Fiat → Stellar → Fiat flows for cross-border payments, enabling businesses to send money internationally at Stellar's near-zero transaction cost.
+* Cross-Border Fiat: Useroutr supports Fiat → Stellar → Fiat flows for cross-border payments, enabling businesses to send money internationally at Stellar's near-zero transaction cost.
 
 ## **2.4 Developer & Merchant Layer**
 
 The top layer is what developers and merchants interact with directly:
 
-* Tavvio SDK (JavaScript/TypeScript, Python, Go) \- embed payment flows directly into applications.
+* Useroutr SDK (JavaScript/TypeScript, Python, Go) \- embed payment flows directly into applications.
 
-* Tavvio REST API \- full programmatic control over payments, quotes, webhooks, and account management.
+* Useroutr REST API \- full programmatic control over payments, quotes, webhooks, and account management.
 
-* Tavvio Dashboard \- no-code tools for creating payment links, invoices, viewing transactions, and managing settings.
+* Useroutr Dashboard \- no-code tools for creating payment links, invoices, viewing transactions, and managing settings.
 
 # **3\. Products**
 
-Tavvio offers five core product modules. Each can be used independently or together as a unified payment stack.
+Useroutr offers five core product modules. Each can be used independently or together as a unified payment stack.
 
-## **3.1 Tavvio Gateway**
+## **3.1 Useroutr Gateway**
 
-Tavvio Gateway is a hosted checkout experience that accepts fiat and crypto payments in a single, embeddable flow. Merchants integrate it with a script tag or SDK call and immediately gain access to every payment method Tavvio supports.
+Useroutr Gateway is a hosted checkout experience that accepts fiat and crypto payments in a single, embeddable flow. Merchants integrate it with a script tag or SDK call and immediately gain access to every payment method Useroutr supports.
 
 ### **Key Features**
 
 * Accepts credit/debit cards, bank transfers (ACH/SEPA/local rails), and crypto from 10+ chains in one checkout session.
 
-* Hosted by Tavvio, PCI-DSS scope is handled entirely on Tavvio's infrastructure.
+* Hosted by Useroutr, PCI-DSS scope is handled entirely on Useroutr's infrastructure.
 
 * Customizable branding: logo, colors, and domain via CNAME.
 
@@ -98,9 +97,9 @@ Tavvio Gateway is a hosted checkout experience that accepts fiat and crypto paym
 
 ### **Integration**
 
-import { TavvioCheckout } from "@tavvio/sdk";
+import { UseroutrCheckout } from "@useroutr/sdk";
 
-const checkout \= new TavvioCheckout({
+const checkout \= new UseroutrCheckout({
 
   apiKey: "tv\_live\_xxxxxxxxxxxx",
 
@@ -118,9 +117,9 @@ const checkout \= new TavvioCheckout({
 
 checkout.open();
 
-## **3.2 Tavvio Links**
+## **3.2 Useroutr Links**
 
-Tavvio Links lets merchants generate shareable payment URLs in seconds with no code required. Links can be shared via WhatsApp, email, SMS, or embedded in any digital surface.
+Useroutr Links lets merchants generate shareable payment URLs in seconds with no code required. Links can be shared via WhatsApp, email, SMS, or embedded in any digital surface.
 
 ### **Key Features**
 
@@ -130,7 +129,7 @@ Tavvio Links lets merchants generate shareable payment URLs in seconds with no c
 
 * Supports expiry dates, single-use or multi-use links.
 
-* Accepts any Tavvio-supported payment method.
+* Accepts any Useroutr-supported payment method.
 
 * Real-time dashboard notifications and webhook events.
 
@@ -154,9 +153,9 @@ POST /v1/payment-links
 
 }
 
-## **3.3 Tavvio Invoicing**
+## **3.3 Useroutr Invoicing**
 
-Tavvio Invoicing provides a professional invoicing tool that lets businesses create, send, and track invoices with customers able to pay in fiat or crypto. Merchants always settle in their preferred currency.
+Useroutr Invoicing provides a professional invoicing tool that lets businesses create, send, and track invoices with customers able to pay in fiat or crypto. Merchants always settle in their preferred currency.
 
 ### **Key Features**
 
@@ -174,11 +173,11 @@ Tavvio Invoicing provides a professional invoicing tool that lets businesses cre
 
 ### **Invoice Lifecycle**
 
-Create → Send → Customer Views → Customer Pays (fiat or crypto) → Tavvio Routes & Converts → Merchant Settles
+Create → Send → Customer Views → Customer Pays (fiat or crypto) → Useroutr Routes & Converts → Merchant Settles
 
-## **3.4 Tavvio Payouts**
+## **3.4 Useroutr Payouts**
 
-Tavvio Payouts is a global disbursement engine. Businesses can send bulk payments to individuals or other businesses worldwide to bank accounts, mobile money wallets, or crypto wallets in a single API call.
+Useroutr Payouts is a global disbursement engine. Businesses can send bulk payments to individuals or other businesses worldwide to bank accounts, mobile money wallets, or crypto wallets in a single API call.
 
 ### **Key Features**
 
@@ -228,35 +227,35 @@ POST /v1/payouts/bulk
 
 }
 
-## **3.5 Tavvio On/Off Ramp**
+## **3.5 Useroutr On/Off Ramp**
 
-Tavvio's on/off ramp module enables direct fiat-to-crypto and crypto-to-fiat conversion for end users or as a white-label service for platforms building their own ramp experience.
+Useroutr's on/off ramp module enables direct fiat-to-crypto and crypto-to-fiat conversion for end users or as a white-label service for platforms building their own ramp experience.
 
 ### **On-Ramp (Fiat → Crypto)**
 
 * The user initiates a deposit in fiat (bank transfer, card, mobile money).
 
-* Tavvio converts to the target crypto asset via Stellar anchors and path payments.
+* Useroutr converts to the target crypto asset via Stellar anchors and path payments.
 
 * Crypto lands in the user's specified wallet within seconds of fiat confirmation.
 
 ### **Off-Ramp (Crypto → Fiat)**
 
-* Users send crypto to their Tavvio off-ramp address (any supported chain).
+* Users send crypto to their Useroutr off-ramp address (any supported chain).
 
-* Tavvio bridges and converts to stablecoin on Stellar, then uses anchor network to deliver fiat.
+* Useroutr bridges and converts to stablecoin on Stellar, then uses anchor network to deliver fiat.
 
 * Funds arrive in the user's bank account or mobile money wallet.
 
 ### **White-Label**
 
-Platforms can embed Tavvio's ramp directly into their product via the SDK or iframe embed, with full custom branding and their own KYC flow via Tavvio's compliance API.
+Platforms can embed Useroutr's ramp directly into their product via the SDK or iframe embed, with full custom branding and their own KYC flow via Useroutr's compliance API.
 
 # **4\. Supported Networks, Currencies & Methods**
 
 ## **4.1 Fiat Currencies**
 
-Tavvio supports fiat payments and settlement across major global currencies including USD, EUR, GBP, NGN, KES, GHS, ZAR, UGX, TZS, XOF, CAD, AUD, BRL, MXN, INR, and more. Coverage is expanding continuously. Refer to the Tavvio Dashboard for the live supported currency list.
+Useroutr supports fiat payments and settlement across major global currencies including USD, EUR, GBP, NGN, KES, GHS, ZAR, UGX, TZS, XOF, CAD, AUD, BRL, MXN, INR, and more. Coverage is expanding continuously. Refer to the Useroutr Dashboard for the live supported currency list.
 
 ## **4.2 Crypto Networks**
 
@@ -274,7 +273,7 @@ Tavvio supports fiat payments and settlement across major global currencies incl
 
 ## **4.3 Supported Tokens**
 
-Tavvio supports USDC (native on Stellar via Circle), USDT, XLM, ETH, SOL, BTC (anchored), and any SEP-compliant Stellar asset. On inbound cross-chain flows, any Wormhole-supported token can be accepted and converted via Stellar path payments.
+Useroutr supports USDC (native on Stellar via Circle), USDT, XLM, ETH, SOL, BTC (anchored), and any SEP-compliant Stellar asset. On inbound cross-chain flows, any Wormhole-supported token can be accepted and converted via Stellar path payments.
 
 ## **4.4 Payment Methods**
 
@@ -290,17 +289,17 @@ Tavvio supports USDC (native on Stellar via Circle), USDT, XLM, ETH, SOL, BTC (a
 
 # **5\. API Reference**
 
-The Tavvio API is a RESTful API that uses JSON for request and response bodies. All requests must be authenticated using your API key in the Authorization header.
+The Useroutr API is a RESTful API that uses JSON for request and response bodies. All requests must be authenticated using your API key in the Authorization header.
 
 ## **5.1 Authentication**
 
 Authorization: Bearer tv\_live\_xxxxxxxxxxxx
 
-Use tv\_live\_ prefixed keys for production and tv\_test\_ prefixed keys for sandbox. API keys are generated and managed in the Tavvio Dashboard under Settings \> API Keys.
+Use tv\_live\_ prefixed keys for production and tv\_test\_ prefixed keys for sandbox. API keys are generated and managed in the Useroutr Dashboard under Settings \> API Keys.
 
 ## **5.2 Base URL**
 
-https://api.tavvio.io/v1
+<https://api.useroutr.io/v1>
 
 ## **5.3 Core Endpoints**
 
@@ -346,7 +345,7 @@ POST /v1/payments
 
   "metadata": { "order\_id": "ord\_789" },
 
-  "redirect\_url": "https://yourapp.com/payment/success"
+  "redirect\_url": "<https://yourapp.com/payment/success>"
 
 }
 
@@ -358,7 +357,7 @@ POST /v1/payments
 
   "status": "pending",
 
-  "checkout\_url": "https://checkout.tavvio.io/pay/abc123",
+  "checkout\_url": "<https://checkout.useroutr.io/pay/abc123>",
 
   "amount": 10000,
 
@@ -414,7 +413,7 @@ All errors follow a consistent format with an HTTP status code, error code, and 
 
     "message": "Unable to find a conversion path for the requested amount.",
 
-    "docs": "https://docs.tavvio.io/errors/insufficient\_liquidity"
+    "docs": "https://docs.useroutr.io/errors/insufficient\_liquidity"
 
   }
 
@@ -428,27 +427,27 @@ All errors follow a consistent format with an HTTP status code, error code, and 
 | 409 | quote\_expired | Quote has expired, request a new one |
 | 422 | insufficient\_liquidity | No path found for conversion |
 | 429 | rate\_limited | Too many requests |
-| 500 | internal\_error | Tavvio-side error |
+| 500 | internal\_error | Useroutr-side error |
 
 # **6\. SDK Reference**
 
-Tavvio offers official SDKs in JavaScript/TypeScript, Python, and Go. All SDKs wrap the REST API and provide typed interfaces, error handling, and convenient builder patterns.
+Useroutr offers official SDKs in JavaScript/TypeScript, Python, and Go. All SDKs wrap the REST API and provide typed interfaces, error handling, and convenient builder patterns.
 
 ## **6.1 JavaScript / TypeScript SDK**
 
 ### **Installation**
 
-npm install @tavvio/sdk
+npm install @useroutr/sdk
 
 ### **Initialization**
 
-import Tavvio from "@tavvio/sdk";
+import Useroutr from "@useroutr/sdk";
 
-const tavvio \= new Tavvio({ apiKey: "tv\_live\_xxxxxxxxxxxx" });
+const useroutr \= new Useroutr({ apiKey: "tv\_live\_xxxxxxxxxxxx" });
 
 ### **Create a Payment**
 
-const payment \= await tavvio.payments.create({
+const payment \= await useroutr.payments.create({
 
   amount: 5000,
 
@@ -458,7 +457,7 @@ const payment \= await tavvio.payments.create({
 
   paymentMethods: \['card', 'crypto'\],
 
-  customer: { email: 'user@example.com' }
+  customer: { email: '<user@example.com>' }
 
 });
 
@@ -466,7 +465,7 @@ console.log(payment.checkoutUrl);
 
 ### **Create a Payout**
 
-const payout \= await tavvio.payouts.create({
+const payout \= await useroutr.payouts.create({
 
   amount: 200,
 
@@ -486,13 +485,13 @@ const payout \= await tavvio.payouts.create({
 
 ### **Installation**
 
-pip install tavvio
+pip install useroutr
 
 ### **Usage**
 
-from tavvio import TavvioClient
+from useroutr import UseroutrClient
 
-client \= TavvioClient(api\_key="tv\_live\_xxxxxxxxxxxx")
+client \= UseroutrClient(api\_key="tv\_live\_xxxxxxxxxxxx")
 
 payment \= client.payments.create(
 
@@ -512,15 +511,15 @@ print(payment.checkout\_url)
 
 ### **Installation**
 
-go get github.com/tavvio-io/tavvio-go
+go get github.com/useroutr-io/useroutr-go
 
 ### **Usage**
 
-import "github.com/tavvio-io/tavvio-go"
+import "github.com/useroutr-io/useroutr-go"
 
-client := tavvio.NewClient("tv\_live\_xxxxxxxxxxxx")
+client := useroutr.NewClient("tv\_live\_xxxxxxxxxxxx")
 
-payment, err := client.Payments.Create(\&tavvio.PaymentParams{
+payment, err := client.Payments.Create(\&useroutr.PaymentParams{
 
     Amount:          5000,
 
@@ -532,7 +531,7 @@ payment, err := client.Payments.Create(\&tavvio.PaymentParams{
 
 # **7\. Webhooks**
 
-Tavvio uses webhooks to notify your server of payment events in real time. Register a webhook endpoint in the Dashboard or via the API, and Tavvio will POST event data to that URL whenever a payment status changes.
+Useroutr uses webhooks to notify your server of payment events in real time. Register a webhook endpoint in the Dashboard or via the API, and Useroutr will POST event data to that URL whenever a payment status changes.
 
 ## **7.1 Registering a Webhook**
 
@@ -540,7 +539,7 @@ POST /v1/webhooks
 
 {
 
-  "url": "https://yourapp.com/webhooks/tavvio",
+  "url": "<https://yourapp.com/webhooks/useroutr>",
 
   "events": \["payment.completed", "payment.failed", "payout.completed", "refund.created"\]
 
@@ -594,7 +593,7 @@ POST /v1/webhooks
 
 ## **7.4 Verifying Webhook Signatures**
 
-All Tavvio webhook requests include a Tavvio-Signature header. You should verify this signature using your webhook secret to ensure the request originated from Tavvio.
+All Useroutr webhook requests include a Useroutr-Signature header. You should verify this signature using your webhook secret to ensure the request originated from Useroutr.
 
 const crypto \= require('crypto');
 
@@ -614,7 +613,7 @@ function verifyWebhook(payload, signature, secret) {
 
 # **8\. Refunds**
 
-Tavvio supports full and partial refunds for completed payments. Refunds are routed back to the original payment method where possible. For crypto payments, the refund is sent to the originating wallet address in the original asset.
+Useroutr supports full and partial refunds for completed payments. Refunds are routed back to the original payment method where possible. For crypto payments, the refund is sent to the originating wallet address in the original asset.
 
 ## **8.1 Initiating a Refund**
 
@@ -644,7 +643,7 @@ POST /v1/refunds
 
 # **9\. Dashboard**
 
-The Tavvio Dashboard (dashboard.tavvio.io) is the no-code interface for managing your Tavvio account. It provides full visibility into transactions, tools to create payment links and invoices, and settings for API keys, webhooks, and team members.
+The Useroutr Dashboard (dashboard.useroutr.io) is the no-code interface for managing your Useroutr account. It provides full visibility into transactions, tools to create payment links and invoices, and settings for API keys, webhooks, and team members.
 
 ## **9.1 Dashboard Sections**
 
@@ -661,7 +660,7 @@ The Tavvio Dashboard (dashboard.tavvio.io) is the no-code interface for managing
 
 ## **9.2 Team & Permissions**
 
-Tavvio supports multiple team members per account with role-based access control:
+Useroutr supports multiple team members per account with role-based access control:
 
 * Owner \- full access including billing and API key management.
 
@@ -683,15 +682,15 @@ Tavvio supports multiple team members per account with role-based access control
 
 * Webhook payloads are signed with HMAC-SHA256 for origin verification.
 
-* Tavvio uses HSMs (Hardware Security Modules) for private key management of custodial Stellar accounts.
+* Useroutr uses HSMs (Hardware Security Modules) for private key management of custodial Stellar accounts.
 
 * Soroban smart contracts are audited by independent security firms prior to mainnet deployment.
 
-* Tavvio operates on Stellar Mainnet only \- no shared keys with test environments.
+* Useroutr operates on Stellar Mainnet only \- no shared keys with test environments.
 
 ## **10.2 KYC & AML**
 
-Tavvio performs KYC (Know Your Customer) verification for merchants above certain transaction thresholds and for all on/off ramp users, in compliance with applicable financial regulations. AML transaction monitoring is applied to all payment flows.
+Useroutr performs KYC (Know Your Customer) verification for merchants above certain transaction thresholds and for all on/off ramp users, in compliance with applicable financial regulations. AML transaction monitoring is applied to all payment flows.
 
 * Merchant KYC: Required for accounts exceeding $10,000/month in processing volume.
 
@@ -701,7 +700,7 @@ Tavvio performs KYC (Know Your Customer) verification for merchants above certai
 
 ## **10.3 PCI DSS**
 
-Tavvio's hosted checkout (Tavvio Gateway) is PCI DSS Level 1 compliant. Card data is never transmitted through or stored on merchant servers when using the hosted checkout flow.
+Useroutr's hosted checkout (Useroutr Gateway) is PCI DSS Level 1 compliant. Card data is never transmitted through or stored on merchant servers when using the hosted checkout flow.
 
 # **11\. Roadmap**
 
@@ -720,7 +719,7 @@ Tavvio's hosted checkout (Tavvio Gateway) is PCI DSS Level 1 compliant. Card dat
 | Anchor | A regulated Stellar network operator that bridges fiat currencies to Stellar assets and back |
 | CCTP | Circle's Cross-Chain Transfer Protocol \- enables native USDC movement across supported blockchains |
 | Path Payment | A Stellar-native transaction type that automatically converts assets across multiple hops using DEX liquidity |
-| Soroban | Stellar's smart contract platform, used by Tavvio for settlement logic and escrow |
+| Soroban | Stellar's smart contract platform, used by Useroutr for settlement logic and escrow |
 | SEP | Stellar Ecosystem Proposal \- a set of standards for interoperability between Stellar wallets and services |
 | Settlement Asset | The asset that the merchant receives after a payment is processed and converted |
 | On-Ramp | The process of converting fiat currency to crypto |
@@ -728,4 +727,4 @@ Tavvio's hosted checkout (Tavvio Gateway) is PCI DSS Level 1 compliant. Card dat
 | Wormhole | A cross-chain messaging protocol enabling asset transfers between Stellar and other blockchains |
 | XLM | Stellar's native currency (Lumens), used for transaction fees and minimum account reserves |
 
-© 2026 Tavvio. All rights reserved. docs.tavvio.io
+© 2026 Useroutr. All rights reserved. docs.useroutr.io

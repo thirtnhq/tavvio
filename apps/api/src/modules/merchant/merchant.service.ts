@@ -10,7 +10,7 @@ import { SettlementDto } from './dto/settlement.dto';
 import { BrandingDto } from './dto/branding.dto';
 import { InviteMemberDto } from './dto/invite-member.dto';
 import { KybSubmissionDto } from './dto/kyb-submission.dto';
-import { detectAddressChain, type Chain } from '@tavvio/types';
+import { detectAddressChain, type Chain } from '@useroutr/types';
 
 @Injectable()
 export class MerchantService {

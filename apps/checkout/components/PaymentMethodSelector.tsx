@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { CreditCard, Bank, CurrencyBtc } from "@phosphor-icons/react";
-import { cn } from "@tavvio/ui";
+import { cn } from "@useroutr/ui";
 import type { PaymentMethod } from "@/hooks/usePayment";
 
 const METHOD_CONFIG = {

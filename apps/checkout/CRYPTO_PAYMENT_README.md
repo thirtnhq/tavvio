@@ -1,6 +1,6 @@
 # Crypto Payment Flow Implementation
 
-This document describes the implementation of the crypto payment flow for Tavvio checkout, including wallet connection and HTLC (Hash Time-Locked Contract) functionality.
+This document describes the implementation of the crypto payment flow for Useroutr checkout, including wallet connection and HTLC (Hash Time-Locked Contract) functionality.
 
 ## Overview
 
@@ -142,7 +142,7 @@ lock(receiver, token, amount, hashlock, timelock)
 
 **Parameters:**
 
-- `receiver`: Tavvio relay address
+- `receiver`: Useroutr relay address
 - `token`: Token address (0x0 for native tokens)
 - `amount`: Amount to lock
 - `hashlock`: Hash of preimage for cross-chain settlement

@@ -1,4 +1,4 @@
-import { Chain } from '@tavvio/types';
+import { Chain } from '@useroutr/types';
 import { IsEnum, IsString, IsOptional } from 'class-validator';
 
 export class CreateQuoteDto {

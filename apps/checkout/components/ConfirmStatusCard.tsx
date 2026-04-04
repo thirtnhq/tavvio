@@ -23,7 +23,7 @@ export function ConfirmStatusCard({ paymentId }: { paymentId: string }) {
       <div className="w-full max-w-[460px] space-y-6">
           <div className="text-center">
             <p className="font-display text-sm font-semibold text-muted-foreground">
-              Tavvio Checkout
+              Useroutr Checkout
             </p>
           </div>
 
@@ -64,7 +64,7 @@ export function ConfirmStatusCard({ paymentId }: { paymentId: string }) {
       <div className="w-full max-w-[460px] space-y-6">
         <div className="text-center">
           <p className="font-display text-sm font-semibold text-muted-foreground">
-            Tavvio Checkout
+            Useroutr Checkout
           </p>
         </div>
 

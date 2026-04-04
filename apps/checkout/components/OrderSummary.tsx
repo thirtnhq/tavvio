@@ -1,4 +1,4 @@
-import { cn } from "@tavvio/ui";
+import { cn } from "@useroutr/ui";
 import { formatCurrency } from "@/lib/utils";
 
 interface OrderSummaryProps {

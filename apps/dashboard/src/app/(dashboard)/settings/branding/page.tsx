@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Button, Input, Skeleton, useToast } from "@tavvio/ui";
+import { Button, Input, Skeleton, useToast } from "@useroutr/ui";
 import { useMerchantProfile, useUpdateBranding } from "@/hooks/useSettings";
 import { motion } from "framer-motion";
 import {

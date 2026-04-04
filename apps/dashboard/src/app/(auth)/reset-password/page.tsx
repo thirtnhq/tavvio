@@ -17,7 +17,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import Logo from "../../../../public/logo.svg";
 
 const schema = z
@@ -91,7 +91,7 @@ export default function ResetPasswordPage() {
           <FieldGroup>
             <div className="flex flex-col items-center gap-2">
               <Link href="/" className="flex flex-col items-center gap-2 font-medium">
-                <Image src={Logo} alt="Tavvio" width={120} height={40} />
+                <Image src={Logo} alt="Useroutr" width={120} height={40} />
               </Link>
               <h1 className="text-xl font-bold">Invalid reset link</h1>
               <FieldDescription>
@@ -116,7 +116,7 @@ export default function ResetPasswordPage() {
           <FieldGroup>
             <div className="flex flex-col items-center gap-2">
               <Link href="/" className="flex flex-col items-center gap-2 font-medium">
-                <Image src={Logo} alt="Tavvio" width={120} height={40} />
+                <Image src={Logo} alt="Useroutr" width={120} height={40} />
               </Link>
               <div className="flex size-12 items-center justify-center rounded-full bg-primary/10">
                 <Check className="size-6 text-primary" />
@@ -146,7 +146,7 @@ export default function ResetPasswordPage() {
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <Link href="/" className="flex flex-col items-center gap-2 font-medium">
-                  <Image src={Logo} alt="Tavvio" width={120} height={40} />
+                  <Image src={Logo} alt="Useroutr" width={120} height={40} />
                 </Link>
                 <h1 className="text-xl font-bold">Set a new password</h1>
                 <FieldDescription>

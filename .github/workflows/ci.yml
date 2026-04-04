@@ -57,13 +57,13 @@ jobs:
       postgres:
         image: postgres:16
         env:
-          POSTGRES_USER: tavvio
-          POSTGRES_PASSWORD: tavvio
-          POSTGRES_DB: tavvio_test
+          POSTGRES_USER: useroutr
+          POSTGRES_PASSWORD: useroutr
+          POSTGRES_DB: useroutr_test
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U tavvio"
+          --health-cmd="pg_isready -U useroutr"
           --health-interval=10s
           --health-timeout=5s
           --health-retries=5
@@ -79,7 +79,7 @@ jobs:
           --health-retries=5
 
     env:
-      DATABASE_URL: postgresql://tavvio:tavvio@localhost:5432/tavvio_test
+      DATABASE_URL: postgresql://useroutr:useroutr@localhost:5432/useroutr_test
       REDIS_URL: redis://localhost:6379
       JWT_SECRET: ci-test-secret
       JWT_REFRESH_SECRET: ci-test-refresh-secret
@@ -180,13 +180,13 @@ jobs:
       - name: Build Dashboard
         working-directory: apps/dashboard
         env:
-          NEXT_PUBLIC_API_URL: https://api.tavvio.io
+          NEXT_PUBLIC_API_URL: https://api.useroutr.io
         run: npm run build
 
       - name: Build Checkout
         working-directory: apps/checkout
         env:
-          NEXT_PUBLIC_API_URL: https://api.tavvio.io
+          NEXT_PUBLIC_API_URL: https://api.useroutr.io
         run: npm run build
 
       - name: Build WWW

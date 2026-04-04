@@ -13,7 +13,7 @@ import {
   Input,
   Skeleton,
   useToast,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import { formatTimestamp } from "@/lib/utils/time";
 import {
   useWebhookConfig,
@@ -182,7 +182,7 @@ export default function WebhooksPage() {
         </div>
         <div className="mt-5 flex gap-3">
           <Input
-            placeholder="https://yourapp.com/webhooks/tavvio"
+            placeholder="https://yourapp.com/webhooks/useroutr"
             value={endpointUrl}
             onChange={(e) => setEndpointUrl(e.target.value)}
             className="flex-1"

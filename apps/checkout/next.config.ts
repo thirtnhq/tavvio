@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  transpilePackages: ["@tavvio/ui"],
+  transpilePackages: ["@useroutr/ui"],
 };
 
 export default nextConfig;

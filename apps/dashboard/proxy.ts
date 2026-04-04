@@ -12,7 +12,7 @@ const AUTH_ENTRY_PATHS = ["/login", "/register"];
 
 export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const token = request.cookies.get("tavvio-token")?.value;
+  const token = request.cookies.get("useroutr-token")?.value;
 
   const isPublic = PUBLIC_PATHS.some((p) => pathname.startsWith(p));
   const isAuthEntry = AUTH_ENTRY_PATHS.some((p) => pathname.startsWith(p));

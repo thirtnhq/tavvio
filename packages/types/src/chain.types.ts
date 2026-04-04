@@ -37,7 +37,7 @@ export interface BridgeInParams {
   senderAddress:   string;           // payer's address on source chain
   hashlock:        string;           // 0x-prefixed sha256 of HTLC secret
   timelockSeconds: number;           // how many seconds until HTLC expires
-  paymentId:       string;           // Tavvio payment ID for tracking
+  paymentId:       string;           // Useroutr payment ID for tracking
 }
 
 export interface BridgeInResult {

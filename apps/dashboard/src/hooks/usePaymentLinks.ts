@@ -5,7 +5,7 @@ import type {
   PaymentLinkStats,
   CreatePaymentLinkInput,
   PaymentLinksResponse,
-} from "@tavvio/types";
+} from "@useroutr/types";
 
 interface PaymentLinksParams {
   page?: number;

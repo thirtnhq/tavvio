@@ -13,9 +13,9 @@ import {
   DialogTitle,
   DialogDescription,
   DialogFooter,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import { Plus, MagnifyingGlass, Link as LinkIcon } from "@phosphor-icons/react";
-import { useToast } from "@tavvio/ui";
+import { useToast } from "@useroutr/ui";
 import { LinkCard } from "@/components/links/LinkCard";
 import { CreateLinkModal } from "@/components/links/CreateLinkModal";
 import { LinkCreatedModal } from "@/components/links/LinkCreatedModal";
@@ -26,7 +26,7 @@ import {
   useDeactivatePaymentLink,
 } from "@/hooks/usePaymentLinks";
 import { useDashboardSocket } from "@/hooks/useDashboardSocket";
-import type { PaymentLink, CreatePaymentLinkInput } from "@tavvio/types";
+import type { PaymentLink, CreatePaymentLinkInput } from "@useroutr/types";
 
 // Simple debounce hook
 function useDebounce<T>(value: T, delay: number): T {

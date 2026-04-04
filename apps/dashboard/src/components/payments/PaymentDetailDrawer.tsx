@@ -1,6 +1,6 @@
 "use client";
 
-import { Drawer } from "@tavvio/ui";
+import { Drawer } from "@useroutr/ui";
 import { type Payment } from "@/hooks/usePayments";
 import { StatusBadge } from "./StatusBadge";
 import { formatCurrency, truncateAddress } from "@/lib/utils";

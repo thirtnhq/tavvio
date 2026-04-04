@@ -37,7 +37,7 @@ const avalanche = {
 } as const satisfies Chain;
 
 const config = getDefaultConfig({
-  appName: "Tavvio Checkout",
+  appName: "Useroutr Checkout",
   projectId: process.env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? "placeholder",
   chains: [mainnet, sepolia, polygon, arbitrum, optimism, base, bsc, avalanche],
   ssr: true,

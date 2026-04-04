@@ -3,10 +3,10 @@
 import { useState, useCallback, useMemo } from "react";
 import { useSearchParams } from "next/navigation";
 import { usePayments, type PaymentStatus, type Payment } from "@/hooks/usePayments";
-import { DataTable, type Column } from "@tavvio/ui";
+import { DataTable, type Column } from "@useroutr/ui";
 
 type PaymentWithIndex = Payment & Record<string, unknown>;
-import { Pagination } from "@tavvio/ui";
+import { Pagination } from "@useroutr/ui";
 import { StatusBadge } from "@/components/payments/StatusBadge";
 import { SearchInput } from "@/components/payments/SearchInput";
 import { FilterBar } from "@/components/payments/FilterBar";

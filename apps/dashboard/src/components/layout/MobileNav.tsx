@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { List, X, House, CreditCard, Link as LinkIcon, FileText, ArrowsLeftRight, ChartLine, Gear } from "@phosphor-icons/react";
-import { cn } from "@tavvio/ui";
+import { cn } from "@useroutr/ui";
 
 const NAV_ITEMS = [
   { label: "Overview", href: "/", icon: House },
@@ -43,7 +43,7 @@ export function MobileNav() {
           <nav className="relative z-10 flex h-full w-[280px] flex-col bg-card shadow-lg">
             <div className="flex h-16 items-center justify-between border-b border-border px-4">
               <span className="font-display text-lg font-bold text-foreground">
-                Tavvio
+                Useroutr
               </span>
               <button
                 onClick={() => setOpen(false)}

@@ -3,7 +3,7 @@ import { getToken, refreshAccessToken, clearTokens, isTokenExpired } from "./aut
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 
 function getApiConnectionErrorMessage() {
-  return `Cannot reach the Tavvio API at ${BASE_URL}. Start it with \`npm run start:api\` or set NEXT_PUBLIC_API_URL.`;
+  return `Cannot reach the Useroutr API at ${BASE_URL}. Start it with \`npm run start:api\` or set NEXT_PUBLIC_API_URL.`;
 }
 
 interface RequestOptions {

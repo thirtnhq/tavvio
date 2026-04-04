@@ -5,7 +5,7 @@ import { ThemeProvider } from "@/providers/ThemeProvider";
 import { QueryProvider } from "@/providers/QueryProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import "./globals.css";
-import { ToastProvider } from "@tavvio/ui";
+import { ToastProvider } from "@useroutr/ui";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,10 +21,10 @@ const openSans = Open_Sans({
 
 export const metadata: Metadata = {
   title: {
-    default: "Tavvio Dashboard",
-    template: "%s | Tavvio Dashboard",
+    default: "Useroutr Dashboard",
+    template: "%s | Useroutr Dashboard",
   },
-  description: "Manage your payments, invoices, and analytics with Tavvio.",
+  description: "Manage your payments, invoices, and analytics with Useroutr.",
 };
 
 export default function RootLayout({

@@ -15,7 +15,7 @@ import {
   InputOTPSlot,
   InputOTPSeparator,
 } from "@/components/ui/input-otp";
-import { FieldDescription, FieldGroup } from "@tavvio/ui";
+import { FieldDescription, FieldGroup } from "@useroutr/ui";
 import Logo from "../../../../public/logo.svg";
 
 export default function VerifyPage() {
@@ -98,8 +98,8 @@ export default function VerifyPage() {
                 href="/"
                 className="flex flex-col items-center gap-2 font-medium"
               >
-                <Image src={Logo} alt="Tavvio" width={120} height={40} />
-                <span className="sr-only">Tavvio</span>
+                <Image src={Logo} alt="Useroutr" width={120} height={40} />
+                <span className="sr-only">Useroutr</span>
               </Link>
               <div className="flex items-center gap-2">
                 <Mail className="size-5 text-primary" />

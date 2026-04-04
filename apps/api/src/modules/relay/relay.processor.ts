@@ -2,7 +2,7 @@ import { Processor, WorkerHost, InjectQueue } from '@nestjs/bullmq';
 import { Job, Queue } from 'bullmq';
 import { Logger } from '@nestjs/common';
 import { PaymentStatus } from '@prisma/client';
-import { Chain } from '@tavvio/types';
+import { Chain } from '@useroutr/types';
 import { RelayService } from './relay.service';
 import { PaymentsService } from '../payments/payments.service';
 import { StellarService } from '../stellar/stellar.service';

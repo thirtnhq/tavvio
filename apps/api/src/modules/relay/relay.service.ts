@@ -5,7 +5,7 @@ import { ethers } from 'ethers';
 import { InjectRedis } from '@nestjs-modules/ioredis';
 import Redis from 'ioredis';
 import { PaymentStatus } from '@prisma/client';
-import { Chain, SourceLockEvent } from '@tavvio/types';
+import { Chain, SourceLockEvent } from '@useroutr/types';
 import { StellarService } from '../stellar/stellar.service';
 import { PaymentsService } from '../payments/payments.service';
 import { BridgeRouterService } from '../bridge/bridge-router.service';

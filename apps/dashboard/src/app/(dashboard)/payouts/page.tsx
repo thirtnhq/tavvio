@@ -1,4 +1,4 @@
-import { Button } from "@tavvio/ui";
+import { Button } from "@useroutr/ui";
 
 export default function PayoutsPage() {
   return (

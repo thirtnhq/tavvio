@@ -14,7 +14,7 @@ import {
   Select,
   Skeleton,
   useToast,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import {
   useTeamMembers,
   useInviteTeamMember,

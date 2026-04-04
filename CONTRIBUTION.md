@@ -1,10 +1,10 @@
-# Contributing to Tavvio
+# Contributing to Useroutr
 
-Thanks for contributing to Tavvio. This document defines the expected workflow, quality bar, and review checklist for all changes.
+Thanks for contributing to Useroutr. This document defines the expected workflow, quality bar, and review checklist for all changes.
 
 ## Scope and Principles
 
-Tavvio is payment infrastructure. Favor correctness and safety over speed:
+Useroutr is payment infrastructure. Favor correctness and safety over speed:
 
 - Keep changes small and focused.
 - Preserve non-custodial and atomic-settlement assumptions.
@@ -43,7 +43,7 @@ docker compose up -d
 4. Update `.env` DB URL for local Docker mapping (`5434`):
 
 ```env
-DATABASE_URL="postgresql://tavvio:password@localhost:5434/tavvio"
+DATABASE_URL="postgresql://useroutr:password@localhost:5434/useroutr"
 ```
 
 5. Run Prisma migration/generate from `apps/api`:

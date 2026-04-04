@@ -1,5 +1,5 @@
 // Re-export cn from shared UI package
-export { cn } from "@tavvio/ui";
+export { cn } from "@useroutr/ui";
 
 export function formatCurrency(amount: number, currency = "USD") {
   return new Intl.NumberFormat("en-US", {

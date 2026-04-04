@@ -12,7 +12,7 @@ import {
   Settings,
   type LucideIcon,
 } from "lucide-react";
-import { cn } from "@tavvio/ui";
+import { cn } from "@useroutr/ui";
 
 interface NavItem {
   label: string;
@@ -87,7 +87,7 @@ export function Sidebar({ collapsed, onToggle }: SidebarProps) {
           onClick={onToggle}
           className="font-display text-lg font-bold text-foreground"
         >
-          {collapsed ? "T" : "Tavvio"}
+          {collapsed ? "T" : "Useroutr"}
         </button>
       </div>
 

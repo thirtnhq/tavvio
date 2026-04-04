@@ -24,7 +24,7 @@ import { StellarService } from '../stellar/stellar.service';
 import { CreatePaymentDto } from './dto/create-payment.dto';
 import { PaymentFiltersDto } from './dto/payment-filters.dto';
 import { PaymentResponseDto } from './dto/payment-response.dto';
-import { SourceLockEvent } from '@tavvio/types';
+import { SourceLockEvent } from '@useroutr/types';
 import * as crypto from 'crypto';
 
 interface CheckoutLineItem {
@@ -422,7 +422,7 @@ export class PaymentsService implements OnModuleInit {
         paymentId: payment.id,
         merchantId: payment.merchantId,
       },
-      description: `Tavvio checkout payment ${payment.id}`,
+      description: `Useroutr checkout payment ${payment.id}`,
     });
 
     if (!paymentIntent.client_secret) {

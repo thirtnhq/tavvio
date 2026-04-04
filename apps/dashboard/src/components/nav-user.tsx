@@ -24,7 +24,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   useSidebar,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import { useAuth } from "@/providers/AuthProvider";
 
 export function NavUser() {

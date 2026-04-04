@@ -1,7 +1,7 @@
 "use client";
 
 import { WarningCircle } from "@phosphor-icons/react/dist/ssr";
-import type { PaymentStatus } from "@tavvio/types";
+import type { PaymentStatus } from "@useroutr/types";
 
 const ERROR_MESSAGES: Record<string, { title: string; message: string }> = {
   EXPIRED: {

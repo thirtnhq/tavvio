@@ -19,7 +19,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 
 export function NavMain({
   items,

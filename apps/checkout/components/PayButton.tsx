@@ -1,7 +1,7 @@
 "use client";
 
 import { Lock } from "@phosphor-icons/react";
-import { Button } from "@tavvio/ui";
+import { Button } from "@useroutr/ui";
 
 export function PayButton({
   amountLabel,

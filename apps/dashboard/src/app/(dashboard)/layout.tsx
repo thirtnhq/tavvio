@@ -2,7 +2,7 @@
 
 import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
-import { SidebarInset, SidebarProvider, SidebarRail } from "@tavvio/ui";
+import { SidebarInset, SidebarProvider, SidebarRail } from "@useroutr/ui";
 import { useAuth } from "@/providers/AuthProvider";
 
 export default function DashboardLayout({

@@ -24,8 +24,8 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Tavvio Checkout",
-  description: "Secure payment checkout powered by Tavvio",
+  title: "Useroutr Checkout",
+  description: "Secure payment checkout powered by Useroutr",
 };
 
 export default function RootLayout({

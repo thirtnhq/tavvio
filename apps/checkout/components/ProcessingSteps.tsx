@@ -1,7 +1,7 @@
 "use client";
 
 import { CheckCircle, Circle, Clock } from "@phosphor-icons/react/dist/ssr";
-import type { PaymentStatus } from "@tavvio/types";
+import type { PaymentStatus } from "@useroutr/types";
 
 const STEP_MAPPING: Record<PaymentStatus, number> = {
   PENDING: 0,

@@ -16,7 +16,7 @@ import {
   FieldError,
   FieldGroup,
   FieldLabel,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import Logo from "../../../../public/logo.svg";
 
 const schema = z.object({
@@ -60,7 +60,7 @@ export default function ForgotPasswordPage() {
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <Link href="/" className="flex flex-col items-center gap-2 font-medium">
-                  <Image src={Logo} alt="Tavvio" width={120} height={40} />
+                  <Image src={Logo} alt="Useroutr" width={120} height={40} />
                 </Link>
                 <h1 className="text-xl font-bold">Check your email</h1>
                 <FieldDescription>
@@ -106,7 +106,7 @@ export default function ForgotPasswordPage() {
             <FieldGroup>
               <div className="flex flex-col items-center gap-2 text-center">
                 <Link href="/" className="flex flex-col items-center gap-2 font-medium">
-                  <Image src={Logo} alt="Tavvio" width={120} height={40} />
+                  <Image src={Logo} alt="Useroutr" width={120} height={40} />
                 </Link>
                 <h1 className="text-xl font-bold">Forgot your password?</h1>
                 <FieldDescription>

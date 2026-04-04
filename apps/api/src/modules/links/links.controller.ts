@@ -21,7 +21,7 @@ import { PublicRoute } from '../../common/decorators/public-route.decorator.js';
 import { CurrentMerchant } from '../../common/decorators/current-merchant.decorator.js';
 import { ZodValidationPipe } from '../../common/pipes/zod-validation.pipe.js';
 
-const CHECKOUT_BASE = process.env.CHECKOUT_URL ?? 'https://pay.tavvio.io';
+const CHECKOUT_BASE = process.env.CHECKOUT_URL ?? 'https://pay.useroutr.io';
 
 @Controller()
 export class LinksController {

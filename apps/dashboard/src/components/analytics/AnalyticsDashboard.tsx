@@ -531,7 +531,7 @@ function downloadCsv(snapshot: AnalyticsSnapshot, period: Period, range: DateRan
   const suffix = range.start && range.end ? `${range.start}_to_${range.end}` : period;
 
   link.href = url;
-  link.download = `tavvio-analytics-${suffix}.csv`;
+  link.download = `useroutr-analytics-${suffix}.csv`;
   link.click();
 
   URL.revokeObjectURL(url);

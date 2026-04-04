@@ -15,8 +15,8 @@ import {
   Separator,
   CurrencyInput,
   DatePicker,
-} from "@tavvio/ui";
-import type { CreatePaymentLinkInput } from "@tavvio/types";
+} from "@useroutr/ui";
+import type { CreatePaymentLinkInput } from "@useroutr/types";
 
 interface CreateLinkModalProps {
   open: boolean;

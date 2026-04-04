@@ -23,7 +23,7 @@ import type {
   BridgeOutParams,
   BridgeOutResult,
   CompleteSourceLockParams,
-} from '@tavvio/types';
+} from '@useroutr/types';
 
 // ── CCTP Contract ABIs (minimal — only what we call) ─────────────────────────
 
@@ -62,7 +62,7 @@ interface ChainConfig {
   tokenMessenger: string; // burns USDC
   messageTransmitter: string; // receives attestation
   usdcAddress: string; // USDC token contract
-  htlcAddress?: string; // Tavvio's HTLC contract (from env)
+  htlcAddress?: string; // Useroutr's HTLC contract (from env)
 }
 
 type SupportedChain =
@@ -160,7 +160,7 @@ export class CctpService {
       `CCTP bridgeToStellar: ${safeParams.fromChain} → stellar | amount: ${safeParams.amount}`,
     );
 
-    // Step 1: Lock funds in Tavvio's HTLC contract on the source chain
+    // Step 1: Lock funds in Useroutr's HTLC contract on the source chain
     //         (The payer calls this from their wallet in the checkout UI)
     //         Here in the service, we watch for the Locked event.
     //

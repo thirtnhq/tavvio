@@ -2,7 +2,13 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Link as LinkIcon, Send, Receipt, BookOpen, ArrowRight } from "lucide-react";
+import {
+  Link as LinkIcon,
+  Send,
+  Receipt,
+  BookOpen,
+  ArrowRight,
+} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface Action {
@@ -35,7 +41,7 @@ const ACTIONS: Action[] = [
     icon: <BookOpen className="h-4 w-4" />,
     label: "View Docs",
     description: "Browse developer documentation",
-    href: "https://docs.tavio.io",
+    href: "https://docs.useroutr.io",
   },
 ];
 

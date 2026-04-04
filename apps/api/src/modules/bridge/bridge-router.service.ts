@@ -7,7 +7,7 @@ import {
   BridgeOutResult,
   Chain,
   CompleteSourceLockParams,
-} from '@tavvio/types';
+} from '@useroutr/types';
 import { ethers } from 'ethers';
 import { WormholeService } from './providers/wormhole.service';
 import { LayerswapService } from './providers/layerswap.service';

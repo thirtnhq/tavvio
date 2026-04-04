@@ -2,7 +2,7 @@
 export { cn } from "./utils";
 
 /* ══════════════════════════════════════════════════════════════
- * Custom Tavvio Components (hand-built, domain-specific)
+ * Custom Useroutr Components (hand-built, domain-specific)
  * ══════════════════════════════════════════════════════════════ */
 
 /* ── Priority 1 — Core components ── */
@@ -70,9 +70,9 @@ export { DonutChart } from "./components/charts/donut-chart";
  * shadcn/ui Components (managed via `npx shadcn add <component>`)
  *
  * Usage:
- *   import { ShadButton } from "@tavvio/ui"
+ *   import { ShadButton } from "@useroutr/ui"
  *   — or —
- *   import { Button } from "@tavvio/ui/components/ui/button"
+ *   import { Button } from "@useroutr/ui/components/ui/button"
  * ══════════════════════════════════════════════════════════════ */
 
 /* Re-export shadcn primitives with Shad prefix to avoid conflicts */

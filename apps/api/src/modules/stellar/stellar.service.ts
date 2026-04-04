@@ -5,7 +5,7 @@ import {
   OnModuleDestroy,
 } from '@nestjs/common';
 import * as StellarSdk from '@stellar/stellar-sdk';
-import { StellarContractEvent } from '@tavvio/types';
+import { StellarContractEvent } from '@useroutr/types';
 
 // ── Interfaces ───────────────────────────────────────────────────────────────
 

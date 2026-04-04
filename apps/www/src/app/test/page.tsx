@@ -149,7 +149,7 @@ const codeSnippets = [
     code: `import { Useroutr } from "@useroutr/sdk";
 
 const client = new Useroutr({
-  apiKey: process.env.TAVVIO_KEY,
+  apiKey: process.env.USEROUTR_KEY,
 });
 
 // Create a cross-chain payment

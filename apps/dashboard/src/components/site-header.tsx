@@ -5,7 +5,7 @@ import { Bell, Moon, SidebarIcon, Sun } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { useSidebar } from "@tavvio/ui";
+import { useSidebar } from "@useroutr/ui";
 import {
   Breadcrumb,
   BreadcrumbItem,

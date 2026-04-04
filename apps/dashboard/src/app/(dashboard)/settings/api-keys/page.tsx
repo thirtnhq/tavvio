@@ -13,7 +13,7 @@ import {
   Input,
   Skeleton,
   useToast,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import {
   useApiKeys,
   useGenerateApiKey,
@@ -254,7 +254,7 @@ export default function ApiKeysPage() {
             No API keys yet
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
-            Generate a key to start integrating with Tavvio
+            Generate a key to start integrating with Useroutr
           </p>
         </motion.div>
       )}

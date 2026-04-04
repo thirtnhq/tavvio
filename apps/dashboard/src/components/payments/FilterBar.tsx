@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Select, type SelectOption } from "@tavvio/ui";
+import { Select, type SelectOption } from "@useroutr/ui";
 import { CaretDown } from "@phosphor-icons/react";
 
 interface FilterBarProps {

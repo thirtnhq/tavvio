@@ -1,10 +1,10 @@
-# Tavvio
+# Useroutr
 
 Non-custodial, cross-chain payment infrastructure where payers can send from any supported chain and merchants receive on their preferred chain/asset, with Stellar as the settlement hub.
 
 ## Project Summary
 
-Tavvio is built around **atomic HTLC settlement** across chains:
+Useroutr is built around **atomic HTLC settlement** across chains:
 
 - **Inbound**: payer locks funds on source chain (EVM/Stellar/Starknet routes).
 - **Routing**: Stellar path payment + Soroban contracts handle conversion and fee deduction.
@@ -79,7 +79,7 @@ Important local DB note:
 - so set `DATABASE_URL` to:
 
 ```env
-DATABASE_URL="postgresql://tavvio:password@localhost:5434/tavvio"
+DATABASE_URL="postgresql://useroutr:password@localhost:5434/useroutr"
 ```
 
 Set at least these for local API startup:

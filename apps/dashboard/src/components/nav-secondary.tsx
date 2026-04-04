@@ -7,7 +7,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 
 export function NavSecondary({
   items,

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { MagnifyingGlass, X } from "@phosphor-icons/react";
-import { Input } from "@tavvio/ui";
+import { Input } from "@useroutr/ui";
 
 interface SearchInputProps {
   placeholder?: string;

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button, type ButtonProps } from "@tavvio/ui";
+import { Button, type ButtonProps } from "@useroutr/ui";
 import { Copy, Check } from "@phosphor-icons/react";
 
 interface CopyButtonProps extends ButtonProps {

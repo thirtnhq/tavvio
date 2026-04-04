@@ -1,5 +1,5 @@
 import { CheckCircle, XCircle } from "@phosphor-icons/react";
-import { cn } from "@tavvio/ui";
+import { cn } from "@useroutr/ui";
 
 interface StatusIndicatorProps {
   status: "processing" | "success" | "error";

@@ -9,7 +9,7 @@ import {
   DialogFooter,
   Button,
   Label,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import { CopySimple, QrCode, WhatsappLogo, Envelope, ChatCircleText } from "@phosphor-icons/react";
 import { useState } from "react";
 import { QRCodeSVG } from "qrcode.react";

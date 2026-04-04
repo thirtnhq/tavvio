@@ -8,7 +8,7 @@ import {
   DialogDescription,
   DialogFooter,
   Button,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import { Download } from "@phosphor-icons/react";
 import { useState, useRef } from "react";
 import { QRCodeSVG } from "qrcode.react";

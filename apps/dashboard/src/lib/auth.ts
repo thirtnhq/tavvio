@@ -1,6 +1,6 @@
-const TOKEN_KEY = "tavvio-token";
-const REFRESH_KEY = "tavvio-refresh-token";
-const VERIFICATION_EMAIL_KEY = "tavvio-verification-email";
+const TOKEN_KEY = "useroutr-token";
+const REFRESH_KEY = "useroutr-refresh-token";
+const VERIFICATION_EMAIL_KEY = "useroutr-verification-email";
 
 const BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000";
 

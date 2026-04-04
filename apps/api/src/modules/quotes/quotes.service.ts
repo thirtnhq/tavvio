@@ -14,7 +14,7 @@ import { Quote } from '@prisma/client';
 import { Prisma } from '@prisma/client';
 type Decimal = Prisma.Decimal;
 const Decimal = Prisma.Decimal;
-import { Chain } from '@tavvio/types';
+import { Chain } from '@useroutr/types';
 import { CreateQuoteDto } from './dto/create-quote.dto';
 import { QuoteResponseDto } from './dto/quote-response.dto';
 

@@ -21,7 +21,7 @@ export function MerchantBranding({
         </div>
       )}
       <p className="mt-2 text-sm font-medium text-foreground">
-        {merchantName || "Tavvio"}
+        {merchantName || "Useroutr"}
       </p>
     </div>
   );

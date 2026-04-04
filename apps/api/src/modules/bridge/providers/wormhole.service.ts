@@ -28,7 +28,7 @@ import {
   BridgeOutParams,
   BridgeOutResult,
   CompleteSourceLockParams,
-} from '@tavvio/types';
+} from '@useroutr/types';
 
 type SupportedChain =
   | 'ethereum'
@@ -97,7 +97,7 @@ interface WormholeClientLike {
   ): Promise<WormholeTransferLike>;
 }
 
-// ── Wormhole ↔ Tavvio chain name mapping ────────────────────────────────────
+// ── Wormhole ↔ Useroutr chain name mapping ────────────────────────────────────
 
 const CHAIN_MAP: Record<SupportedChain, string> = {
   ethereum: 'Ethereum',
@@ -110,7 +110,7 @@ const CHAIN_MAP: Record<SupportedChain, string> = {
   stellar: 'Stellar',
 };
 
-// ── Tavvio EVM HTLC ABI (same as in CCTP service) ──────────────────────────
+// ── Useroutr EVM HTLC ABI (same as in CCTP service) ──────────────────────────
 
 const HTLC_ABI = [
   'function withdraw(bytes32 lockId, bytes32 preimage) returns (bool)',

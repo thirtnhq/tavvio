@@ -17,7 +17,7 @@ import {
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import Logo from "../../public/logo.svg";
 
 const loginSchema = z.object({
@@ -89,8 +89,8 @@ export function LoginForm({
               href="/"
               className="flex flex-col items-center gap-2 font-medium"
             >
-              <Image src={Logo} alt="Tavvio" width={120} height={40} />
-              <span className="sr-only">Tavvio</span>
+              <Image src={Logo} alt="Useroutr" width={120} height={40} />
+              <span className="sr-only">Useroutr</span>
             </Link>
             <h1 className="text-xl font-bold">Sign in to your account</h1>
             <FieldDescription>

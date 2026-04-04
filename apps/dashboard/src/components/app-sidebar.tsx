@@ -23,7 +23,7 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 
 const navMain = [
   { title: "Overview", url: "/", icon: Home },
@@ -67,7 +67,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-display font-semibold">
-                    Tavvio
+                    Useroutr
                   </span>
                   <span className="truncate text-xs text-muted-foreground">
                     Merchant Dashboard

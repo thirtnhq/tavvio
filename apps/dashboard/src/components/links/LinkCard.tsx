@@ -12,12 +12,12 @@ import {
   TooltipTrigger,
   TooltipContent,
   TooltipProvider,
-} from "@tavvio/ui";
+} from "@useroutr/ui";
 import { QrCode, Trash } from "@phosphor-icons/react";
 import { formatCurrency } from "@/lib/utils";
 import { LinkStatusBadge } from "./LinkStatusBadge";
 import { CopyButton } from "./CopyButton";
-import type { PaymentLink } from "@tavvio/types";
+import type { PaymentLink } from "@useroutr/types";
 
 interface LinkCardProps {
   link: PaymentLink;

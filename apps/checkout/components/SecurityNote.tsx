@@ -15,7 +15,7 @@ export function SecurityNote() {
           </p>
           <p className="text-sm leading-6 text-muted-foreground">
             Stripe Elements keeps card data PCI DSS Level 1 compliant while
-            Tavvio handles payment confirmation and settlement.
+            Useroutr handles payment confirmation and settlement.
           </p>
         </div>
       </div>

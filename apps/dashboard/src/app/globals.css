@@ -1,6 +1,6 @@
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "@tavvio/ui/globals.css";
+@import "@useroutr/ui/globals.css";
 
 @custom-variant dark (&:is(.dark *));
 
@@ -90,7 +90,7 @@
 :root {
   --header-height: 3.5rem;
 
-  /* Sidebar uses Tavvio ink tiers for dark-first design */
+  /* Sidebar uses Useroutr ink tiers for dark-first design */
   --sidebar: var(--ink2);
   --sidebar-foreground: var(--lead);
   --sidebar-primary: var(--blue);

@@ -9,7 +9,7 @@ import { TrustBadges } from "@/components/TrustBadges";
 import { ProcessingAnimation } from "@/components/ProcessingAnimation";
 import { ProcessingSteps } from "@/components/ProcessingSteps";
 import { ErrorCard } from "@/components/ErrorCard";
-import type { PaymentStatus } from "@tavvio/types";
+import type { PaymentStatus } from "@useroutr/types";
 
 interface ConfirmPageClientProps {
   params: Promise<{ paymentId: string }>;
