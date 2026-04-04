@@ -54,7 +54,12 @@ function computeTotals(
   lineItems: Array<{ qty: number; unitPrice: number }>,
   taxRate?: number,
   discount?: number,
-): { lineItems: LineItem[]; subtotal: number; taxAmount: number; total: number } {
+): {
+  lineItems: LineItem[];
+  subtotal: number;
+  taxAmount: number;
+  total: number;
+} {
   const enriched: LineItem[] = lineItems.map((item) => ({
     description: (item as LineItem).description,
     qty: item.qty,
@@ -235,7 +240,8 @@ export class InvoicesService {
   async getById(id: string, merchantId: string): Promise<Invoice> {
     const invoice = await this.prisma.invoice.findUnique({ where: { id } });
     if (!invoice) throw new NotFoundException(`Invoice ${id} not found`);
-    if (invoice.merchantId !== merchantId) throw new ForbiddenException('Access denied');
+    if (invoice.merchantId !== merchantId)
+      throw new ForbiddenException('Access denied');
     return invoice;
   }
 
@@ -375,11 +381,19 @@ export class InvoicesService {
       },
     });
 
-    // Ensure PDF exists before sending
-    const pdfUrl = existing.pdfUrl ?? (await this.generatePdf(id, merchantId));
+    // Generate PDF buffer for email attachment
+    const templateData = this.buildTemplateData(existing, merchant);
+    const pdfBuffer = await this.pdf.generateInvoicePdf(templateData);
 
-    const amountDue =
-      toNumber(existing.total) - toNumber(existing.amountPaid);
+    // Upload to storage and persist URL (idempotent — skip if already stored)
+    let pdfUrl = existing.pdfUrl;
+    if (!pdfUrl) {
+      const key = `invoices/${merchantId}/${id}/invoice-${id}.pdf`;
+      pdfUrl = await this.storage.upload(key, pdfBuffer, 'application/pdf');
+      await this.prisma.invoice.update({ where: { id }, data: { pdfUrl } });
+    }
+
+    const amountDue = toNumber(existing.total) - toNumber(existing.amountPaid);
 
     // Send invoice email with branding + tracking pixel + Pay Now link
     await this.notifications.sendInvoice(
@@ -390,8 +404,7 @@ export class InvoicesService {
         amount: amountDue,
         currency: existing.currency,
         dueDate:
-          existing.dueDate ??
-          new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
+          existing.dueDate ?? new Date(Date.now() + 30 * 24 * 60 * 60 * 1000),
         merchantName: merchant.companyName ?? merchant.name,
         merchantEmail: merchant.email,
         merchantLogo: merchant.logoUrl ?? undefined,
@@ -401,7 +414,7 @@ export class InvoicesService {
         trackingPixelUrl: `${this.apiUrl}/v1/invoices/${id}/track`,
         checkoutUrl: `${this.checkoutUrl}/invoice/${id}`,
       },
-      pdfUrl,
+      pdfBuffer,
     );
 
     // Update status
@@ -517,7 +530,14 @@ export class InvoicesService {
         status: { in: [InvoiceStatus.SENT, InvoiceStatus.VIEWED] },
         dueDate: { lt: new Date() },
       },
-      select: { id: true, merchantId: true, customerEmail: true, total: true, currency: true, dueDate: true },
+      select: {
+        id: true,
+        merchantId: true,
+        customerEmail: true,
+        total: true,
+        currency: true,
+        dueDate: true,
+      },
     });
 
     if (overdueInvoices.length === 0) return 0;
@@ -538,7 +558,10 @@ export class InvoicesService {
           dueDate: invoice.dueDate?.toISOString(),
         })
         .catch((err) =>
-          this.logger.warn(`invoice.overdue webhook failed for ${invoice.id}`, err),
+          this.logger.warn(
+            `invoice.overdue webhook failed for ${invoice.id}`,
+            err,
+          ),
         );
     }
 
@@ -594,7 +617,9 @@ export class InvoicesService {
 
     if (!merchant) throw new NotFoundException('Merchant not found');
 
-    return this.pdf.generateInvoicePdf(this.buildTemplateData(invoice, merchant));
+    return this.pdf.generateInvoicePdf(
+      this.buildTemplateData(invoice, merchant),
+    );
   }
 
   // ── Private helpers ────────────────────────────────────────────────────────
@@ -607,10 +632,16 @@ export class InvoicesService {
     const now = Date.now();
     const due = dueDate.getTime();
 
-    const jobs: Array<{ reminderType: ReminderJobData['reminderType']; delay: number }> = [
-      { reminderType: 'before_due', delay: due - now - 3 * 24 * 60 * 60 * 1000 },
-      { reminderType: 'on_due',     delay: due - now },
-      { reminderType: 'after_due',  delay: due - now + 3 * 24 * 60 * 60 * 1000 },
+    const jobs: Array<{
+      reminderType: ReminderJobData['reminderType'];
+      delay: number;
+    }> = [
+      {
+        reminderType: 'before_due',
+        delay: due - now - 3 * 24 * 60 * 60 * 1000,
+      },
+      { reminderType: 'on_due', delay: due - now },
+      { reminderType: 'after_due', delay: due - now + 3 * 24 * 60 * 60 * 1000 },
     ];
 
     for (const job of jobs) {
@@ -622,7 +653,7 @@ export class InvoicesService {
             delay: job.delay,
             attempts: 3,
             backoff: { type: 'exponential', delay: 5000 },
-            jobId: `${invoiceId}:${job.reminderType}`, // idempotent — won't duplicate on re-send
+            jobId: `${invoiceId}_${job.reminderType}`, // idempotent — won't duplicate on re-send
           },
         );
       }
