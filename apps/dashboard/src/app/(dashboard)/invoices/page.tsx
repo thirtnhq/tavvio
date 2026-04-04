@@ -206,11 +206,11 @@ export default function InvoicesPage() {
     }
   };
 
-  const handleSendExisting = async (invoice: Invoice) => {
+  const handleSendExisting = async (invoice: Invoice, message?: string) => {
     try {
-      await sendInvoice.mutateAsync({ id: invoice.id });
+      await sendInvoice.mutateAsync({ id: invoice.id, message });
       toast(`Invoice sent to ${invoice.customerEmail}.`, "success");
-      // Update the detail sheet if it's showing this invoice
+      // Reflect status change in the detail sheet without waiting for a refetch
       setDetailInvoice((prev) =>
         prev?.id === invoice.id ? { ...prev, status: "SENT" } : prev,
       );
