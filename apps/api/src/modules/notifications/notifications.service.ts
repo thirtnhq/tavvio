@@ -91,16 +91,16 @@ export class NotificationsService {
   async sendInvoice(
     customerEmail: string,
     invoice: Invoice,
-    pdfUrl: string,
+    pdfBuffer: Buffer,
   ): Promise<void> {
     await this.dispatch({
       to: customerEmail,
-      subject: `Invoice ${invoice.id} is available`,
+      subject: `Invoice ${invoice.reference ?? invoice.id} is available`,
       html: templates.invoiceTemplate(invoice, this.appUrl),
       attachments: [
         {
-          filename: `invoice-${invoice.id}.pdf`,
-          path: pdfUrl,
+          filename: `invoice-${invoice.reference ?? invoice.id}.pdf`,
+          content: pdfBuffer.toString('base64'),
         },
       ],
     });

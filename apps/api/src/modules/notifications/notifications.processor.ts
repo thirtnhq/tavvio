@@ -49,12 +49,14 @@ export class NotificationsProcessor extends WorkerHost {
 
           if (response.error) {
             this.logger.error(
-              `Failed to send email to ${toString}: ${response.error.message}`,
+              `Resend rejected email to ${toString}: ${JSON.stringify(response.error)}`,
             );
             throw new Error(response.error.message);
           }
 
-          this.logger.log(`Successfully sent email to ${toString}`);
+          this.logger.log(
+            `Email accepted by Resend — id: ${response.data?.id}, to: ${toString}, from: ${this.fromEmail}, subject: "${subject}"`,
+          );
         } catch (error: unknown) {
           const errMsg =
             error instanceof Error ? error.message : 'Unknown error';
