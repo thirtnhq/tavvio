@@ -99,7 +99,7 @@ interface InvoicesTableProps {
   onSort?: (col: string) => void;
   onRowClick: (invoice: Invoice) => void;
   onEdit: (invoice: Invoice) => void;
-  onSend: (invoice: Invoice) => void;
+  onSend: (invoice: Invoice, message?: string) => void;
   onDelete: (invoice: Invoice) => void;
   onDownloadPdf: (invoice: Invoice) => void;
   onCopyLink: (invoice: Invoice) => void;
