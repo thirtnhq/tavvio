@@ -215,24 +215,34 @@ model PaymentLink {
 // ── Invoices ──────────────────────────────────────────────────
 
 model Invoice {
-  id            String        @id @default(cuid())
-  merchantId    String
-  customerEmail String
-  customerName  String?
-  lineItems     Json // [{description, qty, unitPrice}]
-  subtotal      Decimal       @db.Decimal(36, 18)
-  taxRate       Decimal?      @db.Decimal(5, 4)
-  taxAmount     Decimal?      @db.Decimal(36, 18)
-  discount      Decimal?      @db.Decimal(36, 18)
-  total         Decimal       @db.Decimal(36, 18)
-  currency      String        @default("USD")
-  status        InvoiceStatus @default(DRAFT)
-  dueDate       DateTime?
-  pdfUrl        String?
-  paidAt        DateTime?
-  paymentId     String?
-  createdAt     DateTime      @default(now())
-  merchant      Merchant      @relation(fields: [merchantId], references: [id])
+  id              String        @id @default(cuid())
+  merchantId      String
+  invoiceNumber   String? // e.g. "INV-2024-001"
+  customerEmail   String
+  customerName    String?
+  customerPhone   String?
+  customerAddress Json? // {line1, line2?, city, state?, country, zip?}
+  lineItems       Json // [{description, qty, unitPrice, amount}]
+  subtotal        Decimal       @db.Decimal(36, 18)
+  taxRate         Decimal?      @db.Decimal(5, 4)
+  taxAmount       Decimal?      @db.Decimal(36, 18)
+  discount        Decimal?      @db.Decimal(36, 18)
+  total           Decimal       @db.Decimal(36, 18)
+  amountPaid      Decimal       @default(0) @db.Decimal(36, 18)
+  currency        String        @default("USD")
+  status          InvoiceStatus @default(DRAFT)
+  dueDate         DateTime?
+  notes           String?
+  pdfUrl          String?
+  paidAt          DateTime?
+  paymentId       String?
+  createdAt       DateTime      @default(now())
+  updatedAt       DateTime      @updatedAt
+  merchant        Merchant      @relation(fields: [merchantId], references: [id])
+
+  @@index([merchantId])
+  @@index([status])
+  @@index([createdAt])
 }
 
 enum InvoiceStatus {
