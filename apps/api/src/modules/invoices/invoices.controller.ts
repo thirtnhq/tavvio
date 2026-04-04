@@ -124,6 +124,23 @@ export class InvoicesController {
     return this.invoicesService.recordPayment(id, merchantId, dto);
   }
 
+  // ── GET /v1/invoices/:id/checkout ─────────────────────────────────────────
+  // Public — returns display data for the consumer-facing invoice page.
+  @Get(':id/checkout')
+  @PublicRoute()
+  async getCheckoutData(@Param('id') id: string) {
+    return this.invoicesService.getPublicCheckoutData(id);
+  }
+
+  // ── POST /v1/invoices/:id/pay ──────────────────────────────────────────────
+  // Public — creates a payment session for the invoice, returns paymentId.
+  @Post(':id/pay')
+  @PublicRoute()
+  @HttpCode(HttpStatus.CREATED)
+  async initiatePayment(@Param('id') id: string) {
+    return this.invoicesService.initiatePayment(id);
+  }
+
   // ── GET /v1/invoices/:id/track ─────────────────────────────────────────────
   // Public endpoint — email clients load this pixel when the customer opens the email.
   // Updates invoice SENT → VIEWED and returns a 1×1 transparent GIF.

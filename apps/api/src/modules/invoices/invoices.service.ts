@@ -578,6 +578,157 @@ export class InvoicesService {
     return url;
   }
 
+  // ── Public checkout data (no auth — customer-facing) ──────────────────────
+
+  async getPublicCheckoutData(invoiceId: string) {
+    const invoice = await this.prisma.invoice.findUnique({
+      where: { id: invoiceId },
+    });
+    if (!invoice) throw new NotFoundException('Invoice not found');
+
+    const merchant = await this.prisma.merchant.findUnique({
+      where: { id: invoice.merchantId },
+      select: {
+        name: true,
+        companyName: true,
+        logoUrl: true,
+        brandColor: true,
+        email: true,
+      },
+    });
+
+    return {
+      id: invoice.id,
+      invoiceNumber: invoice.invoiceNumber ?? null,
+      status: invoice.status,
+      currency: invoice.currency,
+      total: invoice.total.toString(),
+      amountPaid: invoice.amountPaid.toString(),
+      subtotal: invoice.subtotal.toString(),
+      taxAmount: invoice.taxAmount?.toString() ?? null,
+      discount: invoice.discount?.toString() ?? null,
+      dueDate: invoice.dueDate?.toISOString() ?? null,
+      paidAt: invoice.paidAt?.toISOString() ?? null,
+      notes: invoice.notes ?? null,
+      customerName: invoice.customerName ?? null,
+      lineItems: invoice.lineItems,
+      merchant: {
+        name: merchant?.companyName ?? merchant?.name ?? 'Merchant',
+        logo: merchant?.logoUrl ?? null,
+        brandColor: merchant?.brandColor ?? null,
+        email: merchant?.email ?? null,
+      },
+    };
+  }
+
+  // ── Initiate payment (creates quote + payment, no auth) ────────────────────
+
+  async initiatePayment(invoiceId: string): Promise<{ paymentId: string }> {
+    const invoice = await this.prisma.invoice.findUnique({
+      where: { id: invoiceId },
+    });
+    if (!invoice) throw new NotFoundException('Invoice not found');
+
+    const payableStatuses: InvoiceStatus[] = [
+      InvoiceStatus.SENT,
+      InvoiceStatus.VIEWED,
+      InvoiceStatus.PARTIALLY_PAID,
+      InvoiceStatus.OVERDUE,
+    ];
+    if (!payableStatuses.includes(invoice.status)) {
+      throw new BadRequestException(
+        `Invoice cannot be paid in status: ${invoice.status}`,
+      );
+    }
+
+    const merchant = await this.prisma.merchant.findUnique({
+      where: { id: invoice.merchantId },
+      select: {
+        name: true,
+        companyName: true,
+        logoUrl: true,
+        settlementAsset: true,
+        settlementChain: true,
+        settlementAddress: true,
+      },
+    });
+    if (!merchant) throw new NotFoundException('Merchant not found');
+
+    const amountDue =
+      toNumber(invoice.total) - toNumber(invoice.amountPaid);
+
+    if (amountDue <= 0) {
+      throw new BadRequestException('Invoice balance is already settled');
+    }
+
+    // TTL: use invoice due date if set, otherwise 7 days
+    const expiresAt = invoice.dueDate
+      ? new Date(
+          Math.max(
+            invoice.dueDate.getTime(),
+            Date.now() + 60 * 60 * 1000, // at least 1 h from now
+          ),
+        )
+      : new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+    const settlementAsset = merchant.settlementAsset ?? 'USDC';
+    const settlementChain = merchant.settlementChain ?? 'stellar';
+    const feeBps = 0; // invoice amounts are pre-agreed, no additional fee
+    const feeAmount = 0;
+
+    // Create a 1:1 quote — invoice amounts are already final fiat figures
+    const quote = await this.prisma.quote.create({
+      data: {
+        fromChain: 'fiat',
+        fromAsset: invoice.currency,
+        fromAmount: amountDue,
+        toChain: settlementChain,
+        toAsset: settlementAsset,
+        toAmount: amountDue,
+        rate: 1,
+        feeBps,
+        feeAmount,
+        expiresAt,
+      },
+    });
+
+    const lineItems = Array.isArray(invoice.lineItems)
+      ? (invoice.lineItems as Array<{ description: string; qty: number; unitPrice: number; amount: number }>).map((li) => ({
+          label: li.description,
+          amount: li.amount,
+        }))
+      : [];
+
+    const payment = await this.prisma.payment.create({
+      data: {
+        merchantId: invoice.merchantId,
+        quoteId: quote.id,
+        status: 'PENDING',
+        sourceChain: 'fiat',
+        sourceAsset: invoice.currency,
+        sourceAmount: amountDue,
+        destChain: settlementChain,
+        destAsset: settlementAsset,
+        destAmount: amountDue,
+        destAddress: merchant.settlementAddress ?? 'pending',
+        metadata: {
+          invoiceId: invoice.id,
+          invoiceNumber: invoice.invoiceNumber ?? null,
+          description: `Invoice ${invoice.invoiceNumber ?? invoice.id.slice(0, 8).toUpperCase()}`,
+          merchantLogo: merchant.logoUrl ?? null,
+          lineItems,
+          paymentMethods: ['card', 'bank'],
+        },
+      },
+    });
+
+    this.logger.log(
+      `Invoice payment initiated: invoice=${invoiceId}, payment=${payment.id}`,
+    );
+
+    return { paymentId: payment.id };
+  }
+
   async getPdfBuffer(id: string, merchantId: string): Promise<Buffer> {
     const invoice = await this.getById(id, merchantId);
 

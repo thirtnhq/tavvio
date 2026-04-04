@@ -42,6 +42,7 @@ export interface CheckoutPaymentResponse {
   description?: string;
   lineItems?: CheckoutLineItem[];
   expiresAt?: string;
+  paymentMethods?: string[];
 }
 
 export interface CardSessionResponse {
@@ -349,6 +350,9 @@ export class PaymentsService implements OnModuleInit {
     const description = this.readString(metadata.description);
     const merchantLogo = this.readString(metadata.merchantLogo);
     const lineItems = this.readLineItems(metadata.lineItems);
+    const paymentMethods = Array.isArray(metadata.paymentMethods)
+      ? (metadata.paymentMethods as string[])
+      : undefined;
 
     return {
       id: payment.id,
@@ -368,6 +372,7 @@ export class PaymentsService implements OnModuleInit {
               },
             ],
       expiresAt: payment.quote.expiresAt.toISOString(),
+      paymentMethods,
     };
   }
 
