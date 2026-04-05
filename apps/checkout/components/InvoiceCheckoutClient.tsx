@@ -9,7 +9,7 @@ import {
   AlertTriangle,
   ArrowRight,
   FileText,
-} from "@phosphor-icons/react";
+} from "lucide-react";
 import { MerchantBranding } from "@/components/MerchantBranding";
 import { TrustBadges } from "@/components/TrustBadges";
 import { SecurityNote } from "@/components/SecurityNote";
@@ -74,7 +74,7 @@ function PaidState({ invoice }: TerminalStateProps) {
   return (
     <div className="rounded-xl border border-border bg-card p-8 shadow-sm text-center">
       <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-green-100">
-        <CheckCircle size={36} weight="fill" className="text-green-600" />
+        <CheckCircle size={36} className="text-green-600" />
       </div>
       <h2 className="mt-4 font-display text-lg font-semibold text-foreground">
         Invoice Paid
@@ -102,7 +102,7 @@ function CancelledState({ invoice }: TerminalStateProps) {
   return (
     <div className="rounded-xl border border-border bg-card p-8 shadow-sm text-center">
       <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-        <XCircle size={36} weight="fill" className="text-muted-foreground" />
+        <XCircle size={36} className="text-muted-foreground" />
       </div>
       <h2 className="mt-4 font-display text-lg font-semibold text-foreground">
         Invoice Cancelled
@@ -130,20 +130,19 @@ function OverdueState({
   onPay,
   isPaying,
 }: TerminalStateProps & { onPay: () => void; isPaying: boolean }) {
-  const amountDue =
-    parseFloat(invoice.total) - parseFloat(invoice.amountPaid);
+  const amountDue = parseFloat(invoice.total) - parseFloat(invoice.amountPaid);
   return (
     <div className="rounded-xl border border-red-200 bg-red-50/50 p-8 shadow-sm">
       <div className="flex flex-col items-center text-center">
         <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-red-100">
-          <AlertTriangle size={36} weight="fill" className="text-red-600" />
+          <AlertTriangle size={36} className="text-red-600" />
         </div>
         <h2 className="mt-4 font-display text-lg font-semibold text-foreground">
           Payment Overdue
         </h2>
         <p className="mt-2 text-sm text-muted-foreground">
-          This invoice was due on {fmtDate(invoice.dueDate)}. You can still
-          pay the outstanding balance to settle the invoice.
+          This invoice was due on {fmtDate(invoice.dueDate)}. You can still pay
+          the outstanding balance to settle the invoice.
         </p>
         <p className="mt-3 font-mono text-2xl font-semibold text-red-700">
           {formatCurrency(amountDue, invoice.currency)}
@@ -159,7 +158,7 @@ function OverdueState({
         ) : (
           <>
             Pay Now
-            <ArrowRight size={16} weight="bold" />
+            <ArrowRight size={16} />
           </>
         )}
       </button>
@@ -207,8 +206,12 @@ function LineItemsTable({ invoice }: { invoice: InvoiceCheckoutData }) {
         <div className="grid grid-cols-[1fr_40px_72px_72px] gap-2 px-5 py-2 bg-muted/30">
           <span className="text-xs text-muted-foreground">Item</span>
           <span className="text-xs text-muted-foreground text-center">Qty</span>
-          <span className="text-xs text-muted-foreground text-right">Price</span>
-          <span className="text-xs text-muted-foreground text-right">Total</span>
+          <span className="text-xs text-muted-foreground text-right">
+            Price
+          </span>
+          <span className="text-xs text-muted-foreground text-right">
+            Total
+          </span>
         </div>
         {invoice.lineItems.map((item, i) => (
           <div
@@ -216,7 +219,9 @@ function LineItemsTable({ invoice }: { invoice: InvoiceCheckoutData }) {
             className="grid grid-cols-[1fr_40px_72px_72px] gap-2 px-5 py-3 text-sm"
           >
             <span className="text-foreground">{item.description}</span>
-            <span className="text-muted-foreground text-center tabular-nums">{item.qty}</span>
+            <span className="text-muted-foreground text-center tabular-nums">
+              {item.qty}
+            </span>
             <span className="text-muted-foreground text-right tabular-nums">
               {formatCurrency(item.unitPrice, invoice.currency)}
             </span>
@@ -231,33 +236,45 @@ function LineItemsTable({ invoice }: { invoice: InvoiceCheckoutData }) {
       <div className="border-t border-border px-5 py-4 space-y-2 text-sm">
         <div className="flex justify-between text-muted-foreground">
           <span>Subtotal</span>
-          <span className="tabular-nums">{formatCurrency(subtotal, invoice.currency)}</span>
+          <span className="tabular-nums">
+            {formatCurrency(subtotal, invoice.currency)}
+          </span>
         </div>
         {taxAmount > 0 && (
           <div className="flex justify-between text-muted-foreground">
             <span>Tax</span>
-            <span className="tabular-nums">{formatCurrency(taxAmount, invoice.currency)}</span>
+            <span className="tabular-nums">
+              {formatCurrency(taxAmount, invoice.currency)}
+            </span>
           </div>
         )}
         {discount > 0 && (
           <div className="flex justify-between text-green-600">
             <span>Discount</span>
-            <span className="tabular-nums">−{formatCurrency(discount, invoice.currency)}</span>
+            <span className="tabular-nums">
+              −{formatCurrency(discount, invoice.currency)}
+            </span>
           </div>
         )}
         <div className="border-t border-border pt-2 flex justify-between font-semibold text-foreground text-base">
           <span>Total</span>
-          <span className="font-mono tabular-nums">{formatCurrency(total, invoice.currency)}</span>
+          <span className="font-mono tabular-nums">
+            {formatCurrency(total, invoice.currency)}
+          </span>
         </div>
         {amountPaid > 0 && invoice.status !== "PAID" && (
           <>
             <div className="flex justify-between text-green-600 text-xs">
               <span>Amount Paid</span>
-              <span className="tabular-nums">{formatCurrency(amountPaid, invoice.currency)}</span>
+              <span className="tabular-nums">
+                {formatCurrency(amountPaid, invoice.currency)}
+              </span>
             </div>
             <div className="flex justify-between font-semibold text-amber-700 border-t border-border pt-2">
               <span>Balance Due</span>
-              <span className="font-mono tabular-nums">{formatCurrency(amountDue, invoice.currency)}</span>
+              <span className="font-mono tabular-nums">
+                {formatCurrency(amountDue, invoice.currency)}
+              </span>
             </div>
           </>
         )}
@@ -289,8 +306,7 @@ function PayNowButton({
   onPay: () => void;
   isPaying: boolean;
 }) {
-  const amountDue =
-    parseFloat(invoice.total) - parseFloat(invoice.amountPaid);
+  const amountDue = parseFloat(invoice.total) - parseFloat(invoice.amountPaid);
   const isPartial = invoice.status === "PARTIALLY_PAID";
   const brandColor = invoice.merchant.brandColor;
 
@@ -306,8 +322,19 @@ function PayNowButton({
       {isPaying ? (
         <span className="flex items-center gap-2">
           <svg className="h-4 w-4 animate-spin" viewBox="0 0 24 24" fill="none">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
+            <circle
+              className="opacity-25"
+              cx="12"
+              cy="12"
+              r="10"
+              stroke="currentColor"
+              strokeWidth="4"
+            />
+            <path
+              className="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"
+            />
           </svg>
           Setting up payment…
         </span>
@@ -315,7 +342,7 @@ function PayNowButton({
         <>
           Pay {isPartial ? "Remaining " : ""}
           {formatCurrency(amountDue, invoice.currency)}
-          <ArrowRight size={16} weight="bold" />
+          <ArrowRight size={16} />
         </>
       )}
     </button>
@@ -328,7 +355,7 @@ function DraftState({ invoice }: TerminalStateProps) {
   return (
     <div className="rounded-xl border border-border bg-card p-8 shadow-sm text-center">
       <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-muted">
-        <Clock size={36} weight="fill" className="text-muted-foreground" />
+        <Clock size={36} className="text-muted-foreground" />
       </div>
       <h2 className="mt-4 font-display text-lg font-semibold text-foreground">
         Invoice Not Yet Sent
@@ -383,7 +410,9 @@ interface InvoiceCheckoutClientProps {
   invoiceId: string;
 }
 
-export function InvoiceCheckoutClient({ invoiceId }: InvoiceCheckoutClientProps) {
+export function InvoiceCheckoutClient({
+  invoiceId,
+}: InvoiceCheckoutClientProps) {
   const router = useRouter();
   const [payError, setPayError] = useState<string | null>(null);
 
@@ -397,7 +426,9 @@ export function InvoiceCheckoutClient({ invoiceId }: InvoiceCheckoutClientProps)
       router.push(`/${paymentId}`);
     } catch (err) {
       setPayError(
-        err instanceof Error ? err.message : "Could not start payment. Please try again.",
+        err instanceof Error
+          ? err.message
+          : "Could not start payment. Please try again.",
       );
     }
   };
