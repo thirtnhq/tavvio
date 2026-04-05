@@ -176,3 +176,13 @@ export function useInvoicePdfUrl() {
     mutationFn: (id) => api.get<{ url: string }>(`/v1/invoices/${id}/pdf`),
   });
 }
+
+/** Auto-fetches the PDF URL when `id` is truthy. Used for the PDF preview panel. */
+export function useInvoicePdf(id: string | undefined) {
+  return useQuery<{ url: string }>({
+    queryKey: ["invoice-pdf", id],
+    queryFn: () => api.get<{ url: string }>(`/v1/invoices/${id}/pdf`),
+    enabled: !!id,
+    staleTime: 5 * 60 * 1000, // 5 min — PDF URLs are stable
+  });
+}
