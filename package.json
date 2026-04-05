@@ -24,7 +24,6 @@
     "@nestjs/jwt": "^11.0.2",
     "@nestjs/passport": "^11.0.0",
     "@openzeppelin/contracts": "^5.6.1",
-    "lightningcss-darwin-arm64": "^1.32.0",
     "passport": "^0.7.0",
     "passport-jwt": "^4.0.1"
   },

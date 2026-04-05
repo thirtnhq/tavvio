@@ -1,6 +1,6 @@
 "use client";
 
-import { Bell, Moon, Search, Sun, LogOut, Settings, User } from "lucide-react";
+import { Bell, Moon, Monitor, Search, Sun, LogOut, Settings, User } from "lucide-react";
 import { useTheme } from "@/providers/ThemeProvider";
 import { useAuth } from "@/providers/AuthProvider";
 import {
@@ -17,7 +17,7 @@ interface TopbarProps {
 }
 
 export function Topbar({ title }: TopbarProps) {
-  const { theme, toggleTheme } = useTheme();
+  const { preference, toggleTheme } = useTheme();
   const { merchant, logout } = useAuth();
 
   const initials = merchant?.name
@@ -47,11 +47,21 @@ export function Topbar({ title }: TopbarProps) {
         <button
           onClick={toggleTheme}
           className="rounded-md p-2 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+          aria-label={`Theme: ${preference}`}
+          title={
+            preference === "light"
+              ? "Light mode — click for dark"
+              : preference === "dark"
+                ? "Dark mode — click for system"
+                : "System mode — click for light"
+          }
         >
-          {theme === "dark" ? (
+          {preference === "dark" ? (
+            <Moon className="size-5" />
+          ) : preference === "light" ? (
             <Sun className="size-5" />
           ) : (
-            <Moon className="size-5" />
+            <Monitor className="size-5" />
           )}
         </button>
 

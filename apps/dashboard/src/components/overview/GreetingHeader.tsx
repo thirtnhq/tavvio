@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useMemo } from "react";
 import { motion } from "framer-motion";
@@ -29,14 +29,14 @@ export function GreetingHeader({
     >
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-foreground">
-          {greeting}, {merchantName} 👋
+          {greeting}, {merchantName} ðŸ‘‹
         </h1>
         <p className="mt-1 text-sm text-muted-foreground">
           Here&apos;s what&apos;s happening with your business today.
         </p>
       </div>
       <div className="hidden items-center gap-2 rounded-full border bg-card px-3 py-1.5 text-xs font-medium text-muted-foreground sm:flex">
-        <Activity className="h-3 w-3 text-emerald-500" />
+        <Activity className="h-3 w-3 text-status-success-text" />
         Live
       </div>
     </motion.div>

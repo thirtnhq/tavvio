@@ -96,8 +96,8 @@ export function MetricCard({
             <div
               className={`inline-flex w-fit items-center gap-1 rounded-full px-2 py-0.5 text-xs font-semibold ${
                 isPositive
-                  ? "bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
-                  : "bg-red-500/10 text-red-600 dark:text-red-400"
+                  ? "bg-status-success-bg text-status-success-text"
+                  : "bg-status-error-bg text-status-error-text"
               }`}
             >
               {isPositive ? (
@@ -122,7 +122,7 @@ export function MetricCard({
                   <Line
                     type="monotone"
                     dataKey="v"
-                    stroke={isPositive ? "var(--success, #22c55e)" : "var(--destructive, #ef4444)"}
+                    stroke={isPositive ? "var(--success)" : "var(--destructive)"}
                     strokeWidth={2}
                     dot={false}
                     animationDuration={400}

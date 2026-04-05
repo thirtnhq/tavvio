@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState, useCallback } from "react";
 import { z } from "zod";
@@ -18,14 +18,14 @@ import {
 } from "@useroutr/ui";
 import type { CreateInvoiceInput, Invoice } from "@/hooks/useInvoices";
 
-// ── Validation schema ──────────────────────────────────────────────────────────
+// â”€â”€ Validation schema â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const LineItemSchema = z.object({
   description: z.string().min(1, "Description is required"),
   qty: z.number({ invalid_type_error: "Must be a number" }).positive("Qty > 0"),
   unitPrice: z
     .number({ invalid_type_error: "Must be a number" })
-    .nonnegative("Price ≥ 0"),
+    .nonnegative("Price â‰¥ 0"),
 });
 
 const InvoiceSchema = z.object({
@@ -44,7 +44,7 @@ const InvoiceSchema = z.object({
 
 type FormErrors = Partial<Record<string, string>>;
 
-// ── Line item helpers ──────────────────────────────────────────────────────────
+// â”€â”€ Line item helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface LineItemRow {
   id: string;
@@ -80,7 +80,7 @@ function computeTotals(
   return { subtotal, taxAmount, total };
 }
 
-// ── Props ──────────────────────────────────────────────────────────────────────
+// â”€â”€ Props â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface InvoiceDrawerProps {
   open: boolean;
@@ -92,7 +92,7 @@ interface InvoiceDrawerProps {
   isLoading?: boolean;
 }
 
-// ── Component ──────────────────────────────────────────────────────────────────
+// â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export function InvoiceDrawer({
   open,
@@ -104,12 +104,12 @@ export function InvoiceDrawer({
 }: InvoiceDrawerProps) {
   const isEditing = !!invoice;
 
-  // ── Customer fields ──────────────────────────────────────────────────────────
+  // â”€â”€ Customer fields â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [customerEmail, setCustomerEmail] = useState(invoice?.customerEmail ?? "");
   const [customerName, setCustomerName] = useState(invoice?.customerName ?? "");
   const [invoiceNumber, setInvoiceNumber] = useState(invoice?.invoiceNumber ?? "");
 
-  // ── Line items ───────────────────────────────────────────────────────────────
+  // â”€â”€ Line items â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [rows, setRows] = useState<LineItemRow[]>(() => {
     if (invoice?.lineItems?.length) {
       return invoice.lineItems.map((li) => ({
@@ -122,7 +122,7 @@ export function InvoiceDrawer({
     return [emptyRow()];
   });
 
-  // ── Pricing ──────────────────────────────────────────────────────────────────
+  // â”€â”€ Pricing â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [currency, setCurrency] = useState(invoice?.currency ?? "USD");
   const [taxRate, setTaxRate] = useState(
     invoice?.taxRate ? String(Number(invoice.taxRate) * 100) : "",
@@ -131,21 +131,21 @@ export function InvoiceDrawer({
     invoice?.discount ? String(Number(invoice.discount)) : "",
   );
 
-  // ── Meta ─────────────────────────────────────────────────────────────────────
+  // â”€â”€ Meta â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [dueDate, setDueDate] = useState(
     invoice?.dueDate ? invoice.dueDate.split("T")[0] : "",
   );
   const [notes, setNotes] = useState(invoice?.notes ?? "");
 
-  // ── Errors ───────────────────────────────────────────────────────────────────
+  // â”€â”€ Errors â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const [errors, setErrors] = useState<FormErrors>({});
 
-  // ── Computed totals ───────────────────────────────────────────────────────────
+  // â”€â”€ Computed totals â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const taxRatePct = parseFloat(taxRate) || 0;
   const discountAmt = parseFloat(discount) || 0;
   const { subtotal, taxAmount, total } = computeTotals(rows, taxRatePct, discountAmt);
 
-  // ── Row handlers ──────────────────────────────────────────────────────────────
+  // â”€â”€ Row handlers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const addRow = () => setRows((prev) => [...prev, emptyRow()]);
 
   const removeRow = useCallback((id: string) => {
@@ -166,7 +166,7 @@ export function InvoiceDrawer({
     [],
   );
 
-  // ── Validation ────────────────────────────────────────────────────────────────
+  // â”€â”€ Validation â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
   const validate = (): CreateInvoiceInput | null => {
     const lineItemsForValidation = rows.map(rowToItem);
 
@@ -259,7 +259,7 @@ export function InvoiceDrawer({
           </DialogDescription>
         </DialogHeader>
 
-        {/* ── Scrollable body ── */}
+        {/* â”€â”€ Scrollable body â”€â”€ */}
         <div className="flex-1 overflow-y-auto space-y-5 py-1 pr-1">
 
           {/* Client details */}
@@ -466,7 +466,7 @@ export function InvoiceDrawer({
               {discountAmt > 0 && (
                 <div className="flex justify-between text-muted-foreground">
                   <span>Discount</span>
-                  <span className="text-green-600">−{fmtCurrency(discountAmt)}</span>
+                  <span className="text-status-success-text">âˆ’{fmtCurrency(discountAmt)}</span>
                 </div>
               )}
               <Separator className="my-1" />
@@ -496,7 +496,7 @@ export function InvoiceDrawer({
               </Label>
               <textarea
                 id="inv-notes"
-                placeholder="Payment terms, thank you note, instructions…"
+                placeholder="Payment terms, thank you note, instructionsâ€¦"
                 value={notes}
                 onChange={(e) => setNotes(e.target.value)}
                 rows={3}
@@ -506,7 +506,7 @@ export function InvoiceDrawer({
           </section>
         </div>
 
-        {/* ── Footer ── */}
+        {/* â”€â”€ Footer â”€â”€ */}
         <DialogFooter className="mt-4 gap-2 sm:gap-0">
           <Button
             type="button"
