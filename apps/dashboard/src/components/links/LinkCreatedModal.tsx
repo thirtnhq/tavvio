@@ -105,7 +105,7 @@ export function LinkCreatedModal({
             {/* QR Code Preview */}
             <div className="space-y-2">
               <Label>QR Code</Label>
-              <div className="flex items-center justify-center rounded-lg border border-[var(--border)] bg-white p-4">
+              <div className="flex items-center justify-center rounded-lg border border-[var(--border)] bg-card p-4">
                 <QRCodeSVG
                   value={linkUrl}
                   size={150}

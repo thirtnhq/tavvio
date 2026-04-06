@@ -4,6 +4,7 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { SiteHeader } from "@/components/site-header";
 import { SidebarInset, SidebarProvider, SidebarRail } from "@useroutr/ui";
 import { useAuth } from "@/providers/AuthProvider";
+import { useRefundEvents } from "@/hooks/useRefundEvents";
 
 export default function DashboardLayout({
   children,
@@ -11,6 +12,9 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const { merchant, isLoading } = useAuth();
+
+  // Subscribe to real-time refund events across all dashboard pages
+  useRefundEvents();
 
   if (isLoading) {
     return (

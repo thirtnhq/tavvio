@@ -10,6 +10,7 @@ import {
   Settings,
   LifeBuoy,
   Send,
+  RotateCcw,
 } from "lucide-react";
 
 import { NavMain } from "@/components/nav-main";
@@ -28,6 +29,7 @@ import {
 const navMain = [
   { title: "Overview", url: "/", icon: Home },
   { title: "Payments", url: "/payments", icon: CreditCard },
+  { title: "Refunds", url: "/refunds", icon: RotateCcw },
   { title: "Payment Links", url: "/links", icon: Link2 },
   { title: "Invoices", url: "/invoices", icon: FileText },
   { title: "Payouts", url: "/payouts", icon: ArrowLeftRight },

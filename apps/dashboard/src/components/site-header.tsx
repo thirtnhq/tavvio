@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { Bell, Moon, SidebarIcon, Sun } from "lucide-react";
+import { Bell, Moon, Monitor, SidebarIcon, Sun } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -14,6 +14,11 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { useTheme } from "@/providers/ThemeProvider";
 
 const routeLabels: Record<string, string> = {
@@ -32,7 +37,7 @@ const routeLabels: Record<string, string> = {
 
 export function SiteHeader() {
   const { toggleSidebar } = useSidebar();
-  const { theme, toggleTheme } = useTheme();
+  const { preference, toggleTheme } = useTheme();
   const pathname = usePathname();
 
   const segments = pathname.split("/").filter(Boolean);
@@ -80,18 +85,32 @@ export function SiteHeader() {
           <Button variant="ghost" size="icon" className="h-8 w-8">
             <Bell className="size-4" />
           </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className="h-8 w-8"
-            onClick={toggleTheme}
-          >
-            {theme === "dark" ? (
-              <Sun className="size-4" />
-            ) : (
-              <Moon className="size-4" />
-            )}
-          </Button>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                className="h-8 w-8"
+                onClick={toggleTheme}
+                aria-label={`Theme: ${preference}`}
+              >
+                {preference === "dark" ? (
+                  <Moon className="size-4" />
+                ) : preference === "light" ? (
+                  <Sun className="size-4" />
+                ) : (
+                  <Monitor className="size-4" />
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              {preference === "light"
+                ? "Light mode — click for dark"
+                : preference === "dark"
+                  ? "Dark mode — click for system"
+                  : "System mode — click for light"}
+            </TooltipContent>
+          </Tooltip>
         </div>
       </div>
     </header>

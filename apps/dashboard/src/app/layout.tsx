@@ -6,6 +6,7 @@ import { QueryProvider } from "@/providers/QueryProvider";
 import { AuthProvider } from "@/providers/AuthProvider";
 import "./globals.css";
 import { ToastProvider } from "@useroutr/ui";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -34,12 +35,21 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var p=localStorage.getItem("useroutr-theme");var t=p==="dark"?"dark":p==="light"?"light":window.matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light";document.documentElement.classList.add(t)}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body className={`${inter.variable} ${openSans.variable} antialiased`}>
         <ThemeProvider>
           <QueryProvider>
             <Suspense>
               <AuthProvider>
-                <ToastProvider>{children}</ToastProvider>
+                <TooltipProvider>
+                  <ToastProvider>{children}</ToastProvider>
+                </TooltipProvider>
               </AuthProvider>
             </Suspense>
           </QueryProvider>

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import {
@@ -34,15 +34,15 @@ import { SendInvoiceModal } from "./SendInvoiceModal";
 import { InvoicePdfPreview } from "./InvoicePdfPreview";
 import type { Invoice, InvoiceStatus } from "@/hooks/useInvoices";
 
-// ── Status badge ───────────────────────────────────────────────────────────────
+// â”€â”€ Status badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const STATUS_CONFIG: Record<InvoiceStatus, { label: string; className: string }> = {
   DRAFT: { label: "Draft", className: "bg-muted text-muted-foreground" },
-  SENT: { label: "Sent", className: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300" },
-  VIEWED: { label: "Viewed", className: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300" },
-  PARTIALLY_PAID: { label: "Partially Paid", className: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300" },
-  PAID: { label: "Paid", className: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300" },
-  OVERDUE: { label: "Overdue", className: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300" },
+  SENT: { label: "Sent", className: "bg-status-info-bg text-status-info-text" },
+  VIEWED: { label: "Viewed", className: "bg-status-purple-bg text-status-purple-text" },
+  PARTIALLY_PAID: { label: "Partially Paid", className: "bg-status-amber-bg text-status-amber-text" },
+  PAID: { label: "Paid", className: "bg-status-success-bg text-status-success-text" },
+  OVERDUE: { label: "Overdue", className: "bg-status-error-bg text-status-error-text" },
   CANCELLED: { label: "Cancelled", className: "bg-muted text-muted-foreground" },
 };
 
@@ -55,7 +55,7 @@ function StatusBadge({ status }: { status: InvoiceStatus }) {
   );
 }
 
-// ── Activity timeline ─────────────────────────────────────────────────────────
+// â”€â”€ Activity timeline â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface TimelineEvent {
   key: string;
@@ -239,7 +239,7 @@ function ActivityTimeline({ invoice }: { invoice: Invoice }) {
   );
 }
 
-// ── Props ──────────────────────────────────────────────────────────────────────
+// â”€â”€ Props â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface InvoiceDetailSheetProps {
   invoice: Invoice | null;
@@ -254,7 +254,7 @@ interface InvoiceDetailSheetProps {
   isSendPending?: boolean;
 }
 
-// ── Helpers ────────────────────────────────────────────────────────────────────
+// â”€â”€ Helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function fmtCurrency(amount: string | number, currency: string) {
   const num = typeof amount === "string" ? parseFloat(amount) : amount;
@@ -263,7 +263,7 @@ function fmtCurrency(amount: string | number, currency: string) {
 }
 
 function fmtDate(iso?: string | null) {
-  if (!iso) return "—";
+  if (!iso) return "â€”";
   return new Date(iso).toLocaleDateString("en-US", {
     year: "numeric",
     month: "long",
@@ -271,7 +271,7 @@ function fmtDate(iso?: string | null) {
   });
 }
 
-// ── Component ──────────────────────────────────────────────────────────────────
+// â”€â”€ Component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export function InvoiceDetailSheet({
   invoice,
@@ -305,7 +305,7 @@ export function InvoiceDetailSheet({
     <>
       <Sheet open={open} onOpenChange={onOpenChange}>
         <SheetContent className="w-full sm:max-w-[520px] flex flex-col gap-0 p-0 overflow-hidden">
-          {/* ── Header ── */}
+          {/* â”€â”€ Header â”€â”€ */}
           <SheetHeader className="px-6 py-4 border-b border-border shrink-0">
             <div className="flex items-start justify-between gap-3 pr-6">
               <div className="space-y-1.5 min-w-0">
@@ -334,7 +334,7 @@ export function InvoiceDetailSheet({
             </div>
           </SheetHeader>
 
-          {/* ── Scrollable body ── */}
+          {/* â”€â”€ Scrollable body â”€â”€ */}
           <div className="flex-1 overflow-y-auto">
             <div className="px-6 py-5 space-y-6">
 
@@ -402,7 +402,7 @@ export function InvoiceDetailSheet({
                     </p>
                     <p
                       className={`text-sm font-medium ${
-                        invoice.status === "OVERDUE" ? "text-red-600" : "text-foreground"
+                        invoice.status === "OVERDUE" ? "text-status-error-text" : "text-foreground"
                       }`}
                     >
                       {fmtDate(invoice.dueDate)}
@@ -412,7 +412,7 @@ export function InvoiceDetailSheet({
                 {invoice.paidAt && (
                   <div className="space-y-1">
                     <p className="text-xs text-muted-foreground">Paid On</p>
-                    <p className="text-sm font-medium text-green-600">{fmtDate(invoice.paidAt)}</p>
+                    <p className="text-sm font-medium text-status-success-text">{fmtDate(invoice.paidAt)}</p>
                   </div>
                 )}
               </section>
@@ -464,8 +464,8 @@ export function InvoiceDetailSheet({
                 {discount > 0 && (
                   <div className="flex justify-between text-muted-foreground">
                     <span>Discount</span>
-                    <span className="tabular-nums text-green-600">
-                      −{fmtCurrency(discount, invoice.currency)}
+                    <span className="tabular-nums text-status-success-text">
+                      âˆ’{fmtCurrency(discount, invoice.currency)}
                     </span>
                   </div>
                 )}
@@ -476,7 +476,7 @@ export function InvoiceDetailSheet({
                 </div>
                 {amountPaid > 0 && (
                   <>
-                    <div className="flex justify-between text-green-600 text-xs">
+                    <div className="flex justify-between text-status-success-text text-xs">
                       <span>Amount Paid</span>
                       <span className="tabular-nums">{fmtCurrency(amountPaid, invoice.currency)}</span>
                     </div>
@@ -494,10 +494,10 @@ export function InvoiceDetailSheet({
                   <h3 className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">
                     Payment Details
                   </h3>
-                  <div className="rounded-lg border border-border bg-green-50/50 dark:bg-green-900/10 p-4 space-y-2 text-sm">
+                  <div className="rounded-lg border border-border bg-status-success-bg p-4 space-y-2 text-sm">
                     <div className="flex items-center gap-2">
-                      <CheckCircle2 className="h-4 w-4 text-green-600 shrink-0" />
-                      <span className="font-medium text-green-700 dark:text-green-400">
+                      <CheckCircle2 className="h-4 w-4 text-status-success-text shrink-0" />
+                      <span className="font-medium text-status-success-text">
                         {invoice.status === "PAID" ? "Fully paid" : "Partially paid"}
                       </span>
                     </div>
@@ -517,7 +517,7 @@ export function InvoiceDetailSheet({
                       {amountDue > 0 && (
                         <div className="space-y-0.5">
                           <p className="text-xs text-muted-foreground">Balance due</p>
-                          <p className="font-semibold text-amber-600">
+                          <p className="font-semibold text-status-amber-text">
                             {fmtCurrency(amountDue, invoice.currency)}
                           </p>
                         </div>
@@ -554,7 +554,7 @@ export function InvoiceDetailSheet({
             </div>
           </div>
 
-          {/* ── Footer actions ── */}
+          {/* â”€â”€ Footer actions â”€â”€ */}
           <div className="shrink-0 border-t border-border px-6 py-4 space-y-2">
             {/* Primary row: Edit + Send */}
             {isDraft && (
@@ -615,7 +615,7 @@ export function InvoiceDetailSheet({
         </SheetContent>
       </Sheet>
 
-      {/* ── Send modal (rendered outside sheet to avoid z-index nesting issues) ── */}
+      {/* â”€â”€ Send modal (rendered outside sheet to avoid z-index nesting issues) â”€â”€ */}
       <SendInvoiceModal
         invoice={invoice}
         open={sendModalOpen}
@@ -624,7 +624,7 @@ export function InvoiceDetailSheet({
         isSending={isSendPending}
       />
 
-      {/* ── PDF preview dialog ── */}
+      {/* â”€â”€ PDF preview dialog â”€â”€ */}
       <InvoicePdfPreview
         invoice={invoice}
         open={pdfPreviewOpen}

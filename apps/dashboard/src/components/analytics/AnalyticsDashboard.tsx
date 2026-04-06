@@ -111,9 +111,9 @@ const PERIOD_OPTIONS: Array<{ value: Period; label: string }> = [
 ];
 
 const PAYMENT_COLORS: Record<PaymentMethod, string> = {
-  card: "#3b82f6",
-  crypto: "#14b8a6",
-  bank: "#f59e0b",
+  card: "var(--blue)",
+  crypto: "var(--teal)",
+  bank: "var(--amber)",
 };
 
 const WEEKDAY_LABELS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -782,7 +782,7 @@ function RevenueChart({
                 x2={width}
                 y1={y}
                 y2={y}
-                stroke="rgba(148,163,184,0.22)"
+                stroke="var(--chart-grid)"
                 strokeDasharray="4 6"
               />
             );
@@ -806,7 +806,7 @@ function RevenueChart({
                   width={barWidth}
                   height={barHeight}
                   rx={8}
-                  fill={active ? "#1d4ed8" : "#3b82f6"}
+                  fill={active ? "var(--blue)" : "var(--blue2)"}
                   opacity={active ? 1 : 0.82}
                 />
                 <text
@@ -814,7 +814,7 @@ function RevenueChart({
                   y={height - 18}
                   textAnchor="middle"
                   fontSize="11"
-                  fill="rgba(100,116,139,1)"
+                  fill="var(--chart-tick)"
                 >
                   {point.label}
                 </text>
@@ -826,13 +826,13 @@ function RevenueChart({
                       width={106}
                       height={30}
                       rx={10}
-                      fill="rgba(15,23,42,0.95)"
+                      fill="var(--chart-tooltip-bg)"
                     />
                     <text
                       x={Math.max(18, x - 18)}
                       y={Math.max(28, y - 18)}
                       fontSize="11"
-                      fill="#ffffff"
+                      fill="var(--chart-tooltip-text)"
                     >
                       {formatCompactMoney(point.amount)}
                     </text>
@@ -880,7 +880,7 @@ function PaymentMethodCard({
               cy="70"
               r={radius}
               fill="none"
-              stroke="rgba(148,163,184,0.18)"
+              stroke="var(--chart-grid)"
               strokeWidth="20"
             />
             {segments.map((segment) => {
@@ -983,8 +983,8 @@ function ConversionCard({
         >
           <defs>
             <linearGradient id="conversion-fill-dashboard" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="rgba(20,184,166,0.35)" />
-              <stop offset="100%" stopColor="rgba(20,184,166,0.02)" />
+              <stop offset="0%" stopColor="var(--teal)" stopOpacity={0.35} />
+              <stop offset="100%" stopColor="var(--teal)" stopOpacity={0.02} />
             </linearGradient>
           </defs>
           <path
@@ -994,7 +994,7 @@ function ConversionCard({
           <path
             d={path}
             fill="none"
-            stroke="#14b8a6"
+            stroke="var(--teal)"
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -1058,7 +1058,7 @@ function FailureHeatmap({
   const maxCount = Math.max(...byHour.map((cell) => cell.count), 1);
   const getColor = (count: number) => {
     const alpha = count / maxCount;
-    return `rgba(239,68,68,${0.1 + alpha * 0.75})`;
+    return `color-mix(in srgb, var(--red) ${Math.round((0.1 + alpha * 0.75) * 100)}%, transparent)`;
   };
 
   return (

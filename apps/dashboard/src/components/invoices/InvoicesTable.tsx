@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useState } from "react";
 import {
@@ -25,15 +25,15 @@ import {
 } from "@/components/ui/dropdown-menu";
 import type { Invoice, InvoiceStatus } from "@/hooks/useInvoices";
 
-// ── Status badge ───────────────────────────────────────────────────────────────
+// â”€â”€ Status badge â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 const STATUS_CONFIG: Record<InvoiceStatus, { label: string; className: string }> = {
   DRAFT: { label: "Draft", className: "bg-muted text-muted-foreground" },
-  SENT: { label: "Sent", className: "bg-blue-100 text-blue-700 dark:bg-blue-900/40 dark:text-blue-300" },
-  VIEWED: { label: "Viewed", className: "bg-purple-100 text-purple-700 dark:bg-purple-900/40 dark:text-purple-300" },
-  PARTIALLY_PAID: { label: "Partial", className: "bg-amber-100 text-amber-700 dark:bg-amber-900/40 dark:text-amber-300" },
-  PAID: { label: "Paid", className: "bg-green-100 text-green-700 dark:bg-green-900/40 dark:text-green-300" },
-  OVERDUE: { label: "Overdue", className: "bg-red-100 text-red-700 dark:bg-red-900/40 dark:text-red-300" },
+  SENT: { label: "Sent", className: "bg-status-info-bg text-status-info-text" },
+  VIEWED: { label: "Viewed", className: "bg-status-purple-bg text-status-purple-text" },
+  PARTIALLY_PAID: { label: "Partial", className: "bg-status-amber-bg text-status-amber-text" },
+  PAID: { label: "Paid", className: "bg-status-success-bg text-status-success-text" },
+  OVERDUE: { label: "Overdue", className: "bg-status-error-bg text-status-error-text" },
   CANCELLED: { label: "Cancelled", className: "bg-muted text-muted-foreground line-through" },
 };
 
@@ -46,7 +46,7 @@ function StatusBadge({ status }: { status: InvoiceStatus }) {
   );
 }
 
-// ── Sort indicator ─────────────────────────────────────────────────────────────
+// â”€â”€ Sort indicator â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function SortIcon({ col, sortBy, sortOrder }: { col: string; sortBy?: string; sortOrder?: "asc" | "desc" }) {
   if (sortBy !== col) return <ChevronsUpDown className="h-3 w-3 opacity-40" />;
@@ -55,7 +55,7 @@ function SortIcon({ col, sortBy, sortOrder }: { col: string; sortBy?: string; so
     : <ChevronDown className="h-3 w-3" />;
 }
 
-// ── Skeleton row ───────────────────────────────────────────────────────────────
+// â”€â”€ Skeleton row â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function SkeletonRow() {
   return (
@@ -68,7 +68,7 @@ function SkeletonRow() {
   );
 }
 
-// ── Empty state ────────────────────────────────────────────────────────────────
+// â”€â”€ Empty state â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function EmptyState({ onCreate }: { onCreate: () => void }) {
   return (
@@ -89,7 +89,7 @@ function EmptyState({ onCreate }: { onCreate: () => void }) {
   );
 }
 
-// ── Props ──────────────────────────────────────────────────────────────────────
+// â”€â”€ Props â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 interface InvoicesTableProps {
   invoices: Invoice[];
@@ -107,7 +107,7 @@ interface InvoicesTableProps {
   onCreate: () => void;
 }
 
-// ── Sortable header cell ──────────────────────────────────────────────────────
+// â”€â”€ Sortable header cell â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 function SortableHeader({
   label,
@@ -135,7 +135,7 @@ function SortableHeader({
   );
 }
 
-// ── Main component ────────────────────────────────────────────────────────────
+// â”€â”€ Main component â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
 
 export function InvoicesTable({
   invoices,
@@ -162,7 +162,7 @@ export function InvoicesTable({
   };
 
   const fmtDate = (iso?: string) => {
-    if (!iso) return "—";
+    if (!iso) return "â€”";
     return new Date(iso).toLocaleDateString("en-US", {
       year: "numeric",
       month: "short",
@@ -245,12 +245,12 @@ export function InvoicesTable({
                     {fmtCurrency(inv.total, inv.currency)}
                   </span>
                   {parseFloat(inv.amountPaid ?? "0") > 0 && inv.status !== "PAID" && (
-                    <span className="text-xs text-green-600">
+                    <span className="text-xs text-status-success-text">
                       +{fmtCurrency(inv.amountPaid, inv.currency)} paid
                     </span>
                   )}
                   {inv.status === "PARTIALLY_PAID" && (
-                    <span className="text-xs text-amber-600">
+                    <span className="text-xs text-status-amber-text">
                       {fmtCurrency(String(amountDue), inv.currency)} due
                     </span>
                   )}
@@ -262,7 +262,7 @@ export function InvoicesTable({
                 {/* Due date */}
                 <span
                   className={`text-sm tabular-nums ${
-                    inv.status === "OVERDUE" ? "text-red-600 font-medium" : "text-muted-foreground"
+                    inv.status === "OVERDUE" ? "text-status-error-text font-medium" : "text-muted-foreground"
                   }`}
                 >
                   {fmtDate(inv.dueDate)}

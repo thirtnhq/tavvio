@@ -88,8 +88,7 @@ export function PaymentTimeline({ payment }: PaymentTimelineProps) {
         // Special case for failed/expired/refunded statuses
         if (
           payment.status === "FAILED" ||
-          payment.status === "EXPIRED" ||
-          payment.status === "REFUNDED"
+          payment.status === "EXPIRED"
         ) {
           return (
             <div key={step.status} className="flex gap-3">
@@ -103,10 +102,33 @@ export function PaymentTimeline({ payment }: PaymentTimelineProps) {
                   {step.label}
                 </p>
                 <p className="text-xs text-muted-foreground">
-                  {payment.status === "REFUNDED"
-                    ? "Payment refunded"
-                    : "Payment failed or expired"}
+                  Payment failed or expired
                 </p>
+              </div>
+            </div>
+          );
+        }
+
+        // Show completed flow for REFUNDED/REFUNDING (these went through COMPLETED first)
+        if (
+          payment.status === "REFUNDED" ||
+          payment.status === "REFUNDING"
+        ) {
+          return (
+            <div key={step.status} className="flex gap-3">
+              <div className="flex flex-col items-center">
+                <div className="rounded-full p-2 bg-(--primary)/20 text-primary">
+                  <CheckCircle size={16} weight="bold" />
+                </div>
+                {index < TIMELINE_STEPS.length - 1 && (
+                  <div className="my-1 h-8 w-0.5 bg-primary" />
+                )}
+              </div>
+              <div className="pt-1">
+                <p className="text-sm font-medium text-foreground">
+                  {step.label}
+                </p>
+                <p className="text-xs text-muted-foreground">Completed</p>
               </div>
             </div>
           );
