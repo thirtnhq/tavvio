@@ -14,6 +14,7 @@ import { PayoutDetailDrawer } from "@/components/payouts/PayoutDetailDrawer";
 import { PayoutExportButton } from "@/components/payouts/PayoutExportButton";
 import { CancelConfirmationModal } from "@/components/payouts/CancelConfirmationModal";
 import { BatchGroupHeader } from "@/components/payouts/BatchGroupHeader";
+import { NewPayoutButton } from "@/components/payouts/NewPayoutButton";
 import { formatCurrency, truncateAddress } from "@/lib/utils";
 import { useToast } from "@useroutr/ui";
 
@@ -386,11 +387,14 @@ export default function PayoutsPage() {
             )}
           </div>
         </div>
-        <PayoutExportButton
-          payouts={payouts}
-          isLoading={isLoading}
-          filters={filters}
-        />
+        <div className="flex items-center gap-3">
+          <NewPayoutButton />
+          <PayoutExportButton
+            payouts={payouts}
+            isLoading={isLoading}
+            filters={filters}
+          />
+        </div>
       </div>
 
       {/* ── Summary Cards ──────────────────────────────────────────────────────── */}
