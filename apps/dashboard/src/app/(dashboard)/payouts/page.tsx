@@ -378,13 +378,13 @@ export default function PayoutsPage() {
           <h2 className="font-display text-xl font-semibold text-foreground">
             Payout History
           </h2>
-          <p className="mt-1 text-sm text-muted-foreground">
+          <div className="mt-1 text-sm text-muted-foreground">
             {isLoading ? (
               <Skeleton className="h-4 w-32" />
             ) : (
               `${totalPayouts.toLocaleString()} total payouts`
             )}
-          </p>
+          </div>
         </div>
         <PayoutExportButton
           payouts={payouts}
