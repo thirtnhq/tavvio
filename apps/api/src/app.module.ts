@@ -20,6 +20,7 @@ import { RelayModule } from './modules/relay/relay.module';
 import { NotificationsModule } from './modules/notifications/notifications.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { PrismaModule } from './modules/prisma/prisma.module';
+import { RecipientsModule } from './modules/recipients/recipients.module';
 import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
 import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { IdempotencyInterceptor } from './common/interceptors/idempotency.interceptor';
@@ -71,6 +72,7 @@ import { IdempotencyInterceptor } from './common/interceptors/idempotency.interc
     RampModule,
     RelayModule,
     NotificationsModule,
+    RecipientsModule,
     AnalyticsModule,
   ],
   controllers: [AppController],

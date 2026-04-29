@@ -46,7 +46,7 @@ export class PayoutsService {
 
   // ── Create single payout ──────────────────────────────────────────────────
 
-  async create(
+async create(
     merchantId: string,
     dto: CreatePayoutDto,
     idempotencyKey?: string,
@@ -64,12 +64,31 @@ export class PayoutsService {
       }
     }
 
+    let finalDto = { ...dto };
+
+    // If recipientId provided, lookup and merge details
+    if (dto.recipientId) {
+      const recipient = await this.prisma.recipient.findFirst({
+        where: { id: dto.recipientId, merchantId },
+      });
+      if (!recipient) {
+        throw new NotFoundException('Recipient not found');
+      }
+      finalDto = {
+        ...dto,
+        recipientName: recipient.name,
+        destinationType: recipient.type,
+        destination: recipient.details as Prisma.InputJsonValue,
+      };
+    }
+
     const payout = await this.prisma.payout.create({
       data: {
         merchantId,
-        recipientName: dto.recipientName,
-        destinationType: dto.destinationType as DestType,
-        destination: dto.destination as Prisma.InputJsonValue,
+        recipientId: dto.recipientId ?? null,
+        recipientName: finalDto.recipientName,
+        destinationType: finalDto.destinationType as DestType,
+        destination: finalDto.destination as Prisma.InputJsonValue,
         amount: dto.amount,
         currency: dto.currency,
         status: PayoutStatus.PENDING,
@@ -92,7 +111,7 @@ export class PayoutsService {
 
   // ── Bulk payout ───────────────────────────────────────────────────────────
 
-  async createBulk(merchantId: string, dto: BulkPayoutDto): Promise<BulkPayoutResult> {
+async createBulk(merchantId: string, dto: BulkPayoutDto): Promise<BulkPayoutResult> {
     const batchId = randomUUID();
     const results: BulkPayoutResult['payouts'] = [];
     let accepted = 0;
@@ -101,12 +120,31 @@ export class PayoutsService {
     for (let i = 0; i < dto.payouts.length; i++) {
       const item = dto.payouts[i];
       try {
+        let finalItem = { ...item };
+
+        // If recipientId provided, lookup and merge details
+        if (item.recipientId) {
+          const recipient = await this.prisma.recipient.findFirst({
+            where: { id: item.recipientId, merchantId },
+          });
+          if (!recipient) {
+            throw new NotFoundException(`Recipient ${item.recipientId} not found`);
+          }
+          finalItem = {
+            ...item,
+            recipientName: recipient.name,
+            destinationType: recipient.type,
+            destination: recipient.details as Prisma.InputJsonValue,
+          };
+        }
+
         const payout = await this.prisma.payout.create({
           data: {
             merchantId,
-            recipientName: item.recipientName,
-            destinationType: item.destinationType as DestType,
-            destination: item.destination as Prisma.InputJsonValue,
+            recipientId: item.recipientId ?? null,
+            recipientName: finalItem.recipientName,
+            destinationType: finalItem.destinationType as DestType,
+            destination: finalItem.destination as Prisma.InputJsonValue,
             amount: item.amount,
             currency: item.currency,
             status: PayoutStatus.PENDING,
@@ -317,10 +355,11 @@ export class PayoutsService {
 
   // ── Helpers ───────────────────────────────────────────────────────────────
 
-  private formatResponse(payout: Payout) {
+private formatResponse(payout: Payout) {
     return {
       id: payout.id,
       merchantId: payout.merchantId,
+      recipientId: payout.recipientId,
       recipientName: payout.recipientName,
       destinationType: payout.destinationType,
       destination: payout.destination,
