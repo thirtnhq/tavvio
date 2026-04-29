@@ -257,13 +257,31 @@ enum InvoiceStatus {
 
 // ── Payouts ───────────────────────────────────────────────────
 
+model Recipient {
+  id           String    @id @default(cuid())
+  merchantId   String
+  name         String
+  type         DestType
+  details      Json      // validated per type: {accountNumber, routingNumber?, ...}
+  isDefault    Boolean   @default(false)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  merchant     Merchant  @relation(fields: [merchantId], references: [id], onDelete: Cascade)
+  payouts      Payout[]
+
+  @@unique([merchantId, name])
+  @@index([merchantId])
+  @@index([type])
+}
+
 model Payout {
-  id              String       @id @default(cuid())
+  id              String      @id @default(cuid())
   merchantId      String
+  recipientId     String?     // optional ref to saved Recipient
   recipientName   String
   destinationType DestType
   destination     Json // {type, account, routing, ...}
-  amount          Decimal      @db.Decimal(36, 18)
+  amount          Decimal     @db.Decimal(36, 18)
   currency        String
   status          PayoutStatus @default(PENDING)
   stellarTxHash   String?
@@ -271,14 +289,16 @@ model Payout {
   completedAt     DateTime?
   failureReason   String?
   batchId         String?
-  idempotencyKey  String?      @unique
-  createdAt       DateTime     @default(now())
-  merchant        Merchant     @relation(fields: [merchantId], references: [id])
+  idempotencyKey  String?     @unique
+  createdAt       DateTime    @default(now())
+  merchant        Merchant    @relation(fields: [merchantId], references: [id])
+  recipient       Recipient?  @relation(fields: [recipientId], references: [id])
 
   @@index([merchantId])
   @@index([status])
   @@index([batchId])
   @@index([createdAt])
+  @@index([recipientId])
 }
 
 enum DestType {

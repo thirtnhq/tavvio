@@ -44,13 +44,21 @@ const DestinationSchema = z.discriminatedUnion('type', [
 // ── Create single payout ───────────────────────────────────────────────────────
 
 export const CreatePayoutSchema = z.object({
+  recipientId: z.string().optional(),
   recipientName: z.string().min(1).max(255),
-  destinationType: z.enum(['BANK_ACCOUNT', 'MOBILE_MONEY', 'CRYPTO_WALLET', 'STELLAR']),
+  destinationType: z.enum([
+    'BANK_ACCOUNT',
+    'MOBILE_MONEY',
+    'CRYPTO_WALLET',
+    'STELLAR',
+  ]),
   destination: DestinationSchema,
   amount: z
     .string()
     .regex(/^\d+(\.\d{1,18})?$/, 'amount must be a positive decimal string')
-    .refine((v) => parseFloat(v) > 0, { message: 'amount must be greater than 0' }),
+    .refine((v) => parseFloat(v) > 0, {
+      message: 'amount must be greater than 0',
+    }),
   currency: z.string().length(3).toUpperCase(),
   scheduledAt: z.coerce.date().optional(),
 });
