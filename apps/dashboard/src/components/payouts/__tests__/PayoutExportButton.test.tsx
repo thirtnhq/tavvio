@@ -43,7 +43,7 @@ describe('PayoutExportButton', () => {
 
   beforeEach(() => {
     vi.clearAllMocks()
-    
+
     // Mock document.createElement and related DOM methods
     const mockLink = {
       setAttribute: vi.fn(),
@@ -57,30 +57,30 @@ describe('PayoutExportButton', () => {
 
   it('renders export button', () => {
     render(<PayoutExportButton payouts={mockPayouts} />)
-    
+
     expect(screen.getByText('Export CSV')).toBeInTheDocument()
   })
 
   it('is disabled when loading', () => {
     render(<PayoutExportButton payouts={mockPayouts} isLoading={true} />)
-    
+
     const button = screen.getByText('Export CSV').closest('button')
     expect(button).toBeDisabled()
   })
 
   it('is disabled when no payouts', () => {
     render(<PayoutExportButton payouts={[]} />)
-    
+
     const button = screen.getByText('Export CSV').closest('button')
     expect(button).toBeDisabled()
   })
 
   it('triggers CSV download when clicked', async () => {
     render(<PayoutExportButton payouts={mockPayouts} />)
-    
+
     const button = screen.getByText('Export CSV')
     fireEvent.click(button)
-    
+
     await waitFor(() => {
       expect(document.createElement).toHaveBeenCalledWith('a')
     })
@@ -91,12 +91,12 @@ describe('PayoutExportButton', () => {
       status: 'COMPLETED' as const,
       batchId: 'batch-12345',
     }
-    
+
     render(<PayoutExportButton payouts={mockPayouts} filters={filters} />)
-    
+
     const button = screen.getByText('Export CSV')
     fireEvent.click(button)
-    
+
     await waitFor(() => {
       const createElementCalls = vi.mocked(document.createElement).mock.calls
       expect(createElementCalls.length).toBeGreaterThan(0)

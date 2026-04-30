@@ -9,6 +9,7 @@ import { DestType, Payout, PayoutStatus, Prisma } from '@prisma/client';
 import { PrismaService } from '../prisma/prisma.service';
 import { WebhooksService } from '../webhooks/webhooks.service';
 import { StellarService } from '../stellar/stellar.service';
+import { EventsService } from '../events/events/events.service';
 import { CreatePayoutDto, BulkPayoutDto } from './dto/create-payout.dto';
 import { PayoutFiltersDto } from './dto/payout-filters.dto';
 import { randomUUID } from 'crypto';
@@ -42,6 +43,7 @@ export class PayoutsService {
     private readonly prisma: PrismaService,
     private readonly webhooks: WebhooksService,
     private readonly stellar: StellarService,
+    private readonly events: EventsService,
   ) {}
 
   // ── Create single payout ──────────────────────────────────────────────────
@@ -81,6 +83,7 @@ export class PayoutsService {
     this.webhooks
       .dispatch(merchantId, 'payout.initiated', this.webhookPayload(payout) as Prisma.InputJsonValue)
       .catch(() => undefined);
+    this.emitPayoutStatus(payout);
 
     // Process immediately unless scheduled for the future
     if (!payout.scheduledAt || payout.scheduledAt <= new Date()) {
@@ -116,6 +119,7 @@ export class PayoutsService {
         });
         results.push({ index: i, payoutId: payout.id });
         accepted++;
+        this.emitPayoutStatus(payout);
 
         if (!payout.scheduledAt || payout.scheduledAt <= new Date()) {
           this.processPayout(payout).catch(() => undefined);
@@ -220,6 +224,7 @@ export class PayoutsService {
     this.webhooks
       .dispatch(merchantId, 'payout.initiated', this.webhookPayload(reset) as Prisma.InputJsonValue)
       .catch(() => undefined);
+    this.emitPayoutStatus(reset);
 
     this.processPayout(reset).catch(() => undefined);
 
@@ -229,10 +234,11 @@ export class PayoutsService {
   // ── Internal processing ───────────────────────────────────────────────────
 
   private async processPayout(payout: Payout): Promise<void> {
-    await this.prisma.payout.update({
+    const processing = await this.prisma.payout.update({
       where: { id: payout.id },
       data: { status: PayoutStatus.PROCESSING },
     });
+    this.emitPayoutStatus(processing);
 
     try {
       const destination = payout.destination as Record<string, unknown>;
@@ -260,6 +266,7 @@ export class PayoutsService {
           failureReason,
         } as Prisma.InputJsonValue)
         .catch(() => undefined);
+      this.emitPayoutStatus(failed);
       this.logger.error(`Payout ${payout.id} failed: ${failureReason}`);
     }
   }
@@ -313,6 +320,7 @@ export class PayoutsService {
         stellarTxHash: txHash,
       } as Prisma.InputJsonValue)
       .catch(() => undefined);
+    this.emitPayoutStatus(completed);
   }
 
   // ── Helpers ───────────────────────────────────────────────────────────────
@@ -348,5 +356,15 @@ export class PayoutsService {
       ...(payout.stellarTxHash && { stellarTxHash: payout.stellarTxHash }),
       createdAt: payout.createdAt.toISOString(),
     };
+  }
+
+  private emitPayoutStatus(payout: Payout): void {
+    this.events.emitPayoutStatus(payout.merchantId, payout.id, payout.status, {
+      amount: payout.amount.toString(),
+      currency: payout.currency,
+      stellarTxHash: payout.stellarTxHash ?? undefined,
+      failureReason: payout.failureReason ?? undefined,
+      updatedAt: new Date(),
+    });
   }
 }

@@ -67,34 +67,34 @@ describe('BatchGroupHeader', () => {
 
   it('renders batch summary information', () => {
     render(<BatchGroupHeader {...defaultProps} />)
-    
+
     expect(screen.getByText('Batch')).toBeInTheDocument()
     expect(screen.getByText(/batch-123/)).toBeInTheDocument()
   })
 
   it('displays total payout count', () => {
     render(<BatchGroupHeader {...defaultProps} />)
-    
+
     expect(screen.getByText('3')).toBeInTheDocument()
     expect(screen.getByText('recipients')).toBeInTheDocument()
   })
 
   it('displays total amount with dominant currency', () => {
     render(<BatchGroupHeader {...defaultProps} />)
-    
+
     // Total amount is 450 USD (dominant) + 150 EUR
     expect(screen.getByText('$450.00')).toBeInTheDocument()
   })
 
   it('shows additional currencies count when multiple currencies exist', () => {
     render(<BatchGroupHeader {...defaultProps} />)
-    
+
     expect(screen.getByText('+1 more')).toBeInTheDocument()
   })
 
   it('displays status breakdown', () => {
     render(<BatchGroupHeader {...defaultProps} />)
-    
+
     // Should show status counts
     expect(screen.getByText('(1)')).toBeInTheDocument() // Each status appears
   })
@@ -102,16 +102,16 @@ describe('BatchGroupHeader', () => {
   it('calls onToggle when clicked', () => {
     const onToggle = vi.fn()
     render(<BatchGroupHeader {...defaultProps} onToggle={onToggle} />)
-    
+
     const header = screen.getByText('Batch').closest('div')?.parentElement
     fireEvent.click(header!)
-    
+
     expect(onToggle).toHaveBeenCalled()
   })
 
   it('shows expanded state correctly', () => {
     render(<BatchGroupHeader {...defaultProps} isExpanded={true} />)
-    
+
     // When expanded, should show caret down
     const button = screen.getByRole('button')
     expect(button).toBeInTheDocument()
@@ -119,7 +119,7 @@ describe('BatchGroupHeader', () => {
 
   it('shows collapsed state correctly', () => {
     render(<BatchGroupHeader {...defaultProps} isExpanded={false} />)
-    
+
     // When collapsed, should show caret right
     const button = screen.getByRole('button')
     expect(button).toBeInTheDocument()
@@ -128,13 +128,13 @@ describe('BatchGroupHeader', () => {
   it('handles single currency correctly', () => {
     const singleCurrencyPayouts = mockPayouts.map(p => ({ ...p, currency: 'USD' }))
     render(<BatchGroupHeader {...defaultProps} payouts={singleCurrencyPayouts} />)
-    
+
     expect(screen.queryByText(/more/)).not.toBeInTheDocument()
   })
 
   it('handles empty payouts gracefully', () => {
     render(<BatchGroupHeader {...defaultProps} payouts={[]} />)
-    
+
     expect(screen.getByText('Batch')).toBeInTheDocument()
     expect(screen.getByText('0')).toBeInTheDocument()
   })

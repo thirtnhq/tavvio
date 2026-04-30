@@ -45,7 +45,7 @@ function calculateBatchStats(payouts: Payout[]): BatchStats {
     acc[p.currency] = (acc[p.currency] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);
-  
+
   const dominantCurrency = Object.entries(currencyCounts).sort(
     (a, b) => b[1] - a[1]
   )[0]?.[0] || "USD";

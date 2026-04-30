@@ -15,7 +15,7 @@ describe('PayoutStatusBadge', () => {
   statuses.forEach(({ status, expectedLabel, expectedVariant }) => {
     it(`renders ${status} status with correct label and styling`, () => {
       render(<PayoutStatusBadge status={status} />)
-      
+
       const badge = screen.getByText(expectedLabel)
       expect(badge).toBeInTheDocument()
       expect(badge.parentElement).toHaveClass(expectedVariant)
@@ -25,7 +25,7 @@ describe('PayoutStatusBadge', () => {
   it('matches all status mappings exactly', () => {
     // Ensure all statuses are mapped
     const allStatuses: PayoutStatus[] = ['PENDING', 'PROCESSING', 'COMPLETED', 'FAILED', 'CANCELLED']
-    
+
     allStatuses.forEach((status) => {
       const { container } = render(<PayoutStatusBadge status={status} />)
       expect(container.querySelector('span')).toBeInTheDocument()
