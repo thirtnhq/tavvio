@@ -1,59 +1,79 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { Syne, Newsreader, JetBrains_Mono } from "next/font/google";
+import {
+  Hanken_Grotesk,
+  Instrument_Serif,
+  Fraunces,
+  JetBrains_Mono,
+} from "next/font/google";
 import { cn } from "@/lib/utils";
 import { StructuredData } from "@/components/StructuredData";
 
-const syne = Syne({
+// Hanken Grotesk — clean confident grotesque. Carries the editorial financial
+// feel that altitude.xyz / withpersona / mercury share. Used for both display
+// headlines and body — letting tracking and weight carry the contrast.
+const hanken = Hanken_Grotesk({
   subsets: ["latin"],
-  variable: "--font-display",
+  variable: "--font-hanken",
   weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
 });
 
-const newsreader = Newsreader({
+// Fraunces — variable serif. Used for italic editorial accents inline in
+// headlines and the occasional pull-quote. More expressive than Instrument
+// Serif's narrow Roman, with optical sizing for big-display moments.
+const fraunces = Fraunces({
   subsets: ["latin"],
-  variable: "--font-serif",
+  variable: "--font-fraunces",
+  weight: ["300", "400", "500", "600"],
   style: ["normal", "italic"],
-  weight: ["300", "400"],
+  // axes: ["SOFT", "opsz"],
+  display: "swap",
 });
 
-const jetbrains = JetBrains_Mono({
+// Instrument Serif — kept for the smaller editorial italic moments where
+// Fraunces' optical-size variant is too expressive.
+const instrumentSerif = Instrument_Serif({
   subsets: ["latin"],
-  variable: "--font-mono",
-  weight: ["300", "400"],
+  variable: "--font-instrument-serif",
+  weight: ["400"],
+  style: ["normal", "italic"],
+  display: "swap",
+});
+
+// JetBrains Mono — eyebrow labels, code, numerals.
+const jetMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-jet-mono",
+  weight: ["400", "500"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Useroutr - Pay anything, Settle Everywhere.",
+  title: "Useroutr — Pay anything. Settle everywhere.",
   description:
-    "Useroutr unifies fiat and crypto payments into one API. Accept cards, bank transfers, and 20+ crypto assets — settle globally in seconds on Stellar.",
+    "Non-custodial cross-chain payment infrastructure built on Stellar. One SDK, one API, one dashboard for accepting payments and settling them where you want.",
   keywords: [
-    "Payment Infrastructure",
-    "Crypto Payments",
-    "Fiat Payments",
-    "Cross-chain Payments",
-    "Payment Gateway",
-    "Stellar Blockchain",
+    "non-custodial payment processor",
+    "stellar payment gateway",
+    "crypto payment infrastructure",
+    "cross-chain payment API",
+    "USDC payment processing",
+    "MoneyGram API",
+    "stellar soroban payments",
+    "global payouts API",
     "Useroutr",
-    "Payment API",
-    "Useroutr Protocol",
   ],
-  authors: [{ name: "Useroutr Labs" }],
-  creator: "Useroutr Labs",
-  publisher: "Useroutr Labs",
-  formatDetection: {
-    email: false,
-    address: false,
-    telephone: false,
-  },
+  authors: [{ name: "Useroutr" }],
+  creator: "Useroutr",
+  publisher: "Useroutr",
+  formatDetection: { email: false, address: false, telephone: false },
   metadataBase: new URL("https://useroutr.io"),
-  alternates: {
-    canonical: "/",
-  },
+  alternates: { canonical: "/" },
   openGraph: {
     title: "Useroutr — Pay anything. Settle everywhere.",
     description:
-      "One API for fiat and crypto payments. Accept any currency, settle globally in seconds.",
+      "Non-custodial cross-chain payment infrastructure built on Stellar. Useroutr never holds the money in between.",
     url: "https://useroutr.io",
     siteName: "Useroutr",
     images: [
@@ -61,7 +81,7 @@ export const metadata: Metadata = {
         url: "/og-image.jpg",
         width: 1200,
         height: 630,
-        alt: "Useroutr - Unified Payment Infrastructure",
+        alt: "Useroutr — non-custodial cross-chain payments",
       },
     ],
     locale: "en_US",
@@ -71,7 +91,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Useroutr — Pay anything. Settle everywhere.",
     description:
-      "One API for fiat and crypto payments. Accept any currency, settle globally in seconds.",
+      "Non-custodial cross-chain payment infrastructure built on Stellar.",
     creator: "@useroutr",
     images: ["/twitter-image.jpg"],
   },
@@ -97,13 +117,13 @@ export default function RootLayout({
     <html
       lang="en"
       className={cn(
-        "dark selection:bg-blue/30 selection:text-white",
-        syne.variable,
-        newsreader.variable,
-        jetbrains.variable,
+        hanken.variable,
+        fraunces.variable,
+        instrumentSerif.variable,
+        jetMono.variable,
       )}
     >
-      <body className="antialiased">
+      <body className="antialiased min-h-screen bg-bg text-ink">
         <StructuredData />
         {children}
       </body>

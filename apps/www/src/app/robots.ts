@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: "/private/",
     },
-    sitemap: "https://useroutr.com/sitemap.xml",
+    sitemap: "https://useroutr.io/sitemap.xml",
   };
 }

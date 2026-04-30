@@ -1,140 +1,419 @@
-@import url("https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,300;6..72,400;6..72,500&family=Syne:wght@500;700;800&family=JetBrains+Mono:wght@400;600&display=swap");
 @import "tailwindcss";
 @import "tw-animate-css";
-@import "shadcn/tailwind.css";
 
 @custom-variant dark (&:is(.dark *));
 
+/*
+ * Useroutr — Editorial Frontier
+ * Off-white background. Editorial typography. One indigo accent.
+ */
 :root {
-  --ink: #0a0c10;
-  --ink2: #12151c;
-  --ink3: #1a1e28;
-  --rule: rgba(255, 255, 255, 0.08);
-  --rule2: rgba(255, 255, 255, 0.14);
-  --lead: #e8eaf0;
-  --body: #8a90a0;
-  --faint: #3a4055;
-  --blue: #2b6feb;
-  --blue2: #4a8bf5;
-  --teal: #0fb8ac;
-  --amber: #f5a623;
-  --red: #e8554e;
-  --green: #34c97b;
+  /* Surfaces */
+  --bg: #f9faf9;        /* near-white, slightly cool */
+  --bg-soft: #f0f1f0;   /* soft elevated surface for section seams */
+  --bg-card: #ffffff;   /* pure white card */
+  --bg-deep: #0c0e15;   /* deep cool black for footer / final CTA */
 
-  --display: "Syne", "Trebuchet MS", sans-serif;
-  --serif: "Newsreader", Georgia, serif;
-  --mono: "JetBrains Mono", Menlo, monospace;
+  /* Type — slightly cool ink to match the cool surfaces */
+  --ink: #0e0f12;       /* near-black headline ink */
+  --ink-2: #2b2c30;     /* body */
+  --ink-3: #66676c;     /* muted */
+  --ink-4: #999aa0;     /* faint */
 
-  /* shadcn/ui mapping */
-  --background: var(--ink);
-  --foreground: var(--lead);
-  --card: var(--ink2);
-  --card-foreground: var(--lead);
-  --popover: var(--ink2);
-  --popover-foreground: var(--lead);
-  --primary: var(--blue);
+  /* Lines */
+  --rule: #e3e4e3;
+  --rule-2: #cdced0;
+
+  /* Brand */
+  --accent: #5b53d8;       /* indigo-violet — primary accent */
+  --accent-ink: #443bbf;   /* deeper hover state */
+  --accent-soft: #ecebfa;  /* tinted background wash */
+  --teal: #00807a;         /* secondary cool, used sparingly */
+  --blue: #1a4fc4;         /* link / focus */
+
+  /* Type stacks — Hanken Grotesk carries display + body. Fraunces for
+     expressive italic accents. Instrument Serif for smaller italic moments. */
+  --font-display: var(--font-hanken), "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-hanken), "Hanken Grotesk", ui-sans-serif, system-ui, sans-serif;
+  --font-fraunces: var(--font-fraunces), "Fraunces", "Times New Roman", serif;
+  --font-serif: var(--font-instrument-serif), "Instrument Serif", "Times New Roman", serif;
+  --font-mono: var(--font-jet-mono), "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* Radii */
+  --radius-pill: 999px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+
+  /* Shadcn aliases (kept thin for legacy) */
+  --background: var(--bg);
+  --foreground: var(--ink);
+  --card: var(--bg-card);
+  --card-foreground: var(--ink);
+  --popover: var(--bg-card);
+  --popover-foreground: var(--ink);
+  --primary: var(--ink);
   --primary-foreground: #ffffff;
-  --secondary: var(--ink3);
-  --secondary-foreground: var(--lead);
-  --muted: var(--ink3);
-  --muted-foreground: var(--body);
-  --accent: var(--ink2);
-  --accent-foreground: var(--lead);
-  --destructive: var(--red);
+  --secondary: var(--bg-soft);
+  --secondary-foreground: var(--ink);
+  --muted: var(--bg-soft);
+  --muted-foreground: var(--ink-3);
+  /* shadcn `accent` slot is a hoverable surface, not the brand accent.
+     Map it to bg-soft so it doesn't shadow `--accent` (brand). */
+  --shadcn-accent: var(--bg-soft);
+  --shadcn-accent-foreground: var(--ink);
+  --destructive: #c63a25;
   --destructive-foreground: #ffffff;
   --border: var(--rule);
   --input: var(--rule);
-  --ring: var(--blue);
-  --radius: 0.625rem;
-}
+  --ring: var(--ink);
 
-* {
-  box-sizing: border-box;
-}
-
-html,
-body {
-  margin: 0;
-  padding: 0;
-  scroll-behavior: smooth;
-  background-color: #000000;
-  color: var(--lead);
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-
-body {
-  font-family: var(--serif);
-  font-size: 16px;
-  line-height: 1.65;
-  position: relative;
-}
-
-@media (min-width: 640px) {
-  body {
-    font-size: 17px;
-  }
-}
-
-/* Scrollbar styling */
-.scrollbar-hide::-webkit-scrollbar {
-  display: none;
-}
-.scrollbar-hide {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  color-scheme: light;
 }
 
 @theme inline {
-  --color-ink: var(--ink);
-  --color-ink2: var(--ink2);
-  --color-ink3: var(--ink3);
-  --color-rule: var(--rule);
-  --color-rule2: var(--rule2);
-  --color-lead: var(--lead);
-  --color-body: var(--body);
-  --color-faint: var(--faint);
-  --color-blue: var(--blue);
-  --color-blue2: var(--blue2);
-  --color-teal: var(--teal);
-  --color-amber: var(--amber);
-  --color-red: var(--red);
-  --color-green: var(--green);
+  /* Surfaces */
+  --color-bg: var(--bg);
+  --color-bg-soft: var(--bg-soft);
+  --color-bg-card: var(--bg-card);
+  --color-bg-deep: var(--bg-deep);
 
+  /* Ink */
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-4: var(--ink-4);
+
+  --color-rule: var(--rule);
+  --color-rule-2: var(--rule-2);
+
+  /* Brand accent — exposed as Tailwind `bg-accent`, `text-accent`, etc. */
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-accent-soft: var(--accent-soft);
+  --color-teal: var(--teal);
+  --color-blue: var(--blue);
+
+  /* shadcn passthrough — note: shadcn's `accent` slot was renamed to
+     `shadcn-accent` to free up the `accent` namespace for the brand. */
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
-  --color-popover: var(--popover);
-  --color-popover-foreground: var(--popover-foreground);
   --color-primary: var(--primary);
   --color-primary-foreground: var(--primary-foreground);
   --color-secondary: var(--secondary);
   --color-secondary-foreground: var(--secondary-foreground);
   --color-muted: var(--muted);
   --color-muted-foreground: var(--muted-foreground);
-  --color-accent: var(--accent);
-  --color-accent-foreground: var(--accent-foreground);
+  --color-shadcn-accent: var(--shadcn-accent);
+  --color-shadcn-accent-foreground: var(--shadcn-accent-foreground);
   --color-destructive: var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border: var(--border);
   --color-input: var(--input);
   --color-ring: var(--ring);
 
-  --radius-lg: var(--radius);
-  --radius-md: calc(var(--radius) * 0.8);
-  --radius-sm: calc(var(--radius) * 0.6);
+  /* Legacy aliases for /auth, /products, /test */
+  --color-ink2: var(--bg-soft);
+  --color-ink3: var(--bg-card);
+  --color-rule2: var(--rule-2);
+  --color-lead: var(--ink);
+  --color-body: var(--ink-2);
+  --color-faint: var(--ink-4);
+  --color-blue2: #4677de;
+  --color-amber: var(--accent);
+  --color-orange: var(--accent);
+  --color-orange-ink: var(--accent-ink);
+  --color-text: var(--ink);
+  --color-text-muted: var(--ink-3);
+  --color-text-faint: var(--ink-4);
+  --color-bg-elevated: var(--bg-soft);
+  --color-border-strong: var(--rule-2);
+  --color-blue-hover: #4677de;
+  --color-green: #2e7d4f;
+  --color-red: #c63a25;
+  --color-purple: #6f42c1;
+  --color-deep-ocean: var(--bg-deep);
 
-  --font-serif: var(--serif);
-  --font-mono: var(--mono);
-  --font-display: var(--display);
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-fraunces: var(--font-fraunces);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
 }
 
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  scroll-behavior: smooth;
+  text-rendering: optimizeLegibility;
+}
+
+body { overflow-x: hidden; }
+
+::selection {
+  background: var(--ink);
+  color: var(--bg);
+}
+
+/* Headlines — Bricolage Grotesque, sentence case, very tight tracking */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  line-height: 0.98;
+}
+h1 { font-weight: 600; letter-spacing: -0.045em; }
+
+/* Italic editorial accent — Fraunces variable serif for big-display moments.
+   Optical sizing tuned via font-variation-settings so headlines feel
+   expressive while small-body italics stay readable. */
+.editorial-italic {
+  font-family: var(--font-fraunces);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  font-variation-settings: "opsz" 144, "SOFT" 50;
+}
+/* Smaller, more restrained italic — for body asides */
+.editorial-italic-sm {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+
+/* Mono eyebrow */
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ink-3);
+}
+
+/* Container — generous, max 1280 */
+.container-x {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 1280px;
+  padding-inline: 24px;
+}
+@media (min-width: 768px) {
+  .container-x { padding-inline: 40px; }
+}
+
+/* Section seam — just a hairline */
+.hairline { border-color: var(--rule); }
+
+/* Pill button */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 14px 22px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  transition: transform 0.18s ease, background-color 0.18s ease, color 0.18s ease;
+}
+.pill:hover { transform: translateY(-1px); }
+.pill-dark {
+  background: var(--ink);
+  color: var(--bg);
+}
+.pill-dark:hover { background: #1d1d23; }
+.pill-light {
+  background: var(--bg-card);
+  color: var(--ink);
+  border: 1px solid var(--rule-2);
+}
+.pill-accent {
+  background: var(--accent);
+  color: #fff;
+}
+.pill-accent:hover { background: var(--accent-ink); }
+/* Legacy alias — old `pill-orange` keeps working but points to accent now */
+.pill-orange {
+  background: var(--accent);
+  color: #fff;
+}
+.pill-orange:hover { background: var(--accent-ink); }
+
+/* Pixelated/dotted text effect — for "Pay anything. Settle everywhere." accent */
+.pixelated {
+  background-image: radial-gradient(currentColor 33%, transparent 34%);
+  background-size: 4px 4px;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+/* Blurred text effect — like altitude's section transitions */
+.text-blur-sm { filter: blur(6px); opacity: 0.7; }
+
+/* Bracketed numeral chrome — used at section starts */
+.bracket-num {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum";
+  letter-spacing: -0.04em;
+}
+
+/* Subtle paper grain on the cream background */
+.bg-grain {
+  position: relative;
+}
+.bg-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.05;
+  mix-blend-mode: multiply;
+  background-image:
+    radial-gradient(rgba(0, 0, 0, 0.45) 1px, transparent 1px);
+  background-size: 3px 3px;
+}
+
+/* Hairline rule used between rows — full row hover feedback */
+.row-rule {
+  border-bottom: 1px solid var(--rule);
+}
+.row-rule:last-child { border-bottom: none; }
+
+/* Image wash — for mountain photo treatments */
+.image-wash {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+}
+.image-wash img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/*
+ * Animation library — keep it small and shared. Most reveal animations are
+ * driven by motion/react in the components; CSS keyframes handle continuous
+ * loops (marquee, ping) and route-level enter.
+ */
+@keyframes blur-in {
+  from { filter: blur(14px); opacity: 0; transform: translateY(10px); }
+  to { filter: blur(0); opacity: 1; transform: translateY(0); }
+}
+.blur-in { animation: blur-in 0.9s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+@keyframes drift-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.drift-up { animation: drift-up 0.8s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+/* Page-level enter — applied to PageShell main content on mount */
+@keyframes page-enter {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.page-enter { animation: page-enter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Continuous marquee — used in trust strip */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: inline-flex;
+  gap: 4rem;
+  animation: marquee 38s linear infinite;
+  will-change: transform;
+}
+.marquee-mask {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, black 8%, black 92%, transparent 100%);
+}
+
+/* Image clip-reveal — used as scroll-triggered when image enters viewport */
+@keyframes clip-reveal {
+  from { clip-path: inset(0 0 100% 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+.clip-reveal { animation: clip-reveal 1.1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Underline-on-hover for inline links */
+.link-underline {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  transition: background-size 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.link-underline:hover { background-size: 100% 1px; }
+
+/* Magnetic-feel scale on press for primary CTAs */
+.magnet {
+  transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+.magnet:hover { transform: translateY(-2px); }
+.magnet:active { transform: translateY(0) scale(0.98); }
+
+/* Letter reveal — used inline on hero subtitles */
+@keyframes word-rise {
+  0% { opacity: 0; transform: translateY(0.4em) rotateX(-30deg); filter: blur(6px); }
+  100% { opacity: 1; transform: translateY(0) rotateX(0); filter: blur(0); }
+}
+.word-rise { animation: word-rise 1s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+/* Slow soft pulse for status dots */
+@keyframes pulse-soft {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.15); }
+}
+.pulse-soft { animation: pulse-soft 2.4s ease-in-out infinite; }
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .blur-in, .drift-up, .page-enter, .clip-reveal, .word-rise,
+  .marquee-track, .pulse-soft {
+    animation: none !important;
+  }
+  .magnet { transition: none !important; }
+}
+
+/* Focus ring */
+:where(button, a, input, select, textarea):focus-visible {
+  outline: 2px solid var(--ink);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Scrollbar polish */
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
+  * { border-color: var(--rule); }
+  body { background: var(--bg); color: var(--ink); }
 }

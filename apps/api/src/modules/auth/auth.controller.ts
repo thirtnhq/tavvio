@@ -18,6 +18,14 @@ import { LoginSchema } from './dto/login.dto.js';
 import type { LoginDto } from './dto/login.dto.js';
 import { RefreshSchema } from './dto/refresh.dto.js';
 import type { RefreshDto } from './dto/refresh.dto.js';
+import { ForgotPasswordSchema } from './dto/forgot-password.dto.js';
+import type { ForgotPasswordDto } from './dto/forgot-password.dto.js';
+import { ResetPasswordSchema } from './dto/reset-password.dto.js';
+import type { ResetPasswordDto } from './dto/reset-password.dto.js';
+import { VerifyEmailSchema } from './dto/verify-email.dto.js';
+import type { VerifyEmailDto } from './dto/verify-email.dto.js';
+import { ResendVerificationSchema } from './dto/resend-verification.dto.js';
+import type { ResendVerificationDto } from './dto/resend-verification.dto.js';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard.js';
 import { PublicRoute } from '../../common/decorators/public-route.decorator.js';
 import { CurrentMerchant } from '../../common/decorators/current-merchant.decorator.js';
@@ -48,6 +56,49 @@ export class AuthController {
   @UsePipes(new ZodValidationPipe(RefreshSchema))
   async refresh(@Body() dto: RefreshDto) {
     return this.authService.refreshToken(dto.refreshToken);
+  }
+
+  @PublicRoute()
+  @Post('auth/forgot-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UsePipes(new ZodValidationPipe(ForgotPasswordSchema))
+  async forgotPassword(@Body() dto: ForgotPasswordDto): Promise<void> {
+    await this.authService.forgotPassword(dto.email);
+  }
+
+  @PublicRoute()
+  @Post('auth/reset-password')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UsePipes(new ZodValidationPipe(ResetPasswordSchema))
+  async resetPassword(@Body() dto: ResetPasswordDto): Promise<void> {
+    await this.authService.resetPassword(dto.token, dto.password);
+  }
+
+  @PublicRoute()
+  @Post('auth/verify')
+  @HttpCode(HttpStatus.OK)
+  @UsePipes(new ZodValidationPipe(VerifyEmailSchema))
+  async verifyEmail(@Body() dto: VerifyEmailDto) {
+    return this.authService.verifyEmail(dto.email, dto.code);
+  }
+
+  @PublicRoute()
+  @Post('auth/resend-verification')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @UsePipes(new ZodValidationPipe(ResendVerificationSchema))
+  async resendVerification(
+    @Body() dto: ResendVerificationDto,
+  ): Promise<void> {
+    await this.authService.resendVerification(dto.email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Post('auth/logout')
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async logout(
+    @CurrentMerchant('id') merchantId: string,
+  ): Promise<void> {
+    await this.authService.logout(merchantId);
   }
 
   @UseGuards(JwtAuthGuard)

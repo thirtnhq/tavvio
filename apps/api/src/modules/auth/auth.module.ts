@@ -7,6 +7,7 @@ import { JwtStrategy } from './strategies/jwt.strategy.js';
 import { JwtAuthGuard } from '../../common/guards/jwt-auth.guard.js';
 import { ApiKeyGuard } from '../../common/guards/api-key.guard.js';
 import { CombinedAuthGuard } from '../../common/guards/combined-auth.guard.js';
+import { NotificationsModule } from '../notifications/notifications.module.js';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { CombinedAuthGuard } from '../../common/guards/combined-auth.guard.js';
       secret: process.env.JWT_SECRET,
       signOptions: { expiresIn: '15m' },
     }),
+    NotificationsModule,
   ],
   providers: [
     AuthService,

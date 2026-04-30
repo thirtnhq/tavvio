@@ -19,6 +19,11 @@ model Merchant {
   name              String
   email             String         @unique
   passwordHash      String
+  emailVerifiedAt   DateTime?
+  verificationCodeHash      String?
+  verificationCodeExpiresAt DateTime?
+  passwordResetTokenHash    String?
+  passwordResetExpiresAt    DateTime?
   apiKeyHash        String?        @unique // deprecated – use ApiKey model
   webhookUrl        String?
   webhookSecret     String?

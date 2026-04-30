@@ -43,6 +43,14 @@ export class NotificationsService {
     });
   }
 
+  async sendVerificationCodeEmail(email: string, code: string): Promise<void> {
+    await this.dispatch({
+      to: email,
+      subject: `Your Useroutr verification code: ${code}`,
+      html: templates.verificationCodeTemplate(code, this.appUrl),
+    });
+  }
+
   async sendPasswordResetEmail(email: string, token: string): Promise<void> {
     await this.dispatch({
       to: email,

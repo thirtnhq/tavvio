@@ -30,6 +30,7 @@ export interface Merchant {
   name: string;
   companyName?: string;
   logoUrl?: string;
+  emailVerifiedAt?: string | null;
 }
 
 export interface RegisterDto {
@@ -89,6 +90,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const logout = useCallback(() => {
     clearRefreshTimer();
+    // Best-effort: tell the API about the logout. We don't await failures so
+    // the user is signed out locally even if the network is down.
+    void api.post("/auth/logout").catch(() => undefined);
     clearTokens();
     setToken(null);
     setMerchant(null);
@@ -253,7 +257,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   const verifyOtp = async (email: string, code: string) => {
-    await api.post("/auth/verify", { email, code });
+    const updated = await api.post<Merchant>("/auth/verify", { email, code });
+    setMerchant((prev) => ({ ...(prev ?? updated), ...updated }));
     clearPendingVerificationEmail();
     setVerificationEmail(null);
     router.replace("/");

@@ -31,12 +31,18 @@ jest.mock('../prisma/prisma.service', () => ({
 
 import { AuthService } from './auth.service';
 import { PrismaService } from '../prisma/prisma.service';
+import { NotificationsService } from '../notifications/notifications.service';
 
 interface MockMerchant {
   id: string;
   name: string;
   email: string;
   passwordHash: string;
+  emailVerifiedAt: Date | null;
+  verificationCodeHash: string | null;
+  verificationCodeExpiresAt: Date | null;
+  passwordResetTokenHash: string | null;
+  passwordResetExpiresAt: Date | null;
   apiKeyHash: string | null;
   webhookUrl: string | null;
   webhookSecret: string | null;
@@ -54,6 +60,11 @@ const mockMerchant: MockMerchant = {
   name: 'Test Corp',
   email: 'test@example.com',
   passwordHash: '$2b$12$hashedpassword',
+  emailVerifiedAt: null,
+  verificationCodeHash: null,
+  verificationCodeExpiresAt: null,
+  passwordResetTokenHash: null,
+  passwordResetExpiresAt: null,
   apiKeyHash: null,
   webhookUrl: null,
   webhookSecret: null,
@@ -71,6 +82,11 @@ const mockJwtService = {
   verify: jest.fn(),
 };
 
+const mockNotificationsService = {
+  sendVerificationCodeEmail: jest.fn().mockResolvedValue(undefined),
+  sendPasswordResetEmail: jest.fn().mockResolvedValue(undefined),
+};
+
 describe('AuthService', () => {
   let service: AuthService;
 
@@ -80,6 +96,10 @@ describe('AuthService', () => {
         AuthService,
         { provide: PrismaService, useValue: mockPrismaService },
         { provide: JwtService, useValue: mockJwtService },
+        {
+          provide: NotificationsService,
+          useValue: mockNotificationsService,
+        },
       ],
     }).compile();
 
@@ -113,11 +133,13 @@ describe('AuthService', () => {
       expect(result.merchant).not.toHaveProperty('passwordHash');
       expect(result.merchant).not.toHaveProperty('apiKeyHash');
       expect(mockPrismaService.merchant.create).toHaveBeenCalledWith({
-        data: {
+        data: expect.objectContaining({
           name: 'Test Corp',
           email: 'test@example.com',
           passwordHash: expect.any(String) as string,
-        },
+          verificationCodeHash: expect.any(String) as string,
+          verificationCodeExpiresAt: expect.any(Date) as Date,
+        }) as object,
       });
     });
 

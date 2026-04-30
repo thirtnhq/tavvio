@@ -96,13 +96,30 @@ export const verificationTemplate = (token: string, appUrl: string) =>
     </p>
   `);
 
+export const verificationCodeTemplate = (code: string, appUrl: string) =>
+  layout(`
+    <h2 style="margin: 0 0 16px; font-size: 20px; color: #18181b;">Verify your email</h2>
+    <p style="margin: 0 0 16px; font-size: 14px; color: #3f3f46; line-height: 1.6;">
+      Enter this 6-digit code on the verification page to finish setting up your account:
+    </p>
+    <div style="margin: 24px 0; padding: 20px; background-color: #fafafa; border: 1px solid #e4e4e7; border-radius: 8px; text-align: center;">
+      <span style="font-family: 'SF Mono', Menlo, Consolas, monospace; font-size: 30px; letter-spacing: 8px; font-weight: 700; color: #18181b;">${esc(code)}</span>
+    </div>
+    <p style="margin: 0 0 8px; font-size: 13px; color: #3f3f46;">
+      Or open <a href="${esc(appUrl)}/verify" style="color: #18181b;">${esc(appUrl)}/verify</a> directly.
+    </p>
+    <p style="margin: 0; font-size: 12px; color: #71717a;">
+      This code expires in 15 minutes. If you didn't create an account, you can safely ignore this email.
+    </p>
+  `);
+
 export const passwordResetTemplate = (token: string, appUrl: string) =>
   layout(`
     <h2 style="margin: 0 0 16px; font-size: 20px; color: #18181b;">Reset your password</h2>
     <p style="margin: 0 0 8px; font-size: 14px; color: #3f3f46; line-height: 1.6;">
       We received a request to reset your password. Click the button below to choose a new one.
     </p>
-    ${button('Reset Password', `${appUrl}/reset?token=${encodeURIComponent(token)}`)}
+    ${button('Reset Password', `${appUrl}/reset-password?token=${encodeURIComponent(token)}`)}
     <p style="margin: 0; font-size: 12px; color: #71717a;">
       This link will expire in 1 hour. If you didn't request a password reset, please ignore this email.
     </p>
